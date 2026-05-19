@@ -2,13 +2,13 @@
 layout: post
 title: "Built on evidence: Research at the Open Home Foundation"
 description: "From our first peer-reviewed paper to the decisions behind every product: Open Home Foundation researchers Annika Schulz and Idil Bostan unpack how research shapes everything we do."
-og_image: /assets/images/blog/built-on-evidence-research-at-the-open-home-foundation/art.webp
+card_image: /assets/images/blog/built-on-evidence-research-at-the-open-home-foundation/art.webp
 date: 2026-05-20
 author: "Annika Schulz, Idil Bostan"
 category: "Research"
 ---
 
-Last month, two of us packed our bags and headed to Barcelona. Not for tapas (though there was some of that too), but to present the Open Home Foundation's first-ever peer-reviewed paper at <a href="https://chi2026.acm.org/" target="_blank" rel="noopener">ACM CHI</a> – the leading international conference on Human-Computer Interaction 🎉
+Last month, two of us packed our bags and headed to Barcelona. Not for tapas (though there was some of that too), but to present the Open Home Foundation's first-ever peer-reviewed paper at <a href="https://chi2026.acm.org/" target="_blank" rel="noopener noreferrer">ACM CHI</a> – the leading international conference on Human-Computer Interaction 🎉
 
 It was a milestone we'd been working toward for a long time. By publishing and presenting this research, we're putting evidence on the academic record that privacy-conscious users exist, and their needs are real and underserved. It reinforces one of our core beliefs: that smart homes need to be designed with privacy at the foundation, rather than something users have to retrofit.
 
@@ -18,7 +18,7 @@ But the paper is only part of the story. Behind it is a rigorous approach to res
 
 ## From principles to a peer-reviewed paper
 
-Privacy is one of the core principles of the <a href="https://www.openhomefoundation.org/" target="_blank" rel="noopener">Open Home Foundation</a>. So when the opportunity arose to explore the topic in a formal study, it felt like a meaningful place to start. <a href="https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI26_shortpaper.pdf" target="_blank" rel="noopener">Building a Private Smart Home: User Motivations and Challenges</a> – the paper Annika and Open Home Foundation President Paulus Schoutsen co-authored – investigated how privacy shapes the way users set up and maintain their smart homes. Specifically, what measures they take to ensure privacy in their homes, and what aspects of smart home tech make users uncomfortable due to privacy concerns, including when that might lead to them abandoning certain (big) technologies.
+Privacy is one of the core principles of the <a href="https://www.openhomefoundation.org/" target="_blank" rel="noopener noreferrer">Open Home Foundation</a>. So when the opportunity arose to explore the topic in a formal study, it felt like a meaningful place to start. <a href="https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI26_shortpaper.pdf" target="_blank" rel="noopener noreferrer">Building a Private Smart Home: User Motivations and Challenges</a> – the paper Annika and Open Home Foundation President Paulus Schoutsen co-authored – investigated how privacy shapes the way users set up and maintain their smart homes. Specifically, what measures they take to ensure privacy in their homes, and what aspects of smart home tech make users uncomfortable due to privacy concerns, including when that might lead to them abandoning certain (big) technologies.
 
 What the research illuminated was that privacy concerns in the smart home don't exist in a vacuum. Users are responding to a broader landscape, rife with data breaches, surveillance capitalism, AI trained on personal data, and data tracking for political gain. The desire for more private systems is real, and for many, it's already driving them away from technologies that don't meet that standard. That's exactly why we exist as a foundation: to fight for locally controlled, private smart home alternatives that put users back in control.
 
@@ -28,7 +28,7 @@ Presenting that work at ACM CHI meant bringing it to an event of more than 6,000
 
 *Scenes from ACM CHI 2026 – from keynotes to the conference floor.*
 
-Whether you're a researcher, a community member, or just someone who cares about privacy in your smart home – we'd love to hear from you. Head to our <a href="https://github.com/OpenHomeFoundation/ux-design/discussions/26" target="_blank" rel="noopener">UX design discussions page</a> on GitHub to share your insights (we read everything!). And if you'd like to go deeper into the research itself, check out the <a href="https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI26_shortpaper.pdf" target="_blank" rel="noopener">full paper</a> and <a href="https://github.com/OpenHomeFoundation/user-research/wiki/Privacy-Study" target="_blank" rel="noopener">research wiki</a>, or if you only have a few minutes, take a peek at the <a href="https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI-Poster.pdf" target="_blank" rel="noopener">poster</a> we presented at the conference 👀
+Whether you're a researcher, a community member, or just someone who cares about privacy in your smart home – we'd love to hear from you. Head to our <a href="https://github.com/OpenHomeFoundation/ux-design/discussions/26" target="_blank" rel="noopener noreferrer">UX design discussions page</a> on GitHub to share your insights (we read everything!). And if you'd like to go deeper into the research itself, check out the <a href="https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI26_shortpaper.pdf" target="_blank" rel="noopener noreferrer">full paper</a> and <a href="https://github.com/OpenHomeFoundation/user-research/wiki/Privacy-Study" target="_blank" rel="noopener noreferrer">research wiki</a>, or if you only have a few minutes, take a peek at the <a href="https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI-Poster.pdf" target="_blank" rel="noopener noreferrer">poster</a> we presented at the conference 👀
 
 ## Why we question what we build
 
@@ -50,7 +50,7 @@ Annika works within the Product & UX department to understand what users actuall
 
 *Annika Schulz (left) and Idil Bostan presenting Open Home Foundation's privacy study poster at ACM CHI 2026 in Barcelona.*
 
-What unites our work is a shared belief that technology should be designed to be approachable to everyone. Our Product Manager Laura Palombi captured this perfectly at <a href="https://www.openhomefoundation.org/blog/building-whats-next-state-of-the-open-home-2026/" target="_blank" rel="noopener">State of the Open Home 2026</a>: "Approachability means thinking as a human is thinking and not as the machine wants you to think".
+What unites our work is a shared belief that technology should be designed to be approachable to everyone. Our Product Manager Laura Palombi captured this perfectly at <a href="https://www.openhomefoundation.org/blog/building-whats-next-state-of-the-open-home-2026/" target="_blank" rel="noopener noreferrer">State of the Open Home 2026</a>: "Approachability means thinking as a human is thinking and not as the machine wants you to think".
 
 The question is how we actually understand what our users think, especially when our commitment to privacy rules out the research methods most tech companies take for granted.
 
@@ -58,15 +58,15 @@ The question is how we actually understand what our users think, especially when
 
 Let's address the elephant in the room: *data*. Research at the Open Home Foundation is shaped by a core tension: we want our projects to be grounded in evidence, *but we won't sacrifice our values to get there*.
 
-This pushes us to seek privacy-sensitive data collection methods for understanding our users and informing decisions. We're crafting approaches designed to respect the community. For example, when conducting research, participants are explicitly asked to share information about themselves, their perspectives, opinions, and experiences based on informed consent – as described in our <a href="https://www.openhomefoundation.org/user-research-agreement/" target="_blank" rel="noopener">User Research Agreement</a>. Translation: we want people to share on their own terms, and know their privacy is protected in the process.
+This pushes us to seek privacy-sensitive data collection methods for understanding our users and informing decisions. We're crafting approaches designed to respect the community. For example, when conducting research, participants are explicitly asked to share information about themselves, their perspectives, opinions, and experiences based on informed consent – as described in our <a href="https://www.openhomefoundation.org/user-research-agreement/" target="_blank" rel="noopener noreferrer">User Research Agreement</a>. Translation: we want people to share on their own terms, and know their privacy is protected in the process.
 
 While our approach can add challenges, meaningfully contributing to ethical research methods in service of our community, especially in the world of tech, is more than worth the effort.
 
 ## Research in action
 
-And it's this commitment to ethical research that has shaped our work from the start. Our research on the <a href="https://www.home-assistant.io/docs/automation/editor/" target="_blank" rel="noopener">Automation editor</a> – a tool that lets you create and edit automations directly from the Home Assistant user interface, without writing any YAML code – explored how users actually interact with one of Home Assistant's most-used features. And our research into how privacy-conscious users build and maintain their smart homes evolved into the study we presented at CHI.
+And it's this commitment to ethical research that has shaped our work from the start. Our research on the <a href="https://www.home-assistant.io/docs/automation/editor/" target="_blank" rel="noopener noreferrer">Automation editor</a> – a tool that lets you create and edit automations directly from the Home Assistant user interface, without writing any YAML code – explored how users actually interact with one of Home Assistant's most-used features. And our research into how privacy-conscious users build and maintain their smart homes evolved into the study we presented at CHI.
 
-That work doesn't stop. Right now, we're investigating user expectations of the <a href="https://works-with.home-assistant.io/" target="_blank" rel="noopener">Works with Home Assistant</a> (WWHA) badge. Because some WWHA-certified devices have features missing in Home Assistant, we want to understand what users expect from the badge so we can align our certification decisions with that. This will also help us work out how to communicate any limitations so users can make genuinely informed purchasing decisions.
+That work doesn't stop. Right now, we're investigating user expectations of the <a href="https://works-with.home-assistant.io/" target="_blank" rel="noopener noreferrer">Works with Home Assistant</a> (WWHA) badge. Because some WWHA-certified devices have features missing in Home Assistant, we want to understand what users expect from the badge so we can align our certification decisions with that. This will also help us work out how to communicate any limitations so users can make genuinely informed purchasing decisions.
 
 We're also conducting several studies in parallel, in which we ask questions about the work and field of professional smart home installers, learn from beginners about how we can help them find their footing in ESPHome, and observe how users familiarize themselves with the Dashboard Creator of Home Assistant.
 
@@ -80,6 +80,6 @@ From our work in Human-Computer Interaction, we know Home Assistant has already 
 
 *The wider community we're proud to be part of – CHI '26's academia-practice divide meetup.*
 
-If you're a researcher working on smart home usage, interaction design, privacy, accessibility, or anything adjacent, we'd love to hear from you. We've set up a <a href="https://github.com/OpenHomeFoundation/user-research/discussions" target="_blank" rel="noopener">dedicated space</a> on GitHub where you can share your work and start discussions: a place to exchange ideas, follow each other's work, and think together about what comes next.
+If you're a researcher working on smart home usage, interaction design, privacy, accessibility, or anything adjacent, we'd love to hear from you. We've set up a <a href="https://github.com/OpenHomeFoundation/user-research/discussions" target="_blank" rel="noopener noreferrer">dedicated space</a> on GitHub where you can share your work and start discussions: a place to exchange ideas, follow each other's work, and think together about what comes next.
 
 The best version of smart home technology gets built when practitioners and researchers are in dialogue. Come be part of it!
