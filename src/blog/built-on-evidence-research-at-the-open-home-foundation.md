@@ -3,6 +3,9 @@ layout: post
 title: "Built on evidence: Research at the Open Home Foundation"
 description: "From our first peer-reviewed paper to the decisions behind our projects: Open Home Foundation researchers Annika Schulz and Idil Bostan unpack how research shapes everything we do."
 card_image: /assets/images/blog/built-on-evidence-research-at-the-open-home-foundation/art.webp
+eleventyComputed:
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+hide_header_image: true
 date: 2026-05-20
 author: "Annika Schulz, Idil Bostan"
 category: "Research"
@@ -64,7 +67,7 @@ While our approach can add challenges, meaningfully contributing to ethical rese
 
 ## Research in action
 
-And it's this commitment to ethical research that has shaped our work from the start. Our research on the <a href="https://www.home-assistant.io/docs/automation/editor/" target="_blank" rel="noopener noreferrer">Automation editor</a> – a tool that lets you create and edit automations directly from the Home Assistant user interface, without writing any YAML code – explored how users actually interact with one of Home Assistant's most-used features. And our research into how privacy-conscious users build and maintain their smart homes evolved into the study we presented at CHI.
+And it's this commitment to ethical research that has shaped our work from the start. Our research on the <a href="https://www.home-assistant.io/docs/automation/editor/" target="_blank" rel="noopener noreferrer">automation editor</a> – a tool that lets you create and edit automations directly from the Home Assistant user interface, without writing any YAML code – explored how users actually interact with one of Home Assistant's most-used features. And our research into how privacy-conscious users build and maintain their smart homes evolved into the study we presented at CHI.
 
 That work doesn't stop. Right now, we're investigating user expectations of the <a href="https://works-with.home-assistant.io/" target="_blank" rel="noopener noreferrer">Works with Home Assistant</a> (WWHA) badge. Because some WWHA-certified devices have features missing in Home Assistant, we want to understand what users expect from the badge so we can align our certification decisions with that. This will also help us work out how to communicate any limitations so users can make genuinely informed purchasing decisions.
 

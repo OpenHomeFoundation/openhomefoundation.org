@@ -29,9 +29,13 @@ communication standards.
     {%- endif %}
     <meta property="og:title" content="{{ full_title }}">
     <meta property="og:description" content="{{ full_description }}">
+    {%- capture og_image_url -%}
+      {%- assign _og = og_image | default: '/assets/images/opengraph.jpg' -%}
+      {%- if _og contains '://' -%}{{ _og }}{%- else -%}https://www.openhomefoundation.org{{ _og }}{%- endif -%}
+    {%- endcapture -%}
     <meta
       property="og:image"
-      content="https://www.openhomefoundation.org{{ og_image | default: '/assets/images/opengraph.jpg' }}"
+      content="{{ og_image_url }}"
     >
     {%- if author %}
     <meta property="og:image:author" content="{{ author }}">
