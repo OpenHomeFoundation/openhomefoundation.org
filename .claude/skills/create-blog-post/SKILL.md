@@ -9,7 +9,7 @@ Convert a draft markdown file into a properly formatted Open Home Foundation blo
 
 ## Usage
 
-Place your draft blog post markdown file in the project root `create-blog-post/` directory (e.g., `/workspaces/ohf-website/create-blog-post/`), then run:
+Place your draft blog post markdown file in the project root `create-blog-post/` directory, then run:
 
 ```shell
 /create-blog-post
@@ -19,19 +19,19 @@ Place your draft blog post markdown file in the project root `create-blog-post/`
 
 Automates conversion of a draft markdown file with metadata into a production-ready Open Home Foundation blog post:
 
-- Extracts metadata (blog title, subtitle, author, author role, publish date, Social/OpenGraph fields)
+- Extracts metadata (blog title, author, publish date, category, Social/OpenGraph fields)
 - Removes "# Blog notes/preparations" section and lines with ☝️ emoji
 - Converts `### **– Summary break / Read more –**` to `<!--more-->`
 - Processes hero image and any additional images
 - Converts external links to HTML `<a>` tags with `target="_blank"`
 - Formats content (removes bold from headings, fixes link references)
-- Creates properly formatted blog post in `src/blog/` with Eleventy front matter
+- Creates properly formatted blog post in `source/_posts/` with Jekyll front matter
 
 ## Required Files in `create-blog-post/` Directory
 
 1. **Draft markdown file** (any .md filename)
-2. **`art.webp`** - Hero/OG image (required)
-3. **`image2.png`, `image3.png`, etc.** - Additional images (optional, will be converted to WebP)
+2. **`art.*`** - Hero/OG image (required, any common image format: `.webp`, `.png`, `.jpg`, `.jpeg`)
+3. **`image2.*`, `image3.*`, etc.** - Additional images (optional, any common image format)
 
 ## Draft File Format
 
@@ -40,13 +40,11 @@ Automates conversion of a draft markdown file with metadata into a production-re
 
 **Blog title:** Your Blog Title
 
-**Subtitle:** A short subtitle or tagline for the post
-
 **Author:** Author Name
 
-**Author role:** Role or Title
-
 **Publish date:** DD-MM-YYYY
+
+**Category:** Category Name
 
 **Social/OpenGraph title** (Usually same as the blog title, visibility mostly limited to 50-60 characters)**:**
 A short title.
@@ -80,66 +78,90 @@ Rest of content...
 
 Creates a production-ready blog post at:
 
-- `src/blog/slug.md` - The formatted blog post
-- `src/assets/images/blog/slug/art.webp` - OG/hero image (moved from `create-blog-post/`)
-- `src/assets/images/blog/slug/image2.webp`, `image3.webp`, etc. - Additional images (converted from PNGs)
+- `source/_posts/YYYY-MM-DD-slug.markdown` - The formatted blog post
+- `source/images/blog/YYYY-MM-slug/art.webp` - OG/hero image (moved from `create-blog-post/`)
+- `source/images/blog/YYYY-MM-slug/image2.webp`, `image3.webp`, etc. - Additional images (converted from PNGs)
 
 ## Conversion Process
 
-### 1. Parse Metadata
+### 1. Pre-process Draft
 
-- Extract blog title, subtitle, author, author role, publish date, Social/OpenGraph title and description
+Before doing anything else, strip out embedded base64 image data from the draft file using a shell command. **Do not read the draft file before this step** — the base64 data can make the file extremely large.
+
+Google Docs markdown exports include image references like `![][image1]` in the content body, with corresponding base64 definitions at the bottom of the file in the format:
+
+```text
+[image1]: <data:image/png;base64,iVBORw0KGgo... (potentially megabytes of data)>
+```
+
+Run this `sed` command via the Bash tool to strip them in-place:
+
+```shell
+sed -i '/^\[image[0-9]*\]: <data:/d' "create-blog-post/draft.md"
+```
+
+- This removes all lines matching the base64 image definition pattern
+- The `![][image1]` references in the content body are preserved — they will be replaced with proper image paths later
+- Only after this command completes should you read the draft file
+
+### 2. Parse Metadata
+
+- Extract blog title, author, publish date, category (convert to YAML list), Social/OpenGraph title and description
 - Auto-generate URL slug from blog title (lowercase, hyphens for spaces, remove special characters)
 - Remove "# Blog notes/preparations" section and all content under it (up to "# Blog content")
 - Remove all lines that start with ☝️ emoji (instruction lines)
 - Convert `### **– Summary break / Read more –**` marker to `<!--more-->`
 
-### 2. Process Images
+### 3. Process Images
 
-**Hero image (`art.webp`):**
+Before processing images, ensure the `cwebp` tool is installed. If not, install it:
 
-- Move to `src/assets/images/blog/slug/art.webp`
-- Replace `![][image1]` reference in "# Blog content" section with: `<img src="/assets/images/blog/slug/art.webp" alt="Blog Title" style="border: 0;box-shadow: none;">`
+```shell
+# Check if cwebp is available, install if missing
+which cwebp || sudo apt-get install -y webp
+```
+
+**Hero image (`art.*`):**
+
+- Find the `art` image in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
+- If the source is already `.webp`, copy it to `source/images/blog/YYYY-MM-slug/art.webp`
+- If the source is any other format, convert to WebP: `cwebp -resize 1200 630 -q 85 input -o source/images/blog/YYYY-MM-slug/art.webp`
+- The OG image must be exactly 1200x630 pixels — the source image should already be this size, so use `-resize 1200 630` to ensure correctness
+- Replace `![][image1]` reference in "# Blog content" section with: `<img src="/images/blog/YYYY-MM-slug/art.webp" alt="Blog Title" style="border: 0;box-shadow: none;">`
 - CRITICAL: Use double quotes for all HTML attributes (prevents breaking on apostrophes in alt text)
 - Alt text uses the Social/OpenGraph title or blog title
 - No wrapper tags (no `<p>` tag)
-- Set `og_image` front matter to `/assets/images/blog/slug/art.webp`
 
 **Additional images (if any):**
 
-- Find `image2.png`, `image3.png`, etc. in `create-blog-post/` directory
-- Convert to WebP: `cwebp -resize 900 0 -q 85 input.png -o output.webp`
-- Move to `src/assets/images/blog/slug/`
+- Find `image2.*`, `image3.*`, etc. in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
+- Convert to WebP with a max width of 900px: `cwebp -resize 900 0 -q 85 input -o output.webp` (the `0` for height preserves the aspect ratio)
+- If the source is already `.webp`, still re-encode it with the resize: `cwebp -resize 900 0 -q 85 input.webp -o output.webp`
+- Output to `source/images/blog/YYYY-MM-slug/image2.webp`, `image3.webp`, etc.
 - Update references in content
 
-### 3. Transform Links
+### 4. Transform Links
 
 **External links** (different domains/subdomains):
 
-- Convert to: `<a href="URL" target="_blank" rel="noopener">text</a>`
+- Convert to: `<a href="URL" target="_blank" rel="noopener noreferrer">text</a>`
 
-**Internal links** (`www.openhomefoundation.org` and `openhomefoundation.org` only):
+**Internal links** (`www.openhomefoundation.org` only):
 
 - Keep as Markdown links: `[text](/path)`
 
-### 4. Clean Content
+### 5. Clean Content
 
 - **Headings**: Remove bold formatting (`## **Title**` → `## Title`)
 - **Heading levels**: If content starts with H1 (`#`), demote all headings one level (content should start at H2)
 - **Backticks**: Strip erroneous `\`` characters (preserve code blocks/inline code)
+- **Text content**: Do not change the author's wording, phrasing, or writing style. The blog text should stay as-is. If you spot obvious typos or locale spelling issues (such as British English instead of American English), do not fix them silently — collect them and ask the user for confirmation before applying any changes.
+- **Emojis**: Preserve all emojis that appear in the blog content. Do not strip them out.
 
-### 5. Build Blog Post
+### 6. Build Blog Post
 
-- Create `src/blog/slug.md`
-- Eleventy front matter with these fields:
-  - `layout: post`
-  - `title` (quoted string)
-  - `subtitle` (quoted string, if provided)
-  - `description` (from Social/OpenGraph description)
-  - `og_image` (path to hero image)
-  - `date` (YYYY-MM-DD format)
-  - `author` (quoted string)
-  - `author_role` (quoted string, if provided)
+- Create `source/_posts/YYYY-MM-DD-slug.markdown`
+- Jekyll front matter (layout, title, description, date, date_formatted, author, categories, og_image)
 - Hero image (no wrapper)
 - Intro paragraph
 - `<!--more-->` tag after first paragraph
@@ -155,22 +177,23 @@ Creates a production-ready blog post at:
 
 This would create:
 
-- `src/blog/partner-update.md`
-- `src/assets/images/blog/partner-update/art.webp`
-- `src/assets/images/blog/partner-update/image2.webp`, `image3.webp` (if additional images exist)
+- `source/_posts/2026-01-13-partner-update.markdown`
+- `source/images/blog/2026-01-partner/art.webp`
+- `source/images/blog/2026-01-partner/image2.webp`, `image3.webp` (if additional images exist)
 
 ## Important Notes
 
 **Image references:**
 
-- Draft: `![][image1]` (at start of "# Blog content" section) → Output: `art.webp` hero image
-- Draft: `![][image2]` → Look for `image2.png`, convert to `image2.webp`
-- Draft: `![][image3]` → Look for `image3.png`, convert to `image3.webp`
+- Draft: `![][image1]` (at start of "# Blog content" section) → Output: `art.webp` hero image (1200x630, OG image)
+- Draft: `![][image2]` → Look for `image2.*` (any format), convert to `image2.webp` (max 900px wide)
+- Draft: `![][image3]` → Look for `image3.*` (any format), convert to `image3.webp` (max 900px wide)
+- Source images can be any common format (`.webp`, `.png`, `.jpg`, `.jpeg`) — all are converted/re-encoded to `.webp`
 
 **Requirements:**
 
 - Hero image reference should appear at the start of the "# Blog content" section
-- `cwebp` tool required for PNG→WebP conversion (install: `sudo apt-get install -y webp`)
+- `cwebp` tool is required — the skill will auto-install it via `sudo apt-get install -y webp` if not already present
 
 **Content processing:**
 
@@ -180,10 +203,39 @@ This would create:
 
 **Output format:**
 
-- Filename: `slug.md` (no date prefix — Eleventy uses the `date` front matter field)
-- Image directory: `src/assets/images/blog/slug/`
+- Filename: `YYYY-MM-DD-slug.markdown`
+- Image directory: `source/images/blog/YYYY-MM-slug/`
+- Categories in YAML list format (even single category)
 
 **Link handling:**
 
-- Only `www.openhomefoundation.org` and `openhomefoundation.org` stay as Markdown links
-- All other domains/subdomains → HTML `<a>` tags with `target="_blank" rel="noopener"`
+- Only `www.openhomefoundation.org` stay as Markdown links
+- All other domains/subdomains → HTML `<a>` tags with `target="_blank" rel="noopener noreferrer">`
+
+## Post-processing summary
+
+After the blog post has been created, output a summary to the user covering:
+
+**Metadata:**
+
+- Title, author (and whether they were verified in `people.yml`), date, category
+
+**Images:**
+
+- Each source image, its original dimensions/format, and where it was output (with the conversion applied)
+
+**Content transformations:**
+
+- A bulleted list of every notable transformation applied, such as:
+  - Sections/content removed (base64 data, blog template, notes, instruction lines)
+  - Image references replaced
+  - Summary break conversion
+  - Device list replacement (if WWHA, including brand used and number of devices)
+  - Link conversions (external to HTML, internal to relative markdown)
+  - Quote/blockquote formatting
+  - Heading changes (reformatted, promoted/demoted, bold removed)
+  - Escape character cleanup
+
+**Proposed text changes (requires user approval):**
+
+- If any typos or locale spelling issues were spotted (such as British to American English), list each one and ask the user whether to apply them. Do not apply these changes until the user confirms.
