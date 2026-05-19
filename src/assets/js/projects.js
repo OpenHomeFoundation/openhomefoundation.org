@@ -17,5 +17,11 @@ new Swiper(".collab-container", {
     992: {
       slidesPerView: 3.2,
     },
+    1200: {
+      slidesPerView: 3.4,
+    },
+    1400: {
+      slidesPerView: 4,
+    },
   },
 });
