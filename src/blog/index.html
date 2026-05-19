@@ -25,9 +25,9 @@ description: News and updates from the Open Home Foundation
         {% for post in collections.posts %}
         <div class="col-s-12 col-m-6 col-l-4">
           <a href="{{ post.url }}" class="blog-card">
-            {% if post.data.og_image %}
+            {% if post.data.card_image or post.data.og_image %}
             <div class="blog-card-image">
-              <img src="{{ post.data.og_image }}" alt="{{ post.data.title }}" />
+              <img src="{{ post.data.card_image | default: post.data.og_image }}" alt="{{ post.data.title }}" />
             </div>
             {% endif %}
             <div class="blog-card-content">
