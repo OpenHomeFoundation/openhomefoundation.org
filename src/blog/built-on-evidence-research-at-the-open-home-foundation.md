@@ -4,7 +4,7 @@ title: "Built on evidence: Research at the Open Home Foundation"
 description: "From our first peer-reviewed paper to the decisions behind our projects: Open Home Foundation researchers Annika Schulz and Idil Bostan unpack how research shapes everything we do."
 card_image: /assets/images/blog/built-on-evidence-research-at-the-open-home-foundation/card.webp
 eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
 hide_header_image: true
 date: 2026-05-20
 author: "Annika Schulz, Idil Bostan"
