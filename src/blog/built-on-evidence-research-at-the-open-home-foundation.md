@@ -6,7 +6,7 @@ card_image: /assets/images/blog/built-on-evidence-research-at-the-open-home-foun
 eleventyComputed:
   og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
-date: 2026-05-20
+date: 2026-05-21
 author: "Annika Schulz, Idil Bostan"
 category: "Research"
 ---
