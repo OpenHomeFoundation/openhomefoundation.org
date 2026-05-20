@@ -47,9 +47,15 @@
   justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
-  gap: 8px 16px;
+  gap: 8px 6px;
   flex: 1 0 0;
   flex-wrap: wrap;
+}
+
+@media (min-width: 1100px) {
+  .navbar .navbar-bar .menu {
+    gap: 8px 16px;
+  }
 }
 
 .navbar .navbar-bar .menu .menu-item a {
