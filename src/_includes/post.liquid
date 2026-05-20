@@ -23,7 +23,7 @@ layout: base
 <div class="bg-primary">
   <section id="post">
     <div class="container">
-      {% if og_image %}
+      {% if og_image and hide_header_image != true %}
         <div class="header">
           <img
             class="header-image"
