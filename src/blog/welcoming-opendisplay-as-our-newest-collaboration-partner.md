@@ -4,7 +4,7 @@ title: "Welcoming OpenDisplay as our newest collaboration partner"
 description: "Find out how we're bringing the versatility and practicality of e-paper to a wider audience by teaming up with our new collaboration partner, OpenDisplay."
 card_image: /assets/images/blog/welcoming-opendisplay-as-our-newest-collaboration-partner/card.webp
 eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
 hide_header_image: true
 date: 2026-05-21
 author: "Paulus Schoutsen"
