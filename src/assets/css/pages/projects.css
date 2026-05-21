@@ -59,6 +59,10 @@
   padding-bottom: 100px;
 }
 
+#collabs .container {
+  max-width: 1400px;
+}
+
 #collabs p {
   font-size: 24px;
   font-weight: 300;
@@ -71,33 +75,52 @@
   --swiper-wrapper-transition-timing-function: linear;
 }
 
+.collab-container.swiper {
+  overflow: visible;
+}
+
+.collab-container .swiper-pagination {
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
+
+  --swiper-pagination-bullet-inactive-color: var(--on-primary-color);
+  --swiper-pagination-color: var(--on-primary-color);
+  --swiper-pagination-bottom: -2.5rem;
+}
 
 #collabs .collab-card {
-  padding: 48px 32px;
+  height: auto;
+  padding: 24px;
   text-align: center;
   display: flex;
   flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: space-between;
   border-radius: 8px;
   border: 1px solid var(--grey-color);
   background: rgba(237, 236, 237, 0.3);
-  height: 100%;
-}
-
-@media (min-width: 768px) {
-  #collabs .collab-card {}
 }
 
 #collabs .collab-card p {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 300;
-  margin-bottom: 24px;
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  #collabs .collab-card {
+    padding: 48px 32px;
+  }
+
+  #collabs .collab-card p {
+    font-size: 16px;
+  }
 }
 
 #collabs .collab-card img {
   height: 64px;
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 #standards {
