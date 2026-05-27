@@ -1,6 +1,9 @@
 if (navigator.clipboard?.writeText) {
   document.querySelectorAll(".copy-email").forEach((el) => {
-    const email = el.dataset.email;
+    const href = el.getAttribute("href") || "";
+    const email =
+      el.dataset.email ||
+      (href.startsWith("mailto:") ? href.slice(7).split("?")[0] : "");
     if (!email) return;
 
     const tooltip = document.createElement("span");
