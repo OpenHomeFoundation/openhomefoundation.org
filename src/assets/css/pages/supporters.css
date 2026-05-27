@@ -120,7 +120,8 @@
 }
 
 #supporters p+.button {
-  justify-self: center;
+  width: fit-content;
+  margin-inline: auto;
 }
 
 #supporters .standard-card:hover,
