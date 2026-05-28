@@ -13,6 +13,7 @@
 @import "components/footer.css";
 @import "components/button.css";
 @import "components/card.css";
+@import "components/copy-email.css";
 
 @import "pages/index.css";
 @import "pages/structure.css";

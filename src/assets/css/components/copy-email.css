@@ -1,0 +1,57 @@
+.copy-email {
+  position: relative;
+}
+
+.copy-email__tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 4px);
+  margin-bottom: 4px;
+  background: var(--light-blue-color);
+  color: var(--dark-blue-color);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+  z-index: 10;
+}
+
+.copy-email__tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--light-blue-color);
+}
+
+.copy-email.is-copied .copy-email__tooltip {
+  opacity: 1;
+  transform: translate(-50%, -4px);
+}
+
+.copy-email__sr-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-email__tooltip {
+    transition: none;
+  }
+}
