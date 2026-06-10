@@ -1,7 +1,8 @@
 /* User research agreement section */
 
 #agreement-intro,
-#data-use-intro {
+#data-use-intro,
+#privacy-intro {
   padding-top: 150px;
   padding-bottom: 50px;
 }
@@ -15,7 +16,8 @@
 }
 
 #agreement-intro h1,
-#data-use-intro h1 {
+#data-use-intro h1,
+#privacy-intro h1 {
   font-family: Biotif;
   font-size: 56px;
   line-height: 1.1;
@@ -25,7 +27,8 @@
 
 @media (max-width: 767px) {
   #agreement-intro h1,
-  #data-use-intro h1 {
+  #data-use-intro h1,
+  #privacy-intro h1 {
     margin-left: -24px;
     margin-right: -24px;
     font-size: 56px;
