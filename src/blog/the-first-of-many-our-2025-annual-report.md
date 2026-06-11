@@ -15,7 +15,7 @@ Last year marked an exciting new chapter for the Open Home Foundation. Restructu
 
 As part of our commitment to building in the open, this week we're proud to publish the foundation's very first Annual Report for 2025 🎉 From structural changes to big new projects, the report gives a detailed look into who we are and how we operate, along with our wins of 2025 and our plans for what's next. Read on for a snapshot of what you'll find…
 
-<p style="text-align: center;"><a href="https://drive.google.com/file/d/1_5-g_ipn9OykcEb9bmJE-JH7QvLQyOg9/view" target="_blank" rel="noopener noreferrer" class="button" style="display: inline-flex;">Read the 2025 Annual Report</a></p>
+<p style="text-align: center; margin-top: 40px;"><a href="https://drive.google.com/file/d/1_5-g_ipn9OykcEb9bmJE-JH7QvLQyOg9/view" target="_blank" rel="noopener noreferrer" class="button" style="display: inline-flex;">Read the 2025 Annual Report</a></p>
 
 <!--more-->
 
