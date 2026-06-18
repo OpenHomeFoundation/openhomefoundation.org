@@ -53,7 +53,7 @@ And if all that wasn’t enough, <a href="https://www.home-assistant.io/blog/202
 
 By consolidating all your devices into a single platform, Home Assistant gives you complete freedom to use your data however you see fit. You can build custom dashboards, create complex automations, sync with other interfaces like Google Home (if you really want to!), or even give control to your local AI agent.
 
-But what I’m really excited about is how this freedom fuels our vision of a more sustainable smart home. This isn’t an accident: making IR, RF and serial “first-class citizens” of Home Assistant are specific goals on our <a href="https://github.com/orgs/OpenHomeFoundation/projects/8" target="_blank" rel="noopener noreferrer">public roadmap</a>, all tied to the same Open Home Foundation value: sustainability.
+But what I’m really excited about is how this freedom fuels our vision of a more sustainable smart home. This isn’t an accident: making IR, RF and serial “first-class citizens” of Home Assistant are specific goals on our <a href="https://github.com/orgs/OpenHomeFoundation/projects/8" target="_blank" rel="noopener noreferrer">public roadmap</a>, all tied to the same Open Home Foundation principle: sustainability.
 
 As <a href="https://www.howtogeek.com/stop-buying-new-smart-home-devices-old-ones-work-with-home-assistant/" target="_blank" rel="noopener noreferrer">*How-To Geek* recently put it</a>, the sheer pace of our new integrations means the best way to upgrade your smart home today is actually to stop buying new devices, because the high-quality gear you already own probably works with Home Assistant now.
 
