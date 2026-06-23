@@ -53,6 +53,8 @@ sections:
   - title: "Budgets"
     description: "This section contains the annual budget for the Open Home Foundation, as approved by the Board."
     documents:
+      - title: "2026 Open Home Foundation Budget"
+        link: "https://drive.google.com/file/d/1BQBdp4W1pq4K_vSX-syR4xgrf4ggtHsH/view"
       - title: "2025 Open Home Foundation Budget"
         link: "https://drive.google.com/file/d/1IAqzddWX7TNmQokH9yZ5ySTzaoYR41Hm/view"
   - title: "Annual Reports"
