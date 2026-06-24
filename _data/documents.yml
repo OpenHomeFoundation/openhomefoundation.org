@@ -4,6 +4,11 @@ sections:
       - title: "Privacy"
         description: "Our stance on privacy and data autonomy in the smart home, and our recommendations for improving them."
         link: "https://drive.google.com/file/d/18Bw8P2Wxr0uWgcqLAf4TfH6aMOmcgw0q/view"
+  - title: "Annual Reports"
+    description: "Our yearly reports on the Open Home Foundation's activities, accomplishments, and direction."
+    documents:
+      - title: "2025 Annual Report"
+        link: "https://drive.google.com/file/d/1_5-g_ipn9OykcEb9bmJE-JH7QvLQyOg9/view"
   - title: "Working Groups"
     description: "The Works with Home Assistant (WWHA) program is a certification program for products that integrate with Home Assistant. It ensures that products meet specific standards for quality and compatibility."
     documents:
@@ -57,8 +62,3 @@ sections:
         link: "https://drive.google.com/file/d/1BQBdp4W1pq4K_vSX-syR4xgrf4ggtHsH/view"
       - title: "2025 Open Home Foundation Budget"
         link: "https://drive.google.com/file/d/1IAqzddWX7TNmQokH9yZ5ySTzaoYR41Hm/view"
-  - title: "Annual Reports"
-    description: "Our yearly reports on the Open Home Foundation's activities, accomplishments, and direction."
-    documents:
-      - title: "2025 Annual Report"
-        link: "https://drive.google.com/file/d/1_5-g_ipn9OykcEb9bmJE-JH7QvLQyOg9/view"
