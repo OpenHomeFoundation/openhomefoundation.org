@@ -169,7 +169,7 @@ title: "Blog Title"
 description: "Social/OpenGraph description"
 card_image: /assets/images/blog/slug/card.webp
 eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: YYYY-MM-DD
 author: "Author Name"
@@ -178,6 +178,7 @@ category: "Category"
 ```
 
 Then the content:
+
 - Intro paragraph(s)
 - `<!--more-->` tag after first paragraph
 - Remaining content (with inline images embedded where `![][imageN]` references appeared)

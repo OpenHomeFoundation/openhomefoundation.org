@@ -4,7 +4,7 @@ title: "IFA Berlin 2026: Save the date"
 description: "Mark your calendars! From September 4 to 8, 2026, the Open Home Foundation will be exhibiting at IFA Berlin – and you’re invited."
 card_image: /assets/images/blog/ifa-berlin-2026-save-the-date/card.webp
 eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: 2026-06-30
 author: "Melissa Thermidor"
