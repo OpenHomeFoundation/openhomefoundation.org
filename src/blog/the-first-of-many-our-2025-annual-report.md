@@ -4,7 +4,7 @@ title: "The first of many: Our 2025 Annual Report"
 description: "Pull up a chair, because the foundation's 2025 Annual Report is here and packed with a year's worth of growth, milestones, and building with our community."
 card_image: /assets/images/blog/the-first-of-many-our-2025-annual-report/card.webp
 eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: 2026-06-11
 author: "Paulus Schoutsen"
