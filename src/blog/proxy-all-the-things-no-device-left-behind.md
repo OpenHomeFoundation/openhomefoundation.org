@@ -4,7 +4,7 @@ title: "Proxy all the things: no device left behind"
 description: "Discover how Open Home Foundation projects can help you give your beloved old devices a new lease of life for a more sustainable smart home."
 card_image: /assets/images/blog/proxy-all-the-things-no-device-left-behind/card.webp
 eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: 2026-06-18
 author: "Paulus Schoutsen"
