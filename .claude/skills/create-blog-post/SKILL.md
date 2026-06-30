@@ -22,16 +22,16 @@ Automates conversion of a draft markdown file with metadata into a production-re
 - Extracts metadata (blog title, author, publish date, category, Social/OpenGraph fields)
 - Removes "# Blog notes/preparations" section and lines with ☝️ emoji
 - Converts `### **– Summary break / Read more –**` to `<!--more-->`
-- Processes hero image and any additional images
+- Processes card image (OG/social) and inline content images
 - Converts external links to HTML `<a>` tags with `target="_blank"`
 - Formats content (removes bold from headings, fixes link references)
-- Creates properly formatted blog post in `source/_posts/` with Jekyll front matter
+- Creates properly formatted blog post in `src/blog/` with front matter
 
 ## Required Files in `create-blog-post/` Directory
 
 1. **Draft markdown file** (any .md filename)
-2. **`art.*`** - Hero/OG image (required, any common image format: `.webp`, `.png`, `.jpg`, `.jpeg`)
-3. **`image2.*`, `image3.*`, etc.** - Additional images (optional, any common image format)
+2. **`card.*`** - OG/social card image (required, any common image format: `.webp`, `.png`, `.jpg`, `.jpeg`). This image is used for social sharing only and is **not** shown inline in the blog content.
+3. **`image1.*`, `image2.*`, etc.** - Inline content images (optional, any common image format). These are embedded in the blog content body.
 
 ## Draft File Format
 
@@ -58,8 +58,6 @@ Influences SEO ranking. Include the main keyword, describe what readers will fin
 
 # Blog content
 
-![][image1]
-
 Your intro paragraph here...
 
 ### **– Summary break / Read more –**
@@ -69,7 +67,8 @@ Rest of content...
 
 **Notes:**
 
-- The `![][image1]` reference should appear at the start of the "# Blog content" section. This will be replaced with the `art.webp` hero image.
+- Content should begin with text, not an image. The card image is handled separately and is not placed in the content body.
+- `![][image1]` through `![][imageN]` references in the content body correspond to `image1.*` through `imageN.*` files in `create-blog-post/`. They are replaced with inline `<img>` tags.
 - URL slug is optional and will be auto-generated from the blog title if not provided in metadata
 - Lines beginning with ☝️ emoji are instructions and will be removed during processing
 - The `### **– Summary break / Read more –**` marker will be converted to `<!--more-->`
@@ -78,9 +77,9 @@ Rest of content...
 
 Creates a production-ready blog post at:
 
-- `source/_posts/YYYY-MM-DD-slug.markdown` - The formatted blog post
-- `source/images/blog/YYYY-MM-slug/art.webp` - OG/hero image (moved from `create-blog-post/`)
-- `source/images/blog/YYYY-MM-slug/image2.webp`, `image3.webp`, etc. - Additional images (converted from PNGs)
+- `src/blog/slug.md` - The formatted blog post
+- `src/assets/images/blog/slug/card.webp` - OG/social card image (moved from `create-blog-post/`)
+- `src/assets/images/blog/slug/image1.webp`, `image2.webp`, etc. - Inline content images (converted from source format)
 
 ## Conversion Process
 
@@ -106,7 +105,7 @@ sed -i '/^\[image[0-9]*\]: <data:/d' "create-blog-post/draft.md"
 
 ### 2. Parse Metadata
 
-- Extract blog title, author, publish date, category (convert to YAML list), Social/OpenGraph title and description
+- Extract blog title, author, publish date, category, Social/OpenGraph title and description
 - Auto-generate URL slug from blog title (lowercase, hyphens for spaces, remove special characters)
 - Remove "# Blog notes/preparations" section and all content under it (up to "# Blog content")
 - Remove all lines that start with ☝️ emoji (instruction lines)
@@ -121,24 +120,24 @@ Before processing images, ensure the `cwebp` tool is installed. If not, install 
 which cwebp || sudo apt-get install -y webp
 ```
 
-**Hero image (`art.*`):**
+**Card image (`card.*`):**
 
-- Find the `art` image in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
-- If the source is already `.webp`, copy it to `source/images/blog/YYYY-MM-slug/art.webp`
-- If the source is any other format, convert to WebP: `cwebp -resize 1200 630 -q 85 input -o source/images/blog/YYYY-MM-slug/art.webp`
-- The OG image must be exactly 1200x630 pixels — the source image should already be this size, so use `-resize 1200 630` to ensure correctness
-- Replace `![][image1]` reference in "# Blog content" section with: `<img src="/images/blog/YYYY-MM-slug/art.webp" alt="Blog Title" style="border: 0;box-shadow: none;">`
-- CRITICAL: Use double quotes for all HTML attributes (prevents breaking on apostrophes in alt text)
-- Alt text uses the Social/OpenGraph title or blog title
-- No wrapper tags (no `<p>` tag)
+- Find the `card` image in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
+- If the source is already `.webp`, copy it to `src/assets/images/blog/slug/card.webp`
+- If the source is any other format, convert to WebP: `cwebp -resize 1200 630 -q 85 input -o src/assets/images/blog/slug/card.webp`
+- The card image must be exactly 1200x630 pixels — the source image should already be this size, so use `-resize 1200 630` to ensure correctness
+- This image goes in the `card_image` front matter field only; it is **not** placed in the content body
 
-**Additional images (if any):**
+**Inline content images (if any):**
 
-- Find `image2.*`, `image3.*`, etc. in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
+- Find `image1.*`, `image2.*`, `image3.*`, etc. in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
 - Convert to WebP with a max width of 900px: `cwebp -resize 900 0 -q 85 input -o output.webp` (the `0` for height preserves the aspect ratio)
 - If the source is already `.webp`, still re-encode it with the resize: `cwebp -resize 900 0 -q 85 input.webp -o output.webp`
-- Output to `source/images/blog/YYYY-MM-slug/image2.webp`, `image3.webp`, etc.
-- Update references in content
+- Output to `src/assets/images/blog/slug/image1.webp`, `image2.webp`, etc.
+- Replace each `![][imageN]` reference in the content with: `<img src="/assets/images/blog/slug/imageN.webp" alt="descriptive alt text" style="border: 0;box-shadow: none;">`
+- CRITICAL: Use double quotes for all HTML attributes (prevents breaking on apostrophes in alt text)
+- Write descriptive, meaningful alt text for each image based on context
+- No wrapper tags (no `<p>` tag)
 
 ### 4. Transform Links
 
@@ -160,52 +159,79 @@ which cwebp || sudo apt-get install -y webp
 
 ### 6. Build Blog Post
 
-- Create `source/_posts/YYYY-MM-DD-slug.markdown`
-- Jekyll front matter (layout, title, description, date, date_formatted, author, categories, og_image)
-- Hero image (no wrapper)
-- Intro paragraph
+Create `src/blog/slug.md` with the following front matter:
+
+```yaml
+---
+layout: post
+title: "Blog Title"
+description: "Social/OpenGraph description"
+card_image: /assets/images/blog/slug/card.webp
+eleventyComputed:
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}?share"
+hide_header_image: true
+date: YYYY-MM-DD
+author: "Author Name"
+category: "Category"
+---
+```
+
+Then the content:
+- Intro paragraph(s)
 - `<!--more-->` tag after first paragraph
-- Remaining content
+- Remaining content (with inline images embedded where `![][imageN]` references appeared)
+
+**Note**: The `card_image` and OG image are header/social fields only. Do not add a hero image to the content body.
 
 ## Example
 
 1. Place in project root `create-blog-post/`:
    - `draft-partner-update.md` - Your draft file
-   - `art.webp` - OG/hero image
-   - `image2.png`, `image3.png` - Additional images (if any)
+   - `card.webp` - OG/social card image (1200x630)
+   - `image1.png`, `image2.png` - Inline content images (if any)
 2. Run `/create-blog-post`
 
 This would create:
 
-- `source/_posts/2026-01-13-partner-update.markdown`
-- `source/images/blog/2026-01-partner/art.webp`
-- `source/images/blog/2026-01-partner/image2.webp`, `image3.webp` (if additional images exist)
+- `src/blog/partner-update.md`
+- `src/assets/images/blog/partner-update/card.webp`
+- `src/assets/images/blog/partner-update/image1.webp`, `image2.webp` (if inline images exist)
 
 ## Important Notes
 
-**Image references:**
+**Image handling:**
 
-- Draft: `![][image1]` (at start of "# Blog content" section) → Output: `art.webp` hero image (1200x630, OG image)
-- Draft: `![][image2]` → Look for `image2.*` (any format), convert to `image2.webp` (max 900px wide)
-- Draft: `![][image3]` → Look for `image3.*` (any format), convert to `image3.webp` (max 900px wide)
+- `card.*` → `card.webp` (1200x630, OG/social only, not shown in content)
+- `image1.*` → `image1.webp` (max 900px wide, inline content image)
+- `image2.*` → `image2.webp` (max 900px wide, inline content image)
 - Source images can be any common format (`.webp`, `.png`, `.jpg`, `.jpeg`) — all are converted/re-encoded to `.webp`
+- `![][imageN]` references in draft content → inline `<img>` tags pointing to `imageN.webp`
 
 **Requirements:**
 
-- Hero image reference should appear at the start of the "# Blog content" section
 - `cwebp` tool is required — the skill will auto-install it via `sudo apt-get install -y webp` if not already present
+
+**Front matter:**
+
+- `card_image` points to `card.webp` (OG/social card image)
+- `og_image` is dynamically generated via `eleventyComputed` using the OG image service
+- `hide_header_image: true` suppresses the default header image
+- `category` is a plain string (not a YAML list)
+- Date format in front matter: `YYYY-MM-DD`
+- No `date_formatted` field
 
 **Content processing:**
 
 - Remove "# Blog notes/preparations" section entirely
 - Remove all lines starting with ☝️ emoji (instruction lines)
 - Convert `### **– Summary break / Read more –**` to `<!--more-->`
+- Content starts with text, not an image
 
 **Output format:**
 
-- Filename: `YYYY-MM-DD-slug.markdown`
-- Image directory: `source/images/blog/YYYY-MM-slug/`
-- Categories in YAML list format (even single category)
+- Filename: `slug.md` (no date prefix in filename)
+- File location: `src/blog/`
+- Image directory: `src/assets/images/blog/slug/`
 
 **Link handling:**
 
