@@ -156,6 +156,7 @@ which cwebp || sudo apt-get install -y webp
 - **Backticks**: Strip erroneous `\`` characters (preserve code blocks/inline code)
 - **Text content**: Do not change the author's wording, phrasing, or writing style. The blog text should stay as-is. If you spot obvious typos or locale spelling issues (such as British English instead of American English), do not fix them silently — collect them and ask the user for confirmation before applying any changes.
 - **Emojis**: Preserve all emojis that appear in the blog content. Do not strip them out.
+- **Apostrophes**: All apostrophes in content and front matter must be curly/smart quotes (') not straight apostrophes ('). HTML entities like `&rsquo;` should also be converted to the curly character directly.
 
 ### 6. Build Blog Post
 
