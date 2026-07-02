@@ -55,6 +55,9 @@ sections:
       - title: "Collaboration Members Regulations"
         description: "Establish the framework for external open source projects to support the Open Home Foundation's mission."
         link: "https://drive.google.com/file/d/1ss_2ejQB9gYrTyBaMnHxmhReNHbalWoS/view"
+      - title: "IT Policy"
+        description: "Set the standards for the secure and responsible use of the Open Home Foundation's IT systems, devices, and data."
+        link: "https://drive.google.com/file/d/1HJzYJGCaH0Dmvq7gt0VDinEyjA3YaWmt/view"
   - title: "Budgets"
     description: "This section contains the annual budget for the Open Home Foundation, as approved by the Board."
     documents:
