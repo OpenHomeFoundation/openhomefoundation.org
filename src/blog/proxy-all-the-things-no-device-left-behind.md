@@ -7,7 +7,7 @@ eleventyComputed:
   og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: 2026-06-18
-author: "Paulus Schoutsen"
+author: [paulus-schoutsen]
 category: "Hardware"
 ---
 

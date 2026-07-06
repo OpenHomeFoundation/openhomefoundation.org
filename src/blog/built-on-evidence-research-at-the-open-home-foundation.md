@@ -7,7 +7,7 @@ eleventyComputed:
   og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: 2026-05-20
-author: "Annika Schulz, Idil Bostan"
+author: [annika-schulz, idil-bostan]
 category: "Research"
 ---
 
