@@ -1,0 +1,27 @@
+paulus-schoutsen:
+  name: "Paulus Schoutsen"
+  github: "balloob"
+
+melissa-thermidor:
+  name: "Melissa Thermidor"
+  avatar: "/assets/images/authors/melissa-thermidor.webp"
+
+guy-sie:
+  name: "Guy Sie"
+  github: "guysie"
+
+pascal-vizeli:
+  name: "Pascal Vizeli"
+  github: "pvizeli"
+
+j-nick-koston:
+  name: "J. Nick Koston"
+  github: "bdraco"
+
+annika-schulz:
+  name: "Annika Schulz"
+  github: "anakinsbrna"
+
+idil-bostan:
+  name: "Idil Bostan"
+  github: "idilb"

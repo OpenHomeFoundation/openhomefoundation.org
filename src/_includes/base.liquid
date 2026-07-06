@@ -37,8 +37,8 @@ communication standards.
       property="og:image"
       content="{{ og_image_url }}"
     >
-    {%- if author %}
-    <meta property="og:image:author" content="{{ author }}">
+    {%- if author_display %}
+    <meta property="og:image:author" content="{{ author_display }}">
     {%- endif %}
     {%- if category %}
     <meta property="og:image:category" content="{{ category }}">
@@ -47,9 +47,9 @@ communication standards.
     <meta name="twitter:label1" value="Reading time">
     <meta name="twitter:data1" value="~{{ reading_time }} {% if reading_time == 1 %}minute{% else %}minutes{% endif %}">
     {%- endif %}
-    {%- if author %}
+    {%- if author_display %}
       <meta name="twitter:label2" value="Written by">
-      <meta name="twitter:data2" value="{{ author }}">
+      <meta name="twitter:data2" value="{{ author_display }}">
     {%- endif %}
     <link rel="alternate" type="application/atom+xml" title="Open Home Foundation Blog" href="/blog/feed.xml">
     <link rel="stylesheet" href="/assets/swiper-bundle.min.css">

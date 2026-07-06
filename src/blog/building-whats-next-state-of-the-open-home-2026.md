@@ -4,7 +4,7 @@ title: "Building what's next: State of the Open Home 2026"
 description: "From a new Community department to a public roadmap awaiting your input – and more. Catch up on the event highlights and help shape what we build next."
 og_image: /assets/images/blog/building-whats-next-state-of-the-open-home-2026/art.webp
 date: 2026-04-10
-author: "Paulus Schoutsen"
+author: [paulus-schoutsen]
 category: "State of the Open Home"
 ---
 

@@ -14,7 +14,16 @@ layout: base
               {{ description }}
             </p>
           {% endif %}
-          <p class="meta text-center">{{ date | date: '%A, %B %d, %Y' }}{% if author %} · {{ author }}{% endif %} · {{ reading_time }} minute read</p>
+          {% if author %}
+            <p class="meta text-center">
+              <span class="meta-secondary">{{ date | date: '%A, %B %d, %Y' }} · {{ reading_time }} minute read</span>
+              <span class="meta-author"><span class="author-avatars">{% for slug in author %}{% assign a = authors[slug] %}{% if a.github %}<img class="author-avatar" src="https://github.com/{{ a.github }}.png?size=80" alt="{{ a.name }}">{% elsif a.avatar %}<img class="author-avatar" src="{{ a.avatar }}" alt="{{ a.name }}">{% endif %}{% endfor %}</span><span class="author-names">{% for slug in author %}{% assign a = authors[slug] %}{% if a %}{% if a.github %}<a href="https://github.com/{{ a.github }}" target="_blank" rel="noopener noreferrer">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% else %}{{ slug }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}</span></span>
+            </p>
+          {% else %}
+            <p class="meta text-center">
+              <span class="meta-secondary">{{ date | date: '%A, %B %d, %Y' }} · {{ reading_time }} minute read</span>
+            </p>
+          {% endif %}
         </div>
       </div>
     </div>

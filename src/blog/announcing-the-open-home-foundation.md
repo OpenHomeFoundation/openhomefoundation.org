@@ -5,7 +5,7 @@ subtitle: "Actions speak louder than words.<br /><br />Which is why we're launch
 description: "Actions speak louder than words. Which is why we created the Open Home Foundation to secure the radical principles of privacy, choice, and sustainability for smart homes."
 og_image: /assets/images/blog/announcing-the-open-home-foundation-opengraph.jpg
 date: 2024-04-20
-author: "Paulus Schoutsen, Guy Sie, Pascal Vizeli, J. Nick Koston"
+author: [paulus-schoutsen, guy-sie, pascal-vizeli, j-nick-koston]
 author_role: "Inaugural Board of the Open Home Foundation"
 category: "Announcements"
 ---
