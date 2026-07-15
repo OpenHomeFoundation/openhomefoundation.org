@@ -14,7 +14,7 @@
 	},
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": {
-			"version": "default"
+			"version": "22"
 		}
 	},
 	"customizations": {
