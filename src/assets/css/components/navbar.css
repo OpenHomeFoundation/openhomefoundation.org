@@ -195,6 +195,26 @@
   cursor: pointer;
 }
 
+.navbar .navbar-bar .menu-button svg path {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform 250ms ease-in-out,
+    opacity 200ms ease-in-out;
+}
+
+.navbar .navbar-bar .menu-button[aria-expanded="true"] svg path:nth-child(1) {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.navbar .navbar-bar .menu-button[aria-expanded="true"] svg path:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar .navbar-bar .menu-button[aria-expanded="true"] svg path:nth-child(3) {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
 .navbar-menu {
   display: none;
   flex-direction: column;
