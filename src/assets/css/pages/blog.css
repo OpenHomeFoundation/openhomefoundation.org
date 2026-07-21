@@ -29,10 +29,6 @@
   text-decoration: underline;
 }
 
-.author-avatars {
-  display: inline-flex;
-}
-
 .author-avatar {
   width: 40px;
   height: 40px;
@@ -47,14 +43,35 @@
 }
 
 .meta-author {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem;
   font-size: 15px;
+  margin-top: 1rem;
 }
 
-.meta-author:has(.author-avatar ~ .author-avatar) {
-  gap: 0;
+@media (min-width: 768px) {
+  .author-avatars {
+    display: inline-flex;
+  }
+
+  .meta-author:has(.author-avatar ~ .author-avatar) {
+    gap: 0;
+  }
+
+  .meta-author {
+    flex-direction: row;
+    margin-top: 0;
+  }
+
+  .author-names {
+    text-align: left;
+  }
+}
+
+.author-names {
+  text-wrap: balance;
 }
 
 .meta-secondary {
