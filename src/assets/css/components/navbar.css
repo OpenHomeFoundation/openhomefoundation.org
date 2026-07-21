@@ -320,13 +320,13 @@
   outline: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 870px) {
   .navbar-menu-item.has-dropdown > .navbar-menu-label {
     display: none;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 870px) {
   .navbar-container {
     padding: 0 24px;
   }
