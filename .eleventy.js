@@ -13,6 +13,14 @@ module.exports = (eleventyConfig) => {
       .sort((a, b) => b.date - a.date);
   });
 
+  // 	--------------------- Papers Collection ---------------------
+  eleventyConfig.addCollection("papers", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob(["src/documents/papers/*.html", "src/documents/papers/*.md"])
+      .filter((item) => !item.inputPath.includes("index.html"))
+      .sort((a, b) => b.date - a.date);
+  });
+
 
   // 	--------------------- Custom Template Languages ---------------------
   eleventyConfig.addPlugin(require("./config/css-config.js"));

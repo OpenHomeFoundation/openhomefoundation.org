@@ -3,7 +3,7 @@ sections:
     documents:
       - title: "Privacy"
         description: "Our stance on privacy and data autonomy in the smart home, and our recommendations for improving them."
-        link: "https://drive.google.com/file/d/18Bw8P2Wxr0uWgcqLAf4TfH6aMOmcgw0q/view"
+        link: "/documents/papers/privacy/"
   - title: "Annual Reports"
     description: "Our yearly reports on the Open Home Foundation's activities, accomplishments, and direction."
     documents:
