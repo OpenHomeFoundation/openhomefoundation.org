@@ -22,6 +22,7 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPassthroughCopy({
     "src/assets/fonts/": "assets/fonts/",
     "src/assets/images/": "assets/images/",
+    "src/assets/documents/": "assets/documents/",
     "src/assets/favicon/*": "/",
     "src/robots.txt": "/robots.txt",
     "src/_redirects": "/_redirects",
