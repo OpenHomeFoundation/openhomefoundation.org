@@ -3,7 +3,7 @@ layout: paper
 lead: "Position paper, October 2025"
 title: "Privacy in the smart home"
 description: "Personal privacy in the smart home requires data autonomy. This means smart home data should be local first, user owned and controlled, and legally protected. In addition, the privacy implications of any smart home device or service should be easily understood thanks to simple labeling."
-pdf: https://drive.google.com/file/d/18Bw8P2Wxr0uWgcqLAf4TfH6aMOmcgw0q/view
+pdf: /assets/documents/privacy-position-paper-29-oct-2025.pdf
 ---
 
 ## Introduction
