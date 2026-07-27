@@ -1,0 +1,128 @@
+#paper-header {
+  padding-top: 120px;
+  padding-bottom: 60px;
+  color: var(--light-grey-color);
+}
+
+#paper-header p {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+#paper-header .meta {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--light-grey-color);
+  margin-top: 24px;
+}
+
+#paper-header .meta-secondary {
+  opacity: 0.7;
+}
+
+#paper-header .button {
+  margin: 0 auto;
+}
+
+#paper-header .button svg path {
+  transition: fill .18s ease-in-out;
+}
+
+#paper-header .button:hover svg path {
+  fill: var(--dark-blue-color);
+}
+
+#paper-header .lead {
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+#paper-header h1 {
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--light-grey-color);
+  font-size: 32px;
+}
+
+@media (min-width: 768px) {
+  #paper-header h1 {
+    font-size: 56px;
+  }
+
+  #paper-header p {
+    font-size: 24px;
+  }
+}
+
+#paper {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+  #paper {
+    padding-top: 80px;
+  }
+}
+
+#paper-list {
+  padding-top: 40px;
+  padding-bottom: 120px;
+}
+
+@media (min-width: 768px) {
+  #paper-list {
+    padding-top: 80px;
+  }
+}
+
+#paper .header {
+  display: flex;
+  justify-content: center;
+}
+
+#paper .content {
+  margin-bottom: 64px;
+}
+
+#paper .content p,
+#paper .content li {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--secondary-text-color);
+}
+
+#paper .content h2 {
+  font-size: 32px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  margin-top: 40px;
+  color: var(--primary-text-color);
+}
+
+#paper .content h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  margin-top: 32px;
+  color: var(--primary-text-color);
+}
+
+#paper .content lite-youtube,
+#paper .content img,
+#paper .content picture {
+  width: 100%;
+  margin-bottom: 24px;
+  display: block;
+  margin-top: 24px;
+  border-radius: 16px;
+}
+
+#paper .content img + p:has(em) {
+  margin-top: -16px;
+  font-size: 14px;
+}
