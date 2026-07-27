@@ -17,8 +17,7 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addCollection("papers", function (collectionApi) {
     return collectionApi
       .getFilteredByGlob(["src/documents/papers/*.html", "src/documents/papers/*.md"])
-      .filter((item) => !item.inputPath.includes("index.html"))
-      .sort((a, b) => b.date - a.date);
+      .filter((item) => !item.inputPath.includes("index.html"));
   });
 
 
