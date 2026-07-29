@@ -17,27 +17,24 @@
             <li class="{% if page.url == '/supporters/' %}active{% endif %}"><a href="/supporters/">Supporters</a></li>
           </ul>
         </li>
-        <li class="menu-item has-dropdown {% if page.url == '/projects/' or page.url == '/research/' %}active{% endif %}">
+        <li class="menu-item has-dropdown {% if page.url == '/projects/' %}active{% endif %}">
           <a href="#" aria-haspopup="true">What we do<span class="dropdown-arrow" aria-hidden="true"></span></a>
           <ul class="dropdown">
             <li class="{% if page.url == '/projects/' %}active{% endif %}"><a href="/projects/">Projects</a></li>
-            <li class="{% if page.url == '/research/' %}active{% endif %}"><a href="/research/">Research *</a></li>
-            <li class="{% if page.url == '/research/' %}active{% endif %}"><a href="/research/">Advocacy *</a></li>
           </ul>
         </li>
 
-        <li class="menu-item has-dropdown {% if page.url == '/documents/' or page.url == '/press-kit/' %}active{% endif %}">
+        <li class="menu-item has-dropdown {% if page.url == '/documents/' or page.url == '/papers/privacy/' %}active{% endif %}">
           <a href="#" aria-haspopup="true">Resources<span class="dropdown-arrow" aria-hidden="true"></span></a>
           <ul class="dropdown">
-            <li class="{% if page.url == '/documents/' %}active{% endif %}">
-              <a href="/documents/">Privacy whitepaper *</a>
+            <li class="{% if page.url == '/papers/privacy/' %}active{% endif %}">
+              <a href="/papers/privacy/">Privacy paper</a>
             </li>
             <li class="{% if page.url == '/documents/' %}active{% endif %}"><a href="/documents/">Documents</a></li>
-            <li class="{% if page.url == '/press-kit/' %}active{% endif %}"><a href="/press-kit/">Press kit *</a></li>
           </ul>
         </li>
 
-        <li class="menu-item {% if page.url contains '/blog/' %}active{% endif %}"><a href="/blog/">News</a></li>
+        <li class="menu-item {% if page.url contains '/blog/' %}active{% endif %}"><a href="/blog/">Blog</a></li>
         <li class="menu-item">
           <a href="https://store.openhomefoundation.org/" target="_blank">Store</a>
         </li>
@@ -69,38 +66,35 @@
           </ul>
         </details>
       </li>
-      <li class="navbar-menu-item has-dropdown {% if page.url == '/projects/' or page.url == '/research/' %}active{% endif %}">
+      <li class="navbar-menu-item has-dropdown {% if page.url == '/projects/' %}active{% endif %}">
         <details
-          {% if page.url == '/projects/' or page.url == '/research/' %}
+          {% if page.url == '/projects/' %}
             open
           {% endif %}
         >
           <summary>What we do<span class="dropdown-arrow" aria-hidden="true"></span></summary>
           <ul class="dropdown">
             <li class="{% if page.url == '/projects/' %}active{% endif %}"><a href="/projects/">Projects</a></li>
-            <li class="{% if page.url == '/research/' %}active{% endif %}"><a href="/research/">Research *</a></li>
-            <li class="{% if page.url == '/research/' %}active{% endif %}"><a href="/research/">Advocacy *</a></li>
           </ul>
         </details>
       </li>
-      <li class="navbar-menu-item has-dropdown {% if page.url == '/documents/' or page.url == '/press-kit/' %}active{% endif %}">
+      <li class="navbar-menu-item has-dropdown {% if page.url == '/documents/' %}active{% endif %}">
         <details
-          {% if page.url == '/documents/' or page.url == '/press-kit/' %}
+          {% if page.url == '/documents/' %}
             open
           {% endif %}
         >
           <summary>Resources<span class="dropdown-arrow" aria-hidden="true"></span></summary>
           <ul class="dropdown">
-            <li class="{% if page.url == '/documents/' %}active{% endif %}">
-              <a href="/documents/">Privacy whitepaper *</a>
+            <li class="{% if page.url == '/papers/privacy/' %}active{% endif %}">
+              <a href="/papers/privacy/">Privacy paper</a>
             </li>
             <li class="{% if page.url == '/documents/' %}active{% endif %}"><a href="/documents/">Documents</a></li>
-            <li class="{% if page.url == '/press-kit/' %}active{% endif %}"><a href="/press-kit/">Press kit *</a></li>
           </ul>
         </details>
       </li>
       <li class="navbar-menu-item {% if page.url contains '/blog/' %}active{% endif %}">
-        <a href="/blog/">News</a>
+        <a href="/blog/">Blog</a>
       </li>
       <li class="navbar-menu-item">
         <a href="https://store.openhomefoundation.org/" target="_blank">Store</a>
