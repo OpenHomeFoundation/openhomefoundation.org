@@ -29,6 +29,16 @@ body {
   background-repeat: repeat, no-repeat;
 }
 
+.bg-gradient-paper-header {
+  overflow: hidden;
+  background:
+    url("/assets/images/gradients/noise.png"),
+    url("/assets/images/gradients/gradient-about-header.jpg") var(--secondary-color);
+  background-size: auto, cover;
+  background-position: center center;
+  background-repeat: repeat, no-repeat;
+}
+
 .bg-gradient-agreement-header {
   overflow: hidden;
   background:

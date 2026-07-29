@@ -13,6 +13,13 @@ module.exports = (eleventyConfig) => {
       .sort((a, b) => b.date - a.date);
   });
 
+  // 	--------------------- Papers Collection ---------------------
+  eleventyConfig.addCollection("papers", function (collectionApi) {
+    return collectionApi
+      .getFilteredByGlob(["src/documents/papers/*.html", "src/documents/papers/*.md"])
+      .filter((item) => !item.inputPath.includes("index.html"));
+  });
+
 
   // 	--------------------- Custom Template Languages ---------------------
   eleventyConfig.addPlugin(require("./config/css-config.js"));
@@ -22,6 +29,7 @@ module.exports = (eleventyConfig) => {
   eleventyConfig.addPassthroughCopy({
     "src/assets/fonts/": "assets/fonts/",
     "src/assets/images/": "assets/images/",
+    "src/assets/documents/": "assets/documents/",
     "src/assets/favicon/*": "/",
     "src/robots.txt": "/robots.txt",
     "src/_redirects": "/_redirects",
