@@ -3,8 +3,7 @@ layout: post
 title: "Making our web analytics open source with Plausible"
 description: "Find out how and why we’re implementing analytics on our websites: via open source software with no personal data collection or tracking."
 card_image: /assets/images/blog/making-our-web-analytics-open-source-with-plausible/card.webp
-eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+og_image: /assets/images/blog/making-our-web-analytics-open-source-with-plausible/card.webp
 hide_header_image: true
 date: 2026-07-29
 author: [darren-griffin]
