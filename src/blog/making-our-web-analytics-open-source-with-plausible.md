@@ -8,6 +8,7 @@ hide_header_image: true
 date: 2026-07-29
 author: [darren-griffin]
 category: "Announcements"
+comments: true
 ---
 
 The Open Home Foundation fights for privacy, choice, and sustainability. These principles are at the heart of everything we do, including how we handle website analytics.
