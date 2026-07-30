@@ -26,7 +26,7 @@ layout: base
                     {%- elsif a.avatar -%}
                       <img class="author-avatar" src="{{ a.avatar }}" alt="{{ a.name }}">
                     {%- endif -%}
-                  {%- endfor -%}></span
+                  {%- endfor -%}</span
                 ><span class="author-names">
                   {%- for slug in author -%}
                     {%- assign a = authors[slug] -%}
