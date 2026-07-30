@@ -70,9 +70,9 @@ layout: base
       {% endif %}
       <div class="grid">
         <div class="col-s-12 col-m-8 col-m-offset-3">
-          <div class="content{% unless comments == true and env.isProduction %} mb-128{% endunless %}">
+          <article class="post content{% unless comments == true and env.isProduction %} mb-128{% endunless %}">
             {{ content }}
-          </div>
+          </article>
           {% if comments == true and env.isProduction %}
             <div id="discourse-comments" class="mb-128"></div>
             <script type="text/javascript">
