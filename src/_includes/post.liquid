@@ -17,7 +17,34 @@ layout: base
           {% if author %}
             <p class="meta text-center">
               <span class="meta-secondary">{{ date | date: '%A, %B %d, %Y' }} · {{ reading_time }} minute read</span>
-              <span class="meta-author"><span class="author-avatars">{% for slug in author %}{% assign a = authors[slug] %}{% if a.github %}<img class="author-avatar" src="https://github.com/{{ a.github }}.png?size=80" alt="{{ a.name }}">{% elsif a.avatar %}<img class="author-avatar" src="{{ a.avatar }}" alt="{{ a.name }}">{% endif %}{% endfor %}</span><span class="author-names">{% for slug in author %}{% assign a = authors[slug] %}{% if a %}{% if a.github %}<a href="https://github.com/{{ a.github }}" target="_blank" rel="noopener noreferrer">{{ a.name }}</a>{% else %}{{ a.name }}{% endif %}{% else %}{{ slug }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}</span></span>
+              <span class="meta-author"
+                ><span class="author-avatars">
+                  {%- for slug in author -%}
+                    {%- assign a = authors[slug] -%}
+                    {%- if a.github -%}
+                      <img class="author-avatar" src="https://github.com/{{ a.github }}.png?size=80" alt="{{ a.name }}">
+                    {%- elsif a.avatar -%}
+                      <img class="author-avatar" src="{{ a.avatar }}" alt="{{ a.name }}">
+                    {%- endif -%}
+                  {%- endfor -%}></span
+                ><span class="author-names">
+                  {%- for slug in author -%}
+                    {%- assign a = authors[slug] -%}
+                    {%- if a -%}
+                      {%- if a.github -%}
+                        <a href="https://github.com/{{ a.github }}" target="_blank" rel="noopener noreferrer">
+                          {{- a.name -}}
+                        </a>
+                      {%- else -%}
+                        {{- a.name -}}
+                      {%- endif -%}
+                    {%- else -%}
+                      {{- slug -}}
+                    {%- endif -%}
+                    {%- unless forloop.last %}, {% endunless -%}
+                  {%- endfor -%}
+                </span></span
+              >
             </p>
           {% else %}
             <p class="meta text-center">
@@ -43,9 +70,26 @@ layout: base
       {% endif %}
       <div class="grid">
         <div class="col-s-12 col-m-8 col-m-offset-3">
-          <div class="content mb-128">
+          <div class="content{% unless comments == true and env.isProduction %} mb-128{% endunless %}">
             {{ content }}
           </div>
+          {% if comments == true and env.isProduction %}
+            <div id="discourse-comments" class="mb-128"></div>
+            <script type="text/javascript">
+              DiscourseEmbed = {
+                discourseUrl: 'https://community.home-assistant.io/',
+                discourseEmbedUrl: 'https://www.openhomefoundation.org{{ page.url }}',
+              };
+
+              (function () {
+                var d = document.createElement('script');
+                d.type = 'text/javascript';
+                d.async = true;
+                d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+              })();
+            </script>
+          {% endif %}
         </div>
       </div>
     </div>
