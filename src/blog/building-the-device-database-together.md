@@ -9,6 +9,7 @@ hide_header_image: true
 date: 2026-07-23
 author: [matthias-kerstner]
 category: "Announcements"
+comments: true
 ---
 
 Ever since we introduced the idea of a community-powered device database at State of the Open Home 2025, our goal has been clear: create a “Wikipedia of smart home devices” based on real-world usage. In February, we took the first step by <a href="https://www.home-assistant.io/blog/2026/02/02/about-device-database/" target="_blank" rel="noopener noreferrer">inviting Home Assistant users</a> to voluntarily share anonymized device data to help us build it.
