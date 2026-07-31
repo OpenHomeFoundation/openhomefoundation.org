@@ -2,7 +2,7 @@
 layout: post
 title: "A big win for Android interoperability"
 description: "Google gatekept key Android features, and the European Commission asked what we thought about it. Now Alphabet must open 11 Android features to all."
-card_image: /assets/images/blog/a-big-win-for-android-interoperability/card.webp
+card_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 eleventyComputed:
   og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
