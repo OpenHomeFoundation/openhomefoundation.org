@@ -26,7 +26,7 @@ For three years, our community had tried to ship an always-on wake word detectio
 
 Android has a well-designed mechanism that lets your device listen for “Hey Google” all day, without draining your battery. Their wake word detection runs in two stages. A small model does the first detection on a DSP (digital signal processor), which is a dedicated chip that processes audio using a fraction of the power your device’s main processor (CPU) would need. This first stage runs in an isolated process blocked from the network, and can’t extract audio until a potential wake word is detected. Then the second stage uses a stronger model via the CPU to confirm the detection.
 
-Most contemporary devices have DSPs. But Android-based devices block access to it for anyone other than Google and the manufacturer of the device. Since the wake wake word mechanism using the DSP simply wasn’t available to third-party apps, and developer documentation didn’t exist publicly, we used what we could to build a workaround.
+Most contemporary devices have DSPs. But Android-based devices block access to it for anyone other than Google and the manufacturer of the device. Since the wake word mechanism using the DSP simply wasn’t available to third-party apps, and developer documentation didn’t exist publicly, we used what we could to build a workaround.
 
 ## From microWakeWord to macro results
 
