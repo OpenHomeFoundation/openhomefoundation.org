@@ -22,7 +22,7 @@ description: News and updates from the Open Home Foundation
   <section id="blog-list">
     <div class="container">
       <div class="grid">
-        {% for post in collections.posts %}
+        {% for post in pagination.items %}
         <div class="col-s-12 col-m-6 col-l-4">
           <a href="{{ post.url }}" class="blog-card">
             {% if post.data.card_image or post.data.og_image %}
@@ -41,6 +41,41 @@ description: News and updates from the Open Home Foundation
         </div>
         {% endfor %}
       </div>
+      {% if pagination.hrefs.size > 1 %}
+      <nav class="pagination" aria-label="Blog pagination">
+        {% if pagination.href.previous %}
+        <a href="{{ pagination.href.previous }}" class="pagination-arrow pagination-arrow-prev" aria-label="Previous page">
+          {% include 'svg/arrow.svg' %}
+        </a>
+        {% else %}
+        <span class="pagination-arrow pagination-arrow-prev is-disabled" aria-hidden="true">
+          {% include 'svg/arrow.svg' %}
+        </span>
+        {% endif %}
+
+        <ul class="pagination-list">
+          {% for item in paginationNav %}
+          <li>
+            {% if item.ellipsis %}
+            <span class="pagination-ellipsis">&hellip;</span>
+            {% else %}
+            <a href="{{ item.href }}" class="pagination-number{% if item.current %} is-current{% endif %}" {% if item.current %}aria-current="page"{% endif %}>{{ item.number }}</a>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+
+        {% if pagination.href.next %}
+        <a href="{{ pagination.href.next }}" class="pagination-arrow pagination-arrow-next" aria-label="Next page">
+          {% include 'svg/arrow.svg' %}
+        </a>
+        {% else %}
+        <span class="pagination-arrow pagination-arrow-next is-disabled" aria-hidden="true">
+          {% include 'svg/arrow.svg' %}
+        </span>
+        {% endif %}
+      </nav>
+      {% endif %}
     </div>
   </section>
 </div>
