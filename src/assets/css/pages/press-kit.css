@@ -65,7 +65,11 @@
   position: absolute;
   top: 24px;
   right: 16px;
-  color: var(--primary-text-color);
+}
+
+#press-kit-downloads .download-card svg #arrow_outward_2,
+#press-kit-downloads .download-card svg rect {
+  fill: var(--primary-text-color);
 }
 
 @media (min-width: 768px) {
