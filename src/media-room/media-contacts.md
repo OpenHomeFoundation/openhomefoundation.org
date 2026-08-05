@@ -7,6 +7,7 @@ noindex: true
 ---
 
 **Dedicated email:** <a href="mailto:media@openhomefoundation.org" class="copy-email">media@openhomefoundation.org</a>
+
 **Response time:** The team operates across European (CET) time zones. Time-sensitive media inquiries are prioritized, with responses typically provided within one business day.
 
 ## Spokesperson directory

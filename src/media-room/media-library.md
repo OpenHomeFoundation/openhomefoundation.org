@@ -8,6 +8,8 @@ noindex: true
 
 Below you will find official, high-resolution media assets approved for editorial, journalistic, and broadcast use. These materials are provided to assist press outlets, industry analysts, and content creators reporting on the Open Home Foundation, its governed open source projects, and hardware reference designs.
 
+[insert image gallery / download button]
+
 ## Using and attributing these assets
 
 **Logo integrity**
