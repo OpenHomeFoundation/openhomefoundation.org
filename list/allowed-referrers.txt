@@ -1,0 +1,177 @@
+# Allowed referrers — PUBLIC. Published as openhomefoundation.org/allowed-referrers.json
+# and consumed by every Open Home Foundation site that runs Plausible.
+#
+# WHY THIS EXISTS
+# Someone reaching one of our sites from their own Home Assistant or ESPHome
+# instance sends their private URL as the referrer — a Nabu Casa Cloud address,
+# a dynamic DNS hostname, or their own domain. We can't fix that at source
+# (not everyone updates, and not every link carries rel="noreferrer"), so any
+# referrer that isn't on this list is replaced with https://unlisted.invalid/
+# before Plausible records it.
+#
+# HOW IT WORKS
+# One domain per line. Each entry matches that domain AND all of its subdomains,
+# so "reddit.com" covers "old.reddit.com" and "www.reddit.com". Blank lines and
+# anything after a "#" are ignored. There is no other syntax — no wildcards, no
+# regex, no exact-host mode.
+#
+# THE ONE RULE FOR ADDING SOMETHING
+#
+#   Only add a domain you recognise as a public website.
+#
+# This list is default-deny, and the two mistakes are not equally bad. Leaving a
+# real site out costs one unused data point. Putting the wrong thing in publishes
+# a real person's home URL — permanently, because this file is public and ends up
+# in git history, on a CDN, and in the Internet Archive. So be generous with
+# things you recognise and ruthless with things you don't.
+#
+# Never add: IP addresses in any form, hosts with port numbers, dynamic DNS
+# providers, tunnels, or NAS/router remote access domains. The build rejects all
+# of these automatically — see list/deny-patterns.txt and config/referrers.js.
+#
+# This is a starting list, not a complete one. It grows by PR.
+
+# --- Our own properties ---------------------------------------------------
+openhomefoundation.org
+home-assistant.io
+esphome.io
+music-assistant.io
+zigbee2mqtt.io
+nabucasa.com
+
+# --- Search ---------------------------------------------------------------
+google.com
+bing.com
+duckduckgo.com
+ecosia.org
+qwant.com
+startpage.com
+search.brave.com
+mojeek.com
+kagi.com
+yandex.com
+baidu.com
+naver.com
+seznam.cz
+
+# --- AI assistants --------------------------------------------------------
+# A growing referral source that's easy to forget about.
+chatgpt.com
+openai.com
+claude.ai
+perplexity.ai
+copilot.microsoft.com
+
+# --- Social and aggregators ----------------------------------------------
+reddit.com
+news.ycombinator.com
+lobste.rs
+slashdot.org
+mastodon.social
+fosstodon.org
+hachyderm.io
+bsky.app
+lemmy.world
+lemmy.ml
+facebook.com
+instagram.com
+threads.net
+linkedin.com
+x.com
+t.co
+youtube.com
+pinterest.com
+tiktok.com
+flipboard.com
+
+# --- Chat ----------------------------------------------------------------
+discord.com
+slack.com
+t.me
+matrix.to
+element.io
+
+# --- Developer platforms -------------------------------------------------
+github.com
+gitlab.com
+codeberg.org
+bitbucket.org
+sourceforge.net
+stackoverflow.com
+stackexchange.com
+superuser.com
+serverfault.com
+askubuntu.com
+npmjs.com
+pypi.org
+docker.com
+readthedocs.io
+dev.to
+medium.com
+substack.com
+wordpress.com
+
+# --- Public content platforms --------------------------------------------
+# These hand individuals their own subdomain, but only ever host published
+# websites — nobody runs Home Assistant on GitHub Pages. Included deliberately;
+# delete this group if you'd rather not see individual usernames as sources.
+github.io
+gitlab.io
+netlify.app
+pages.dev
+vercel.app
+blogspot.com
+
+# --- Tech press ----------------------------------------------------------
+arstechnica.com
+theverge.com
+techcrunch.com
+engadget.com
+wired.com
+zdnet.com
+theregister.com
+tomshardware.com
+xda-developers.com
+androidpolice.com
+androidauthority.com
+howtogeek.com
+makeuseof.com
+liliputing.com
+notebookcheck.net
+phoronix.com
+lwn.net
+itsfoss.com
+omgubuntu.co.uk
+linuxiac.com
+cnx-software.com
+servethehome.com
+
+# --- Smart home and maker ------------------------------------------------
+hackaday.com
+hackster.io
+smarthomescene.com
+homekitnews.com
+notenoughtech.com
+everythingsmarthome.co.uk
+automatedhome.co.uk
+
+# --- Regional tech press -------------------------------------------------
+heise.de
+golem.de
+computerbase.de
+t3n.de
+chip.de
+tweakers.net
+hardware.info
+frandroid.com
+numerama.com
+korben.info
+clubic.com
+xataka.com
+genbeta.com
+tomshw.it
+hwupgrade.it
+sweclockers.com
+itmedia.co.jp
+gigazine.net
+habr.com

@@ -86,6 +86,12 @@ communication standards.
 
     <script async src="https://plausible.openhomefoundation.org/js/pa-M8_u5edrDOz5Ui2iONt2_.js"></script>
     <script>
+      // Visitors arriving from their own Home Assistant or ESPHome instance send
+      // their private URL as the referrer. Anything not on the allowlist is
+      // replaced before Plausible ever sees it, so those URLs are never
+      // recorded. Source of truth: list/allowed-referrers.txt
+      var OHF_ALLOWED_REFERRERS = {{ allowedReferrers.json }};
+
       (window.plausible =
         window.plausible ||
         function () {
@@ -96,7 +102,35 @@ communication standards.
           function (i) {
             plausible.o = i || {};
           });
-      plausible.init();
+      plausible.init({
+        transformRequest: function (payload) {
+          var ref = payload.r;
+          if (!ref) return payload;
+
+          var host = "";
+          try {
+            host = new URL(ref).hostname.replace(/\.$/, "");
+          } catch (e) {
+            // Unparseable referrer: falls through and gets replaced.
+          }
+
+          for (var i = 0; i < OHF_ALLOWED_REFERRERS.length; i++) {
+            var d = OHF_ALLOWED_REFERRERS[i];
+            if (
+              host === d ||
+              (host.length > d.length && host.slice(-(d.length + 1)) === "." + d)
+            ) {
+              return payload;
+            }
+          }
+
+          // One aggregate bucket in Plausible, so we can see how much we filter
+          // without learning anything about individual visitors. .invalid is
+          // reserved by RFC 2606 and can never collide with a real domain.
+          payload.r = "https://unlisted.invalid/";
+          return payload;
+        },
+      });
     </script>
   </head>
   <body>
