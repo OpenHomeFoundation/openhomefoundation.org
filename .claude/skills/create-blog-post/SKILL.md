@@ -254,7 +254,7 @@ Unlike a standard blog post, a crosspost has **no draft file and no local images
 - It uses the normal `post` layout. The page is built and indexed (it appears in the sitemap and the blog archive, and the card/feed links point at the OHF URL so the hit lands on our domain first — good for analytics), then a small JavaScript redirect sends visitors to the `external_url` on page load.
 - The page sets its canonical URL to `external_url` (via the `post` layout), so search engines credit the original article.
 - Comments stay off — crossposts simply omit `comments: true`.
-- The Open Graph and card images are generated automatically from `external_url` using the dynamic endpoint `https://assets.openhomefoundation.org/opengraph?url=<external_url>`. Do not point them at `page.url`.
+- The Open Graph and card image can come from one of two sources, chosen with the user in the wizard: the dynamic OG service (`https://assets.openhomefoundation.org/opengraph?url=<external_url>`, which auto-updates), or the source article's own `og:image`. Never point them at `page.url`.
 
 ### 1. Collect the details with a wizard
 
@@ -268,7 +268,10 @@ Before writing anything, gather the required details from the user with the ask-
 - **Author** — must match a top-level key in `_data/authors.yml`. Verify it exists; if not, tell the user it must be added first (name only is fine, like the standard-post path).
 - **Publish date** — in `YYYY-MM-DD` format. Used for the filename slug context and the `date` field.
 - **Category** — the blog category (for example, `Announcements`).
-- **Override image (optional)** — by default the social/card image is generated from `external_url`, so leave this blank in most cases. Only ask whether the user wants to override it with a specific image URL; if so, set it as a static `og_image`/`card_image` instead of the computed values.
+- **Social image** — ask the user which source to use for `og_image`/`card_image` (whatever they pick is used for both):
+  - **Dynamic OG service (default)** — `https://assets.openhomefoundation.org/opengraph?url=<external_url>`. Generated automatically and auto-updates if the source article changes its share image. Set via `eleventyComputed` so `{{ external_url }}` is interpolated.
+  - **Source article's og:image** — fetch the `<meta property="og:image">` from the source article and use that static URL directly (no `eleventyComputed` needed). Good when the source already has a polished share image. Confirm the resolved URL with the user.
+  - **Custom URL** — a specific image URL the user provides, used the same way as the source og:image (static value).
 
 If a source URL is available, fetch it to pre-fill as many details as possible (title, description, opening paragraph, author, date). Confirm the collected values back to the user before creating the file.
 
@@ -281,7 +284,9 @@ If a source URL is available, fetch it to pre-fill as many details as possible (
 
 ### 3. Build the crosspost
 
-Create `src/blog/slug.md` with this front matter and body (no hero image, no `<img>` in the body):
+Create `src/blog/slug.md` with this front matter and body (no hero image, no `<img>` in the body). Use the `og_image`/`card_image` form that matches the image source chosen in the wizard.
+
+**Option A — dynamic OG service** (computed, so `{{ external_url }}` is interpolated):
 
 ```yaml
 ---
@@ -298,6 +303,29 @@ date: YYYY-MM-DD
 author: [author-slug]
 category: "Category"
 ---
+```
+
+**Option B — source article's og:image or a custom URL** (static values, no `eleventyComputed`):
+
+```yaml
+---
+layout: post
+title: "Your crosspost title"
+description: "Your Social/OpenGraph description."
+external_url: "https://esphome.io/blog/full-article-url/"
+external_source: "ESPHome"
+og_image: "https://esphome.io/images/example-hero.png"
+card_image: "https://esphome.io/images/example-hero.png"
+hide_header_image: true
+date: YYYY-MM-DD
+author: [author-slug]
+category: "Category"
+---
+```
+
+Follow the chosen option with the body:
+
+```markdown
 
 Your opening teaser paragraph goes here, ending with the summary break tag.<!--more-->
 ```
@@ -308,7 +336,7 @@ Notes:
 - `author` is a YAML list of slugs from `_data/authors.yml` (not the display name), same as standard posts.
 - The body is **only** the opening teaser paragraph followed immediately by `<!--more-->`. Do not add the full article text — the reader is redirected to the source.
 - Do **not** set `comments: true`. The `post` layout adds the canonical tag and the instant JavaScript redirect whenever `external_url` is present.
-- Keep `og_image`/`card_image` as the computed endpoint values unless the user explicitly wants to override the image with a specific URL.
+- Use the `og_image`/`card_image` form matching the wizard choice: the computed OG-service values (Option A) or static URLs from the source `og:image`/custom URL (Option B).
 - Apply the same prose rules as standard posts (curly apostrophes/quotes in body text, sentence-style capitalization for the title).
 
 ### 4. Crosspost summary
@@ -318,7 +346,7 @@ After creating the file, summarize for the user:
 - The output file path.
 - Title, external source, external URL, author (and whether verified in `_data/authors.yml`), date, and category.
 - The opening text and description used.
-- A note that the Open Graph/card image is derived automatically from `external_url` by the dynamic endpoint, that the page is indexed and canonicalised to the source, and that visitors are redirected on load.
+- Which social image source was used (dynamic OG service or the source `og:image`/custom URL), that the page is indexed and canonicalised to the source, and that visitors are redirected on load.
 
 ## Post-processing summary
 
