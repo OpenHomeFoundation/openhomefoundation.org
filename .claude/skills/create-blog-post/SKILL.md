@@ -326,7 +326,6 @@ category: "Category"
 Follow the chosen option with the body:
 
 ```markdown
-
 Your opening teaser paragraph goes here, ending with the summary break tag.<!--more-->
 ```
 
