@@ -27,6 +27,11 @@ communication standards.
     {%- if noindex %}
       <meta name="robots" content="noindex">
     {%- endif %}
+    {%- if external_url %}
+      <link rel="canonical" href="{{ external_url }}">
+      {%- comment %} Send the full crosspost URL (path included) as the referrer to the source, not just the origin. {%- endcomment %}
+      <meta name="referrer" content="no-referrer-when-downgrade">
+    {%- endif %}
     <meta property="og:title" content="{{ full_title }}">
     <meta property="og:description" content="{{ full_description }}">
     {%- capture og_image_url -%}
