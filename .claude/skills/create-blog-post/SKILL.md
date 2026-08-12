@@ -1,11 +1,16 @@
 ---
 name: create-blog-post
-description: Use this if the user wants to convert a blog post from Google Docs markdown to the format used in the Open Home Foundation website.
+description: Use this if the user wants to convert a blog post from Google Docs markdown to the format used in the Open Home Foundation website, or wants to publish an externally linked (crosspost) blog post that redirects to an article hosted on one of our other sites (Home Assistant, ESPHome, Music Assistant).
 ---
 
 # Create Blog Post
 
 Convert a draft markdown file into a properly formatted Open Home Foundation blog post.
+
+There are two kinds of blog posts this skill handles:
+
+- **Standard blog posts** — full content hosted on the Open Home Foundation website, converted from a Google Docs markdown draft. This is the default path, described in the sections below.
+- **Externally linked (crosspost) blog posts** — a short teaser hosted here that redirects readers to an article on one of our other sites (for example, the Home Assistant, ESPHome, or Music Assistant blog). If the user asks to "crosspost", "publish an externally linked blog", "add an external blog post", or link out to an article on another OHF site, follow the [Externally linked (crosspost) blog posts](#externally-linked-crosspost-blog-posts) section instead.
 
 ## Usage
 
@@ -239,6 +244,81 @@ This would create:
 
 - Only `www.openhomefoundation.org` stay as Markdown links
 - All other domains/subdomains → HTML `<a>` tags with `target="_blank" rel="noopener noreferrer">`
+
+## Externally linked (crosspost) blog posts
+
+A crosspost is a short blog entry that does **not** host the full article. It shows a teaser and then redirects the reader to an article hosted on one of our other sites (Home Assistant, ESPHome, Music Assistant). Use this path when the user asks to publish an externally linked blog, add a crosspost, or link out to an article on another OHF site.
+
+Unlike a standard blog post, a crosspost has **no draft file and no local images to process**:
+
+- It uses the normal `post` layout. The page is built and indexed (it appears in the sitemap and the blog archive, and the card/feed links point at the OHF URL so the hit lands on our domain first — good for analytics), then a small JavaScript redirect sends visitors to the `external_url` on page load.
+- The page sets its canonical URL to `external_url` (via the `post` layout), so search engines credit the original article.
+- Comments stay off — crossposts simply omit `comments: true`.
+- The Open Graph and card images are generated automatically from `external_url` using the dynamic endpoint `https://assets.openhomefoundation.org/opengraph?url=<external_url>`. Do not point them at `page.url`.
+
+### 1. Collect the details with a wizard
+
+Before writing anything, gather the required details from the user with the ask-questions tool (`vscode_askQuestions`). Present them as a short wizard, pre-filling any values the user already provided. Ask for:
+
+- **Title** — the blog post title. Sentence-style capitalization.
+- **Source URL** — the link to the source article. First ask whether the user only has a preview URL so far (for example a Netlify deploy-preview like `https://deploy-preview-87--…netlify.app/blog/…`). A preview URL is fine for pulling details but must **not** be used as the final `external_url`. If they give a preview URL, work out the final published URL (usually the same path on the live domain, e.g. `https://www.home-assistant.io/blog/…`) and confirm it before continuing.
+- **External source** — the name of the site hosting the article (for example, "Home Assistant", "ESPHome", "Music Assistant"). Shown as the source label.
+- **Opening text** — the teaser paragraph shown before the reader is redirected. It ends with the `<!--more-->` tag. If the user has none ready, offer to draft a short teaser from the article for their review.
+- **Description** — the Social/OpenGraph description (roughly 120–158 characters). Often a condensed version of the opening text.
+- **Author** — must match a top-level key in `_data/authors.yml`. Verify it exists; if not, tell the user it must be added first (name only is fine, like the standard-post path).
+- **Publish date** — in `YYYY-MM-DD` format. Used for the filename slug context and the `date` field.
+- **Category** — the blog category (for example, `Announcements`).
+- **Override image (optional)** — by default the social/card image is generated from `external_url`, so leave this blank in most cases. Only ask whether the user wants to override it with a specific image URL; if so, set it as a static `og_image`/`card_image` instead of the computed values.
+
+If a source URL is available, fetch it to pre-fill as many details as possible (title, description, opening paragraph, author, date). Confirm the collected values back to the user before creating the file.
+
+### 2. Validate the details
+
+- Verify the **author** exists as a top-level key in `_data/authors.yml`. If missing, add it (name only) and flag that a GitHub handle/avatar can be added later, or ask the user to confirm.
+- Verify the **external URL** starts with `https://` (the OG image endpoint only works over HTTPS).
+- Make sure `external_url` is the final published URL, not a preview/deploy-preview link. The images are derived from it, so a preview URL would produce the wrong image.
+- Generate the URL slug from the title (lowercase, hyphens for spaces, remove special characters), unless the user provides one or the source URL already has a clean slug in its path (prefer reusing that).
+
+### 3. Build the crosspost
+
+Create `src/blog/slug.md` with this front matter and body (no hero image, no `<img>` in the body):
+
+```yaml
+---
+layout: post
+title: "Your crosspost title"
+description: "Your Social/OpenGraph description."
+external_url: "https://www.home-assistant.io/blog/full-article-url/"
+external_source: "Home Assistant"
+eleventyComputed:
+  og_image: "https://assets.openhomefoundation.org/opengraph?url={{ external_url }}"
+  card_image: "https://assets.openhomefoundation.org/opengraph?url={{ external_url }}"
+hide_header_image: true
+date: YYYY-MM-DD
+author: [author-slug]
+category: "Category"
+---
+
+Your opening teaser paragraph goes here, ending with the summary break tag.<!--more-->
+```
+
+Notes:
+
+- Wrap `title`, `description`, `external_url`, and `external_source` in double quotes.
+- `author` is a YAML list of slugs from `_data/authors.yml` (not the display name), same as standard posts.
+- The body is **only** the opening teaser paragraph followed immediately by `<!--more-->`. Do not add the full article text — the reader is redirected to the source.
+- Do **not** set `comments: true`. The `post` layout adds the canonical tag and the instant JavaScript redirect whenever `external_url` is present.
+- Keep `og_image`/`card_image` as the computed endpoint values unless the user explicitly wants to override the image with a specific URL.
+- Apply the same prose rules as standard posts (curly apostrophes/quotes in body text, sentence-style capitalization for the title).
+
+### 4. Crosspost summary
+
+After creating the file, summarize for the user:
+
+- The output file path.
+- Title, external source, external URL, author (and whether verified in `_data/authors.yml`), date, and category.
+- The opening text and description used.
+- A note that the Open Graph/card image is derived automatically from `external_url` by the dynamic endpoint, that the page is indexed and canonicalised to the source, and that visitors are redirected on load.
 
 ## Post-processing summary
 

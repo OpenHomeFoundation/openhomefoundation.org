@@ -27,6 +27,9 @@ communication standards.
     {%- if noindex %}
       <meta name="robots" content="noindex">
     {%- endif %}
+    {%- if external_url %}
+      <link rel="canonical" href="{{ external_url }}">
+    {%- endif %}
     <meta property="og:title" content="{{ full_title }}">
     <meta property="og:description" content="{{ full_description }}">
     {%- capture og_image_url -%}
