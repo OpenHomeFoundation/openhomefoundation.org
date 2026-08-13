@@ -8,6 +8,7 @@ hide_header_image: true
 date: 2026-08-13
 author: [missy-quarry]
 category: "Announcements"
+comments: true
 ---
 
 You’ve been asking all year, and the wait is over… Mark your calendars, because <a href="https://luma.com/communityday2026" target="_blank" rel="noopener noreferrer">Community Day 2026</a> will be held on Saturday, November 7! 🎉
