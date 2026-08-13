@@ -3,8 +3,7 @@ layout: post
 title: "Community Day 2026: Save the date!"
 description: "Community Day returns on Saturday, November 7, 2026! We learned a lot from last year’s debut event, and have exciting plans to make this one even better."
 card_image: /assets/images/blog/community-day-2026-save-the-date/card.webp
-eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+og_image: /assets/images/blog/community-day-2026-save-the-date/card.webp
 hide_header_image: true
 date: 2026-08-13
 author: [missy-quarry]
