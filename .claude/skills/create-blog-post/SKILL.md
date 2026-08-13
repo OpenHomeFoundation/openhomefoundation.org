@@ -35,7 +35,7 @@ Automates conversion of a draft markdown file with metadata into a production-re
 ## Required Files in `create-blog-post/` Directory
 
 1. **Draft markdown file** (any .md filename)
-2. **`card.*`** - OG/social card image (required, any common image format: `.webp`, `.png`, `.jpg`, `.jpeg`). This image is used for social sharing only and is **not** shown inline in the blog content.
+2. **`card.*`** - OG/social card image (any common image format: `.webp`, `.png`, `.jpg`, `.jpeg`). This image is used for social sharing only and is **not** shown inline in the blog content. If no `card.*` image is provided, fall back to the dynamic OG service (see the card image handling below) instead of blocking.
 3. **`image1.*`, `image2.*`, etc.** - Inline content images (optional, any common image format). These are embedded in the blog content body.
 
 ## Draft File Format
@@ -132,6 +132,7 @@ which cwebp || sudo apt-get install -y webp
 - If the source is any other format, convert to WebP: `cwebp -resize 1200 630 -q 85 input -o src/assets/images/blog/slug/card.webp`
 - The card image must be exactly 1200x630 pixels — the source image should already be this size, so use `-resize 1200 630` to ensure correctness
 - This image goes in the `card_image` front matter field only; it is **not** placed in the content body
+- **No card image available?** If there is no `card.*` in `create-blog-post/`, do not block. Fall back to the dynamic OG service for both `card_image` and `og_image` by pointing them at `https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}` via `eleventyComputed` (see the front matter in [Build Blog Post](#6-build-blog-post)). If the user says they will supply the card image manually later, keep the standard local `card_image: /assets/images/blog/slug/card.webp` path so their file drops straight into place.
 
 **Inline content images (if any):**
 
@@ -182,6 +183,23 @@ category: "Category"
 ---
 ```
 
+When no `card.*` image is available (and the user is not supplying one manually), drop the local `card_image` line and let both social fields use the dynamic OG service instead:
+
+```yaml
+---
+layout: post
+title: "Blog Title"
+description: "Social/OpenGraph description"
+eleventyComputed:
+  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+  card_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
+hide_header_image: true
+date: YYYY-MM-DD
+author: "Author Name"
+category: "Category"
+---
+```
+
 Then the content:
 
 - Intro paragraph(s)
@@ -221,6 +239,7 @@ This would create:
 **Front matter:**
 
 - `card_image` points to `card.webp` (OG/social card image)
+- If no `card.*` image is supplied, `card_image` falls back to the dynamic OG service (same URL as `og_image`) via `eleventyComputed`
 - `og_image` is dynamically generated via `eleventyComputed` using the OG image service
 - `hide_header_image: true` suppresses the default header image
 - `category` is a plain string (not a YAML list)
