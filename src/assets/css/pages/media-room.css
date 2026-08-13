@@ -1,39 +1,39 @@
 /* Media room / press kit */
-#press-kit-intro {
+#media-room-intro {
   padding-top: 150px;
   padding-bottom: 50px;
 }
 
-#press-kit-intro p.subtitle {
+#media-room-intro p.subtitle {
   color: var(--dark-grey-color);
   font-size: 24px;
   font-weight: 300;
 }
 
-#press-kit-about {
+#media-room-about {
   padding-top: 32px;
   padding-bottom: 32px;
 }
 
 @media (min-width: 768px) {
-  #press-kit-about {
+  #media-room-about {
     padding-top: 96px;
   }
 }
 
-#press-kit-downloads {
+#media-room-downloads {
   padding-top: 32px;
   padding-bottom: 32px;
 }
 
 @media (min-width: 768px) {
-  #press-kit-downloads {
+  #media-room-downloads {
     padding-top: 64px;
     padding-bottom: 96px;
   }
 }
 
-#press-kit-downloads .download-card {
+#media-room-downloads .download-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -50,36 +50,36 @@
 }
 
 @media (min-width: 768px) {
-  #press-kit-downloads .download-card {
+  #media-room-downloads .download-card {
     padding: 32px;
     padding-right: 64px;
   }
 }
 
-#press-kit-downloads .download-card:hover,
-#press-kit-downloads .download-card:focus-visible {
+#media-room-downloads .download-card:hover,
+#media-room-downloads .download-card:focus-visible {
   background: rgba(237, 236, 237, 0.9);
 }
 
-#press-kit-downloads .download-card svg {
+#media-room-downloads .download-card svg {
   position: absolute;
   top: 24px;
   right: 16px;
 }
 
-#press-kit-downloads .download-card svg #arrow_outward_2,
-#press-kit-downloads .download-card svg rect {
+#media-room-downloads .download-card svg #arrow_outward_2,
+#media-room-downloads .download-card svg rect {
   fill: var(--primary-text-color);
 }
 
 @media (min-width: 768px) {
-  #press-kit-downloads .download-card svg {
+  #media-room-downloads .download-card svg {
     top: 32px;
     right: 32px;
   }
 }
 
-#press-kit-downloads .download-card h3 {
+#media-room-downloads .download-card h3 {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 12px;
@@ -87,25 +87,25 @@
   color: var(--primary-text-color);
 }
 
-#press-kit-downloads .download-card p {
+#media-room-downloads .download-card p {
   margin: 0;
   font-size: 15px;
   font-weight: 300;
   color: var(--secondary-text-color);
 }
 
-#press-kit-news {
+#media-room-news {
   padding-top: 32px;
   padding-bottom: 64px;
 }
 
 @media (min-width: 768px) {
-  #press-kit-news {
+  #media-room-news {
     padding-bottom: 96px;
   }
 }
 
-#press-kit-news .news-header {
+#media-room-news .news-header {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
