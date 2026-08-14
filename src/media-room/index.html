@@ -43,7 +43,7 @@ description: Media resources, brand assets, and press contacts for journalists a
       </div>
     </div>
   </section>
-  <section id="media-room-downloads">
+  <section id="media-room-downloads" class="download-section">
     <div class="container">
       <div class="grid mb-64">
         <div class="column col-s-12 col-m-8 col-m-offset-3 text-center">
@@ -78,7 +78,7 @@ description: Media resources, brand assets, and press contacts for journalists a
         <div class="col-s-12 col-m-6 col-l-4">
           <a class="download-card" href="/media-room/annual-report-factsheet/">
             {% include 'svg/arrow_outward.svg' %}
-            <h3>2025 Annual Activity Report summary</h3>
+            <h3>2025 Annual Report factsheet</h3>
             <p>
               Growth stats, operational maturation highlights, and engineering
               milestones.
@@ -88,7 +88,7 @@ description: Media resources, brand assets, and press contacts for journalists a
         <div class="col-s-12 col-m-6 col-l-4">
           <a class="download-card" href="/media-room/privacy-position-paper/">
             {% include 'svg/arrow_outward.svg' %}
-            <h3>Policy & Position Papers</h3>
+            <h3>Policy & position papers</h3>
             <p>Standpoint summary on privacy in the smart home.</p>
           </a>
         </div>
@@ -109,6 +109,30 @@ description: Media resources, brand assets, and press contacts for journalists a
             <p>Spokespeople listed by media topic.</p>
           </a>
         </div>
+      </div>
+    </div>
+  </section>
+  <section id="media-room-hardware" class="download-section">
+    <div class="container">
+      <div class="grid mb-64">
+        <div class="column col-s-12 col-m-8 col-m-offset-3 text-center">
+          <h2 class="mb-24">Hardware press kits</h2>
+          <p class="text-secondary">
+            Everything you need to write about licensed hardware made by our
+            commercial partners Nabu Casa and Apollo Automation.
+          </p>
+        </div>
+      </div>
+      <div class="grid">
+        {% for kit in hardwarePressKits %}
+        <div class="col-s-12 col-m-6 col-l-4">
+          <a class="download-card" href="{{ kit.link | default: '#' }}">
+            {% include 'svg/arrow_outward.svg' %}
+            <h3>{{ kit.title }}</h3>
+            <p>{{ kit.description }}</p>
+          </a>
+        </div>
+        {% endfor %}
       </div>
     </div>
   </section>
