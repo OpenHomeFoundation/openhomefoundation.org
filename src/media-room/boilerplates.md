@@ -14,7 +14,7 @@ Founded in 2024, the foundation is a tax-exempt Swiss non-profit that owns and g
 
 Beyond this work, the foundation advocates for the ethical use of smart home technology across the wider industry – engaging companies and the general public on the value of open standards and the vision of the Open Home.
 
-## Open Home Foundation key projects
+## Open Home Foundation core projects
 
 ### About Home Assistant
 

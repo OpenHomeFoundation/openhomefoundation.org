@@ -2,7 +2,7 @@
 layout: paper
 hero: blue
 lead: "Media & press resource · Swiss non-profit stiftung"
-title: "Privacy Position Paper: Factsheet"
+title: "Privacy & position papers"
 description: "A press-ready summary of Privacy in the Smart Home, the foundation's position paper on data autonomy and legal protection for the connected home."
 noindex: true
 paper: /papers/privacy/

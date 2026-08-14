@@ -2,7 +2,7 @@
 layout: paper
 hero: blue
 lead: "Media & press resource · Swiss non-profit stiftung"
-title: "2025 Annual Activity Report: Factsheet"
+title: "2025 Annual Report: Factsheet"
 description: "Growth stats, operational maturation highlights, and engineering milestones from the foundation's inaugural annual report."
 pdf: /assets/documents/annual-report-2025-11-jun-2026.pdf
 noindex: true
@@ -12,7 +12,6 @@ noindex: true
 
 - **CHF 8.84M total revenue:** Generated through commercial licensing partnerships and independent donations.
 - **2.28M+ active households:** Home Assistant installations grew 28% year-over-year globally.
-- **52 salaried staff:** Over 60% of total revenue is invested directly into human resources, engineering continuity, and operational security.
 - **250+ governed open source projects:** Standards, drivers, and platforms protected from corporate buy-outs.
 
 ## Inaugural annual report: Building an open source alternative to Big Tech

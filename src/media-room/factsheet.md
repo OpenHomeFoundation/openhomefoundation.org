@@ -38,7 +38,7 @@ This collective ownership ensures the future of the smart home belongs to the pe
 
 The Open Home Foundation is funded by commercial partner fees and donations.
 
-Funding flows in a single direction: from partners and donors to the foundation. Commercial partners have no ownership or financial control over the foundation. Instead, they are contractually required to contribute a majority of their profits from selling licensed Open Home Foundation products (such as Home Assistant and the ESPHome Starter Kit) to the foundation. This revenue funds salaried staff working globally on core projects, supports external open source collaborations, and powers community initiatives.
+Funding flows in a single direction: from partners and donors to the foundation. Commercial partners have no ownership or financial control over the foundation. Instead, they are contractually required to contribute a majority of their profits from selling licensed Open Home Foundation products (such as Home Assistant Green and the ESPHome Starter Kit) to the foundation. This revenue funds salaried staff working globally on core projects, supports external open source collaborations, and powers community initiatives.
 
 ## The Open Home Foundation at a glance
 
@@ -47,6 +47,6 @@ Funding flows in a single direction: from partners and donors to the foundation.
 - **Headquarters:** Switzerland
 - **Projects governed:** 250+ open-source projects, standards, drivers, and libraries (including Home Assistant, ESPHome, and Music Assistant)
 - **Active users:** 2.28+ million households worldwide, with Home Assistant installations growing 28% year-over-year in 2025
-- **Operational scale:** 50+ full-time salaried employees globally
+- **Operational scale:** 20k+ worldwide contributors
 - **Commercial partners:** Nabu Casa, Apollo Automation
 - **Board members:** Paulus Schoutsen (President), Pascal Vizeli (Treasurer), J. Nick Koston (Member), Trevor Schirmer (Rotating Partner Member)
