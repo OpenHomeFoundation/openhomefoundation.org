@@ -2,7 +2,7 @@
   description: "The easy-to-use, versatile, and trustworthy smart home hub for everyone."
   link: "https://drive.google.com/drive/folders/15GWM39wU9p6f1CiH9D6Y3lrdPY4yWfbh?usp=sharing"
 - title: "Home Assistant Connect ZBT-2"
-  description: "A plug-and-play antenna to connect your Zigbee and Thread devices to Home Assistant."
+  description: "A plug-and-play adapter to connect your Zigbee and Thread devices to Home Assistant."
   link: "https://drive.google.com/drive/folders/1ga3AGuzNOtOgigb7znEfUFVDxYrmuXu1"
 - title: "Home Assistant Connect ZWA-2"
   description: "The ultimate way to connect Z-Wave devices to Home Assistant."
