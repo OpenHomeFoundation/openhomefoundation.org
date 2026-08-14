@@ -21,19 +21,19 @@
   }
 }
 
-#media-room-downloads {
+.download-section {
   padding-top: 32px;
   padding-bottom: 32px;
 }
 
 @media (min-width: 768px) {
-  #media-room-downloads {
+  .download-section {
     padding-top: 64px;
     padding-bottom: 96px;
   }
 }
 
-#media-room-downloads .download-card {
+.download-section .download-card {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -50,36 +50,36 @@
 }
 
 @media (min-width: 768px) {
-  #media-room-downloads .download-card {
+  .download-section .download-card {
     padding: 32px;
     padding-right: 64px;
   }
 }
 
-#media-room-downloads .download-card:hover,
-#media-room-downloads .download-card:focus-visible {
+.download-section .download-card:hover,
+.download-section .download-card:focus-visible {
   background: rgba(237, 236, 237, 0.9);
 }
 
-#media-room-downloads .download-card svg {
+.download-section .download-card svg {
   position: absolute;
   top: 24px;
   right: 16px;
 }
 
-#media-room-downloads .download-card svg #arrow_outward_2,
-#media-room-downloads .download-card svg rect {
+.download-section .download-card svg #arrow_outward_2,
+.download-section .download-card svg rect {
   fill: var(--primary-text-color);
 }
 
 @media (min-width: 768px) {
-  #media-room-downloads .download-card svg {
+  .download-section .download-card svg {
     top: 32px;
     right: 32px;
   }
 }
 
-#media-room-downloads .download-card h3 {
+.download-section .download-card h3 {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 12px;
@@ -87,7 +87,7 @@
   color: var(--primary-text-color);
 }
 
-#media-room-downloads .download-card p {
+.download-section .download-card p {
   margin: 0;
   font-size: 15px;
   font-weight: 300;
