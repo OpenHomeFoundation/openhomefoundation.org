@@ -27,6 +27,9 @@ communication standards.
     {%- if noindex %}
       <meta name="robots" content="noindex">
     {%- endif %}
+    {%- if canonical_url %}
+      <link rel="canonical" href="https://www.openhomefoundation.org{{ canonical_url }}">
+    {%- endif %}
     {%- if external_url %}
       <link rel="canonical" href="{{ external_url }}">
       {%- comment %} Send the full crosspost URL (path included) as the referrer to the source, not just the origin. {%- endcomment %}
