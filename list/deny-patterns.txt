@@ -1,0 +1,102 @@
+# Deny patterns — build-time only. Not included in the published JSON and never
+# shipped to a browser. This file is public, like the rest of the repo, and that
+# is intentional: it contains only well-known service domains, no user data, and
+# it is not a security boundary. The runtime is default-deny, so what gets
+# through is decided by the allowlist alone. Publishing what we filter is
+# auditable, and PRs adding providers we have missed are welcome.
+#
+# Its only job is to fail the build if one of these ends up in
+# allowed-referrers.txt. Each line is suffix-matched: an entry matches if it
+# equals the pattern or is a subdomain of it.
+#
+# IP literals are NOT listed here. They can't be expressed usefully as suffix
+# patterns (2130706433 and 0x7f000001 are both 127.0.0.1), so they are rejected
+# in code by classifyEntry() in config/referrers.js — every IPv4 and IPv6 form,
+# private and public alike.
+#
+# Rule of thumb for adding here: any domain where individuals get their own
+# hostname pointing at a private network. Note this is a narrower test than
+# "individuals get their own subdomain" — GitHub Pages does that too, but it
+# serves published websites, not people's houses.
+
+# --- Home Assistant / Nabu Casa -------------------------------------------
+nabu.casa
+
+# --- Dynamic DNS ----------------------------------------------------------
+duckdns.org
+ddns.net
+ddnsfree.com
+ddnsgeek.com
+dynu.com
+dynu.net
+dynv6.net
+freemyip.com
+hopto.org
+myftp.biz
+myftp.org
+myvnc.com
+no-ip.biz
+no-ip.com
+no-ip.info
+no-ip.org
+onthewifi.com
+redirectme.net
+serveftp.com
+servegame.com
+servehttp.com
+serveminecraft.net
+sytes.net
+zapto.org
+
+# --- FreeDNS (afraid.org) shared domains ---------------------------------
+afraid.org
+chickenkiller.com
+crabdance.com
+ignorelist.com
+mooo.com
+strangled.net
+twilightparadox.com
+
+# --- Router / NAS vendor remote access -----------------------------------
+diskstation.me
+dsmynas.com
+familyds.com
+myfritz.net
+myqnapcloud.com
+quickconnect.to
+synology.me
+
+# --- Overlay networks ----------------------------------------------------
+tailscale.net
+ts.net
+zerotier.com
+
+# --- Tunnels / dev exposure ---------------------------------------------
+bore.pub
+cfargotunnel.com
+loca.lt
+localtunnel.me
+ngrok.app
+ngrok.dev
+ngrok-free.app
+ngrok.io
+pagekite.me
+serveo.net
+trycloudflare.com
+tunnelto.dev
+
+# --- Wildcard DNS resolvers (encode an IP in the hostname) ---------------
+nip.io
+sslip.io
+traefik.me
+xip.io
+
+# --- Local / non-public suffixes -----------------------------------------
+home
+home.arpa
+internal
+intranet
+lan
+local
+localdomain
+localhost
