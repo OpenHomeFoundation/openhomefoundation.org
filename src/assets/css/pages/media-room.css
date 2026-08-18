@@ -1,0 +1,114 @@
+/* Media room / press kit */
+#media-room-intro {
+  padding-top: 150px;
+  padding-bottom: 50px;
+}
+
+#media-room-intro p.subtitle {
+  color: var(--dark-grey-color);
+  font-size: 24px;
+  font-weight: 300;
+}
+
+#media-room-about {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  #media-room-about {
+    padding-top: 96px;
+  }
+}
+
+.download-section {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+@media (min-width: 768px) {
+  .download-section {
+    padding-top: 64px;
+    padding-bottom: 96px;
+  }
+}
+
+.download-section .download-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+  padding-right: 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(237, 236, 237, 0.8);
+  background: rgba(237, 236, 237, 0.5);
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+@media (min-width: 768px) {
+  .download-section .download-card {
+    padding: 32px;
+    padding-right: 64px;
+  }
+}
+
+.download-section .download-card:hover,
+.download-section .download-card:focus-visible {
+  background: rgba(237, 236, 237, 0.9);
+}
+
+.download-section .download-card svg {
+  position: absolute;
+  top: 24px;
+  right: 16px;
+}
+
+.download-section .download-card svg #arrow_outward_2,
+.download-section .download-card svg rect {
+  fill: var(--primary-text-color);
+}
+
+@media (min-width: 768px) {
+  .download-section .download-card svg {
+    top: 32px;
+    right: 32px;
+  }
+}
+
+.download-section .download-card h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  padding-right: 32px;
+  color: var(--primary-text-color);
+}
+
+.download-section .download-card p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--secondary-text-color);
+}
+
+#media-room-news {
+  padding-top: 32px;
+  padding-bottom: 64px;
+}
+
+@media (min-width: 768px) {
+  #media-room-news {
+    padding-bottom: 96px;
+  }
+}
+
+#media-room-news .news-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}

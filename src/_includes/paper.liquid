@@ -1,8 +1,13 @@
 ---
 layout: base
 ---
-<div class="bg-gradient-paper-header">
-  <section id="paper-header">
+<div class="{% if hero == 'blue' %}bg-gradient-agreement-header{% else %}bg-gradient-paper-header{% endif %}">
+  <section
+    id="paper-header"
+    {% if hero == 'blue' %}
+      class="hero-light"
+    {% endif %}
+  >
     <div class="container">
       <div class="grid">
         <div class="column col-s-12 col-m-10 col-m-offset-2">
@@ -21,8 +26,24 @@ layout: base
           {% endif %}
           {% if pdf %}
             <p class="text-center mt-32">
-              <a href="{{ pdf }}" class="button button-outline-light" target="_blank" rel="noopener noreferrer">
+              <a
+                href="{{ pdf }}"
+                class="button {% if hero == 'blue' %}button-outline{% else %}button-outline-light{% endif %}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Download PDF
+                {% include 'svg/arrow_outward.svg' %}
+              </a>
+            </p>
+          {% endif %}
+          {% if paper %}
+            <p class="text-center mt-32">
+              <a
+                href="{{ paper }}"
+                class="button {% if hero == 'blue' %}button-outline{% else %}button-outline-light{% endif %}"
+              >
+                Read paper
                 {% include 'svg/arrow_outward.svg' %}
               </a>
             </p>

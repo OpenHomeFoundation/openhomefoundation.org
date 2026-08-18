@@ -24,13 +24,14 @@
           </ul>
         </li>
 
-        <li class="menu-item has-dropdown {% if page.url == '/documents/' or page.url == '/papers/privacy/' %}active{% endif %}">
+        <li class="menu-item has-dropdown {% if page.url == '/documents/' or page.url == '/papers/privacy/' or page.url == '/media-room/' %}active{% endif %}">
           <a href="#" aria-haspopup="true">Resources<span class="dropdown-arrow" aria-hidden="true"></span></a>
           <ul class="dropdown">
             <li class="{% if page.url == '/papers/privacy/' %}active{% endif %}">
               <a href="/papers/privacy/">Privacy paper</a>
             </li>
             <li class="{% if page.url == '/documents/' %}active{% endif %}"><a href="/documents/">Documents</a></li>
+            <li class="{% if page.url == '/media-room/' %}active{% endif %}"><a href="/media-room/">Media room</a></li>
           </ul>
         </li>
 
@@ -78,7 +79,7 @@
           </ul>
         </details>
       </li>
-      <li class="navbar-menu-item has-dropdown {% if page.url == '/documents/' %}active{% endif %}">
+      <li class="navbar-menu-item has-dropdown {% if page.url == '/documents/' or page.url == '/papers/privacy/' or page.url == '/media-room/' %}active{% endif %}">
         <details
           {% if page.url == '/documents/' %}
             open
@@ -90,6 +91,7 @@
               <a href="/papers/privacy/">Privacy paper</a>
             </li>
             <li class="{% if page.url == '/documents/' %}active{% endif %}"><a href="/documents/">Documents</a></li>
+            <li class="{% if page.url == '/media-room/' %}active{% endif %}"><a href="/media-room/">Media room</a></li>
           </ul>
         </details>
       </li>
