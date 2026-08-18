@@ -31,6 +31,9 @@ description: News and updates from the Open Home Foundation
             </div>
             {% endif %}
             <div class="blog-card-content">
+              {% if post.data.external_url %}
+              <span class="blog-card-badge">Shared from {{ post.data.external_source }}</span>
+              {% endif %}
               <p class="blog-card-date">{{ post.date | date: "%B %d, %Y" }} · {{ post.data.reading_time }} minute read</p>
               <h3 class="blog-card-title">{{ post.data.title }}</h3>
               {% if post.data.description %}

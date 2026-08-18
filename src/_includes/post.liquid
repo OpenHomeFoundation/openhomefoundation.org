@@ -72,7 +72,19 @@ layout: base
         <div class="col-s-12 col-m-8 col-m-offset-3">
           <article class="post content{% unless comments == true and env.isProduction %} mb-128{% endunless %}">
             {{ content }}
+            {% if external_url %}
+              <p class="mt-24">
+                <a href="{{ external_url }}" class="button">Read the full article on {{ external_source }}</a>
+              </p>
+            {% endif %}
           </article>
+          {% if external_url %}
+            <script>
+              // Crosspost: page is indexed and canonicalised to the source, then
+              // sends readers straight to the original article.
+              window.location.replace("{{ external_url }}");
+            </script>
+          {% endif %}
           {% if comments == true and env.isProduction %}
             <div id="discourse-comments" class="mb-128"></div>
             <script type="text/javascript">
