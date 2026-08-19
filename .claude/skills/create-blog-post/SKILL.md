@@ -30,7 +30,7 @@ Automates conversion of a draft markdown file with metadata into a production-re
 - Processes card image (OG/social) and inline content images
 - Converts external links to HTML `<a>` tags with `target="_blank"`
 - Formats content (removes bold from headings, fixes link references)
-- Creates properly formatted blog post in `src/blog/` with front matter
+- Creates properly formatted blog post in `src/content/blog/` with front matter
 
 ## Required Files in `create-blog-post/` Directory
 
@@ -82,9 +82,9 @@ Rest of content...
 
 Creates a production-ready blog post at:
 
-- `src/blog/slug.md` - The formatted blog post
-- `src/assets/images/blog/slug/card.webp` - OG/social card image (moved from `create-blog-post/`)
-- `src/assets/images/blog/slug/image1.webp`, `image2.webp`, etc. - Inline content images (converted from source format)
+- `src/content/blog/slug.md` - The formatted blog post
+- `public/assets/images/blog/slug/card.webp` - OG/social card image (moved from `create-blog-post/`)
+- `public/assets/images/blog/slug/image1.webp`, `image2.webp`, etc. - Inline content images (converted from source format)
 
 ## Conversion Process
 
@@ -128,18 +128,18 @@ which cwebp || sudo apt-get install -y webp
 **Card image (`card.*`):**
 
 - Find the `card` image in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
-- If the source is already `.webp`, copy it to `src/assets/images/blog/slug/card.webp`
-- If the source is any other format, convert to WebP: `cwebp -resize 1200 630 -q 85 input -o src/assets/images/blog/slug/card.webp`
+- If the source is already `.webp`, copy it to `public/assets/images/blog/slug/card.webp`
+- If the source is any other format, convert to WebP: `cwebp -resize 1200 630 -q 85 input -o public/assets/images/blog/slug/card.webp`
 - The card image must be exactly 1200x630 pixels — the source image should already be this size, so use `-resize 1200 630` to ensure correctness
 - This image goes in the `card_image` front matter field only; it is **not** placed in the content body
-- **No card image available?** If there is no `card.*` in `create-blog-post/`, do not block. Fall back to the dynamic OG service for both `card_image` and `og_image` by pointing them at `https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}` via `eleventyComputed` (see the front matter in [Build Blog Post](#6-build-blog-post)). If the user says they will supply the card image manually later, keep the standard local `card_image: /assets/images/blog/slug/card.webp` path so their file drops straight into place.
+- **No card image available?** If there is no `card.*` in `create-blog-post/`, do not block. Simply omit the `card_image` line — when it is absent the card falls back to `og_image`, which itself defaults to the dynamic OG service (see `ogImage()`/`cardImage()` in [src/lib/blog.ts](../../../src/lib/blog.ts)). If the user says they will supply the card image manually later, keep the standard local `card_image: /assets/images/blog/slug/card.webp` path so their file drops straight into place.
 
 **Inline content images (if any):**
 
 - Find `image1.*`, `image2.*`, `image3.*`, etc. in `create-blog-post/` (any extension: `.webp`, `.png`, `.jpg`, `.jpeg`)
 - Convert to WebP with a max width of 900px: `cwebp -resize 900 0 -q 85 input -o output.webp` (the `0` for height preserves the aspect ratio)
 - If the source is already `.webp`, still re-encode it with the resize: `cwebp -resize 900 0 -q 85 input.webp -o output.webp`
-- Output to `src/assets/images/blog/slug/image1.webp`, `image2.webp`, etc.
+- Output to `public/assets/images/blog/slug/image1.webp`, `image2.webp`, etc.
 - Replace each `![][imageN]` reference in the content with: `<img src="/assets/images/blog/slug/imageN.webp" alt="descriptive alt text" style="border: 0;box-shadow: none;">`
 - CRITICAL: Use double quotes for all HTML attributes (prevents breaking on apostrophes in alt text)
 - Write descriptive, meaningful alt text for each image based on context
@@ -166,36 +166,31 @@ which cwebp || sudo apt-get install -y webp
 
 ### 6. Build Blog Post
 
-Create `src/blog/slug.md` with the following front matter:
+Create `src/content/blog/slug.md` with the following front matter:
 
 ```yaml
 ---
-layout: post
 title: "Blog Title"
 description: "Social/OpenGraph description"
 card_image: /assets/images/blog/slug/card.webp
-eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: YYYY-MM-DD
-author: "Author Name"
+author: [author-slug]
 category: "Category"
 ---
 ```
 
-When no `card.*` image is available (and the user is not supplying one manually), drop the local `card_image` line and let both social fields use the dynamic OG service instead:
+Do **not** set `og_image`: when it is omitted, the post automatically uses the dynamic OG service pointed at the post's own URL (computed at build time by `ogImage()` in `src/lib/blog.ts`).
+
+When no `card.*` image is available (and the user is not supplying one manually), drop the `card_image` line too — the card then falls back to the same dynamic OG image:
 
 ```yaml
 ---
-layout: post
 title: "Blog Title"
 description: "Social/OpenGraph description"
-eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
-  card_image: "https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org{{ page.url }}"
 hide_header_image: true
 date: YYYY-MM-DD
-author: "Author Name"
+author: [author-slug]
 category: "Category"
 ---
 ```
@@ -218,9 +213,9 @@ Then the content:
 
 This would create:
 
-- `src/blog/partner-update.md`
-- `src/assets/images/blog/partner-update/card.webp`
-- `src/assets/images/blog/partner-update/image1.webp`, `image2.webp` (if inline images exist)
+- `src/content/blog/partner-update.md`
+- `public/assets/images/blog/partner-update/card.webp`
+- `public/assets/images/blog/partner-update/image1.webp`, `image2.webp` (if inline images exist)
 
 ## Important Notes
 
@@ -239,8 +234,8 @@ This would create:
 **Front matter:**
 
 - `card_image` points to `card.webp` (OG/social card image)
-- If no `card.*` image is supplied, `card_image` falls back to the dynamic OG service (same URL as `og_image`) via `eleventyComputed`
-- `og_image` is dynamically generated via `eleventyComputed` using the OG image service
+- If no `card.*` image is supplied, omit `card_image` — it falls back to `og_image`
+- Omit `og_image` — it defaults to the dynamic OG image service at build time (`ogImage()` in `src/lib/blog.ts`)
 - `hide_header_image: true` suppresses the default header image
 - `category` is a plain string (not a YAML list)
 - Date format in front matter: `YYYY-MM-DD`
@@ -256,8 +251,8 @@ This would create:
 **Output format:**
 
 - Filename: `slug.md` (no date prefix in filename)
-- File location: `src/blog/`
-- Image directory: `src/assets/images/blog/slug/`
+- File location: `src/content/blog/`
+- Image directory: `public/assets/images/blog/slug/` (served at `/assets/images/blog/slug/`)
 
 **Link handling:**
 
@@ -273,7 +268,7 @@ Unlike a standard blog post, a crosspost has **no draft file and no local images
 - It uses the normal `post` layout. The page is built and indexed (it appears in the sitemap and the blog archive, and the card/feed links point at the OHF URL so the hit lands on our domain first — good for analytics), then a small JavaScript redirect sends visitors to the `external_url` on page load.
 - The page sets its canonical URL to `external_url` (via the `post` layout), so search engines credit the original article.
 - Comments stay off — crossposts simply omit `comments: true`.
-- The Open Graph and card image can come from one of two sources, chosen with the user in the wizard: the dynamic OG service (`https://assets.openhomefoundation.org/opengraph?url=<external_url>`, which auto-updates), or the source article's own `og:image`. Never point them at `page.url`.
+- The Open Graph and card image can come from one of two sources, chosen with the user in the wizard: the dynamic OG service (`https://assets.openhomefoundation.org/opengraph?url=<external_url>`, which auto-updates — this is what an omitted `og_image` resolves to automatically when `external_url` is set), or the source article's own `og:image`. Never point them at the post's own URL.
 
 ### 1. Collect the details with a wizard
 
@@ -284,39 +279,35 @@ Before writing anything, gather the required details from the user with the ask-
 - **External source** — the name of the site hosting the article (for example, "Home Assistant", "ESPHome", "Music Assistant"). Shown as the source label.
 - **Opening text** — the teaser paragraph shown before the reader is redirected. It ends with the `<!--more-->` tag. If the user has none ready, offer to draft a short teaser from the article for their review.
 - **Description** — the Social/OpenGraph description (roughly 120–158 characters). Often a condensed version of the opening text.
-- **Author** — must match a top-level key in `_data/authors.yml`. Verify it exists; if not, tell the user it must be added first (name only is fine, like the standard-post path).
+- **Author** — must match a top-level key in `src/data/authors.yml`. Verify it exists; if not, tell the user it must be added first (name only is fine, like the standard-post path).
 - **Publish date** — in `YYYY-MM-DD` format. Used for the filename slug context and the `date` field.
 - **Category** — the blog category (for example, `Announcements`).
 - **Social image** — ask the user which source to use for `og_image`/`card_image` (whatever they pick is used for both):
-  - **Dynamic OG service (default)** — `https://assets.openhomefoundation.org/opengraph?url=<external_url>`. Generated automatically and auto-updates if the source article changes its share image. Set via `eleventyComputed` so `{{ external_url }}` is interpolated.
-  - **Source article's og:image** — fetch the `<meta property="og:image">` from the source article and use that static URL directly (no `eleventyComputed` needed). Good when the source already has a polished share image. Confirm the resolved URL with the user.
+  - **Dynamic OG service (default)** — `https://assets.openhomefoundation.org/opengraph?url=<external_url>`. Generated automatically and auto-updates if the source article changes its share image. Simply omit `og_image`/`card_image` — a crosspost without them resolves to this URL at build time.
+  - **Source article's og:image** — fetch the `<meta property="og:image">` from the source article and set that static URL directly. Good when the source already has a polished share image. Confirm the resolved URL with the user.
   - **Custom URL** — a specific image URL the user provides, used the same way as the source og:image (static value).
 
 If a source URL is available, fetch it to pre-fill as many details as possible (title, description, opening paragraph, author, date). Confirm the collected values back to the user before creating the file.
 
 ### 2. Validate the details
 
-- Verify the **author** exists as a top-level key in `_data/authors.yml`. If missing, add it (name only) and flag that a GitHub handle/avatar can be added later, or ask the user to confirm.
+- Verify the **author** exists as a top-level key in `src/data/authors.yml`. If missing, add it (name only) and flag that a GitHub handle/avatar can be added later, or ask the user to confirm.
 - Verify the **external URL** starts with `https://` (the OG image endpoint only works over HTTPS).
 - Make sure `external_url` is the final published URL, not a preview/deploy-preview link. The images are derived from it, so a preview URL would produce the wrong image.
 - Generate the URL slug from the title (lowercase, hyphens for spaces, remove special characters), unless the user provides one or the source URL already has a clean slug in its path (prefer reusing that).
 
 ### 3. Build the crosspost
 
-Create `src/blog/slug.md` with this front matter and body (no hero image, no `<img>` in the body). Use the `og_image`/`card_image` form that matches the image source chosen in the wizard.
+Create `src/content/blog/slug.md` with this front matter and body (no hero image, no `<img>` in the body). Use the `og_image`/`card_image` form that matches the image source chosen in the wizard.
 
-**Option A — dynamic OG service** (computed, so `{{ external_url }}` is interpolated):
+**Option A — dynamic OG service** (omit the image fields; with `external_url` set they resolve to the OG service automatically):
 
 ```yaml
 ---
-layout: post
 title: "Your crosspost title"
 description: "Your Social/OpenGraph description."
 external_url: "https://www.home-assistant.io/blog/full-article-url/"
 external_source: "Home Assistant"
-eleventyComputed:
-  og_image: "https://assets.openhomefoundation.org/opengraph?url={{ external_url }}"
-  card_image: "https://assets.openhomefoundation.org/opengraph?url={{ external_url }}"
 hide_header_image: true
 date: YYYY-MM-DD
 author: [author-slug]
@@ -324,11 +315,10 @@ category: "Category"
 ---
 ```
 
-**Option B — source article's og:image or a custom URL** (static values, no `eleventyComputed`):
+**Option B — source article's og:image or a custom URL** (static values):
 
 ```yaml
 ---
-layout: post
 title: "Your crosspost title"
 description: "Your Social/OpenGraph description."
 external_url: "https://esphome.io/blog/full-article-url/"
@@ -351,10 +341,10 @@ Your opening teaser paragraph goes here, ending with the summary break tag.<!--m
 Notes:
 
 - Wrap `title`, `description`, `external_url`, and `external_source` in double quotes.
-- `author` is a YAML list of slugs from `_data/authors.yml` (not the display name), same as standard posts.
+- `author` is a YAML list of slugs from `src/data/authors.yml` (not the display name), same as standard posts.
 - The body is **only** the opening teaser paragraph followed immediately by `<!--more-->`. Do not add the full article text — the reader is redirected to the source.
 - Do **not** set `comments: true`. The `post` layout adds the canonical tag and the instant JavaScript redirect whenever `external_url` is present.
-- Use the `og_image`/`card_image` form matching the wizard choice: the computed OG-service values (Option A) or static URLs from the source `og:image`/custom URL (Option B).
+- Use the `og_image`/`card_image` form matching the wizard choice: omitted fields for the OG service (Option A) or static URLs from the source `og:image`/custom URL (Option B).
 - Apply the same prose rules as standard posts (curly apostrophes/quotes in body text, sentence-style capitalization for the title).
 
 ### 4. Crosspost summary
@@ -362,7 +352,7 @@ Notes:
 After creating the file, summarize for the user:
 
 - The output file path.
-- Title, external source, external URL, author (and whether verified in `_data/authors.yml`), date, and category.
+- Title, external source, external URL, author (and whether verified in `src/data/authors.yml`), date, and category.
 - The opening text and description used.
 - Which social image source was used (dynamic OG service or the source `og:image`/custom URL), that the page is indexed and canonicalised to the source, and that visitors are redirected on load.
 

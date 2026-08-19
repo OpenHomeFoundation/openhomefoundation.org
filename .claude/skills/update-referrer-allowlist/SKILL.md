@@ -19,7 +19,7 @@ Because the file is public and permanent (git history + CDN + Internet Archive),
 
 - Allowlist: `list/allowed-referrers.txt` (one bare domain per line; `#` comments; blank lines ignored).
 - Deny patterns: `list/deny-patterns.txt` (build-time-only guard; suffix-matched; never published).
-- Validation/parsing logic: `config/referrers.js`, which exports `loadAllowedReferrers`, `classifyEntry`, `suffixMatch`, and `parseListFile`.
+- Validation/parsing logic: `src/lib/referrers.js` (an ES module, pure — no filesystem access), which exports `loadAllowedReferrers(allowFileText, denyFileText)`, `classifyEntry`, `suffixMatch`, and `parseListFile`. The site loads the list files through `src/lib/allowed-referrers.js`.
 
 Matching is **suffix-based**: an entry matches that domain AND all subdomains. So `reddit.com` covers `old.reddit.com`, and adding a bare domain makes any of its subdomains redundant.
 
@@ -57,9 +57,9 @@ EOF
 Run this script (it normalises `www.`, classifies each entry, and buckets them). Do **not** hand-check large lists — let the code do it:
 
 ```shell
-cat > /tmp/analyze.js <<'EOF'
-const { classifyEntry, suffixMatch, parseListFile } = require("/workspaces/openhomefoundation.org/config/referrers.js");
-const fs = require("fs");
+cat > /tmp/analyze.mjs <<'EOF'
+import { classifyEntry, suffixMatch, parseListFile } from "/workspaces/openhomefoundation.org/src/lib/referrers.js";
+import fs from "node:fs";
 const R = "/workspaces/openhomefoundation.org/";
 
 const existing = parseListFile(fs.readFileSync(R + "list/allowed-referrers.txt", "utf8"))
@@ -87,7 +87,7 @@ console.log("DENIED (deny-pattern match):", denied);
 console.log("COVERED/DUP (already/broader):", covered);
 console.log("TO ADD (" + finalAdd.length + "):\n" + finalAdd.join("\n"));
 EOF
-node /tmp/analyze.js
+node /tmp/analyze.mjs
 ```
 
 ### 3. Review the "TO ADD" list by hand for the judgement calls the code can't make
@@ -105,7 +105,7 @@ Scan for the review-only rules above: personal/self-hosted instances, login/SSO 
 The gate is the build itself: `loadAllowedReferrers()` throws on any invalid entry and warns on redundant ones.
 
 ```shell
-node -e "const {loadAllowedReferrers}=require('./config/referrers.js'); console.error('OK — published entries:', loadAllowedReferrers().length);"
+node -e "import('./src/lib/referrers.js').then(async (m) => { const fs = await import('node:fs'); console.error('OK — published entries:', m.loadAllowedReferrers(fs.readFileSync('list/allowed-referrers.txt', 'utf8'), fs.readFileSync('list/deny-patterns.txt', 'utf8')).length); });"
 ```
 
 - If it **throws**, fix the reported entries and re-run.
@@ -114,7 +114,7 @@ node -e "const {loadAllowedReferrers}=require('./config/referrers.js'); console.
 ### 6. Clean up temp files
 
 ```shell
-rm -f /tmp/newrefs.txt /tmp/analyze.js
+rm -f /tmp/newrefs.txt /tmp/analyze.mjs
 ```
 
 ## Reporting

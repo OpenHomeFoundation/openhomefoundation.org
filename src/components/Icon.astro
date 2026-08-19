@@ -1,0 +1,22 @@
+---
+// Inlines an SVG from src/assets/svg, e.g. <Icon name="arrow" /> or
+// <Icon name="poly/poly-thin" />.
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+
+const icons = import.meta.glob<string>("../assets/svg/**/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+
+const svg = icons[`../assets/svg/${name}.svg`];
+if (!svg) {
+  throw new Error(`Unknown icon "${name}" — expected a file at src/assets/svg/${name}.svg`);
+}
+---
+
+<Fragment set:html={svg} />

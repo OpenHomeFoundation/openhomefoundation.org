@@ -1,0 +1,119 @@
+---
+import Base from "./Base.astro";
+import {
+  AUTHORS,
+  authorDisplay,
+  formatDateWithWeekday,
+  ogImage,
+  postUrl,
+  readingTime,
+  type Post,
+} from "../lib/blog";
+import { IS_PRODUCTION, SITE_URL } from "../lib/site";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, description, author, category, hide_header_image, comments, external_url, external_source } = post.data;
+
+const authors = (author ?? []).map((slug) => ({ slug, author: AUTHORS[slug] }));
+const minutes = readingTime(post);
+const og = ogImage(post);
+const showComments = comments && IS_PRODUCTION;
+const discourseEmbedUrl = `${SITE_URL}${postUrl(post)}`;
+---
+
+<Base
+  title={title}
+  description={description}
+  externalUrl={external_url}
+  ogImage={og}
+  authorDisplay={authorDisplay(post)}
+  category={category}
+  readingTime={minutes}
+>
+  <div class="bg-gradient-blog">
+    <section id="news-header">
+      <div class="container">
+        <div class="grid">
+          <div class="column col-s-12 col-m-10 col-m-offset-2">
+            <h1 class="text-center mb-48">
+              {title}
+            </h1>
+            {description && <p class="text-center">{description}</p>}
+            <p class="meta text-center">
+              <span class="meta-secondary"
+                >{formatDateWithWeekday(post.data.date)} · {minutes} minute read</span
+              >{
+                authors.length > 0 && (
+                  <span class="meta-author"><span class="author-avatars">{authors.map(({ author: a }) => a?.github ? <img class="author-avatar" src={`https://github.com/${a.github}.png?size=80`} alt={a.name} /> : a?.avatar ? <img class="author-avatar" src={a.avatar} alt={a.name} /> : null)}</span><span class="author-names">{authors.map(({ slug, author: a }, i) => <Fragment>{i > 0 ? ", " : ""}{a ? (a.github ? <a href={`https://github.com/${a.github}`} target="_blank" rel="noopener noreferrer">{a.name}</a> : a.name) : slug}</Fragment>)}</span></span>
+                )
+              }
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="bg-primary">
+    <section id="post">
+      <div class="container">
+        {
+          post.data.og_image && !hide_header_image && (
+            <div class="header">
+              <img class="header-image" src={post.data.og_image} alt={title} />
+            </div>
+          )
+        }
+        <div class="grid">
+          <div class="col-s-12 col-m-8 col-m-offset-3">
+            <article class:list={["post", "content", { "mb-128": !showComments }]}>
+              <slot />
+              {
+                external_url && (
+                  <p class="mt-24">
+                    <a href={external_url} class="button">
+                      Read the full article on {external_source}
+                    </a>
+                  </p>
+                )
+              }
+            </article>
+            {
+              external_url && (
+                <script is:inline define:vars={{ external_url }}>
+                  // Crosspost: page is indexed and canonicalised to the source, then
+                  // sends readers straight to the original article.
+                  window.location.replace(external_url);
+                </script>
+              )
+            }
+            {
+              showComments && (
+                <>
+                  <div id="discourse-comments" class="mb-128" />
+                  <script is:inline define:vars={{ discourseEmbedUrl }}>
+                    DiscourseEmbed = {
+                      discourseUrl: "https://community.home-assistant.io/",
+                      discourseEmbedUrl: discourseEmbedUrl,
+                    };
+
+                    (function () {
+                      var d = document.createElement("script");
+                      d.type = "text/javascript";
+                      d.async = true;
+                      d.src = DiscourseEmbed.discourseUrl + "javascripts/embed.js";
+                      (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(d);
+                    })();
+                  </script>
+                </>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

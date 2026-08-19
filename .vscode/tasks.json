@@ -4,7 +4,7 @@
     {
       "label": "Preview",
       "type": "shell",
-      "command": "script/develop",
+      "command": "npm run dev",
       "group": {
         "kind": "test",
         "isDefault": true

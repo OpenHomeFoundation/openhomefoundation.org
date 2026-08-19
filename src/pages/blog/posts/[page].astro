@@ -1,0 +1,35 @@
+---
+import Base from "../../../layouts/Base.astro";
+import BlogListPage from "../../../components/BlogListPage.astro";
+import { getSortedPosts, POSTS_PER_PAGE, type Post } from "../../../lib/blog";
+
+// Page 1 lives at /blog/ (see blog/index.astro); pages 2+ live here.
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => {
+    const page = i + 2;
+    return {
+      params: { page: String(page) },
+      props: {
+        posts: posts.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE),
+        page,
+        totalPages,
+      },
+    };
+  });
+}
+
+interface Props {
+  posts: Post[];
+  page: number;
+  totalPages: number;
+}
+
+const { posts, page, totalPages } = Astro.props;
+---
+
+<Base title="Blog" description="News and updates from the Open Home Foundation" canonicalUrl="/blog/">
+  <BlogListPage posts={posts} currentPage={page} totalPages={totalPages} />
+</Base>

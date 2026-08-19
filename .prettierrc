@@ -1,3 +1,11 @@
 {
-  "plugins": ["@shopify/prettier-plugin-liquid"]
+  "plugins": ["prettier-plugin-astro"],
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ]
 }

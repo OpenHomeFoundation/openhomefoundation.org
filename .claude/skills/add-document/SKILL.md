@@ -17,10 +17,11 @@ Place the PDF file(s) in the project root `add-document/` directory, then run:
 /add-document
 ```
 
-Documents live in `src/assets/documents/` and are listed in `_data/documents.yml`.
-The documents page ([src/documents.html](../../../src/documents.html)) renders
-that data. `src/assets/documents/` is passed through to `/assets/documents/` by
-the passthrough copy rule in [.eleventy.js](../../../.eleventy.js).
+Documents live in `public/assets/documents/` and are listed in
+`src/data/documents.yml`. The documents page
+([src/pages/documents.astro](../../../src/pages/documents.astro)) renders that
+data. Everything under `public/` is copied verbatim into the built site, so
+`public/assets/documents/` is served at `/assets/documents/`.
 
 ## Naming Convention
 
@@ -61,7 +62,7 @@ working-group-resolution-policy-and-principles-17-dec-2025.pdf
 it-policy-01-jul-2026.pdf
 ```
 
-Links in `_data/documents.yml` point at `/assets/documents/<filename>` and,
+Links in `src/data/documents.yml` point at `/assets/documents/<filename>` and,
 because filenames contain no spaces or special characters, need **no**
 URL-encoding.
 
@@ -92,12 +93,12 @@ Convert whatever you find into the `DD-mon-YYYY` format.
 
 1. Read the PDF(s) in `add-document/`.
 2. Choose a `slug` (see the convention). Confirm it does not collide with an
-   existing document by checking both `src/assets/documents/` and
-   `_data/documents.yml`.
+   existing document by checking both `public/assets/documents/` and
+   `src/data/documents.yml`.
 3. Determine the revision date and build the filename `<slug>-<DD>-<mon>-<YYYY>.pdf`.
-4. Move the PDF to `src/assets/documents/<filename>` (lowercase the name; strip
+4. Move the PDF to `public/assets/documents/<filename>` (lowercase the name; strip
    the original messy name entirely).
-5. Add an entry to the appropriate section in `_data/documents.yml`:
+5. Add an entry to the appropriate section in `src/data/documents.yml`:
 
    ```yaml
    - title: "Human Readable Title"
@@ -119,18 +120,18 @@ Use this flow when the incoming PDF replaces a document already on the site
 1. Identify the `slug` of the existing document. Find the current file:
 
    ```shell
-   ls src/assets/documents/ | grep '^<slug>-'
+   ls public/assets/documents/ | grep '^<slug>-'
    ```
 
-   Confirm the match against the `link:` in `_data/documents.yml`.
+   Confirm the match against the `link:` in `src/data/documents.yml`.
 
 2. Determine the new revision date and build the new filename
    `<slug>-<newDD>-<newmon>-<newYYYY>.pdf`.
-3. Move the incoming PDF to `src/assets/documents/<newfilename>`.
-4. Update the matching `link:` in `_data/documents.yml` to point at the new file.
+3. Move the incoming PDF to `public/assets/documents/<newfilename>`.
+4. Update the matching `link:` in `src/data/documents.yml` to point at the new file.
 5. Add a permanent redirect from the OLD path to the NEW path in
-   [src/\_redirects](../../../src/_redirects) so existing/bookmarked links keep
-   working (Netlify-style, one per line):
+   [public/\_redirects](../../../public/_redirects) so existing/bookmarked
+   links keep working (Netlify-style, one per line):
 
    ```text
    /assets/documents/<slug>-<oldDD>-<oldmon>-<oldYYYY>.pdf /assets/documents/<slug>-<newDD>-<newmon>-<newYYYY>.pdf 301
@@ -143,13 +144,13 @@ Use this flow when the incoming PDF replaces a document already on the site
 6. Delete the old file:
 
    ```shell
-   rm "src/assets/documents/<slug>-<oldDD>-<oldmon>-<oldYYYY>.pdf"
+   rm "public/assets/documents/<slug>-<oldDD>-<oldmon>-<oldYYYY>.pdf"
    ```
 
 7. Make sure nothing else still references the old filename:
 
    ```shell
-   grep -rn "<slug>-<oldDD>-<oldmon>-<oldYYYY>.pdf" src _data
+   grep -rn "<slug>-<oldDD>-<oldmon>-<oldYYYY>.pdf" src public
    ```
 
    The only remaining reference should be the source side of the redirect line.
@@ -163,15 +164,16 @@ After any change, rebuild and confirm every document link resolves to a file
 that exists, and that the old revision (if any) is gone:
 
 ```shell
-rm -rf dist && npx @11ty/eleventy 2>&1 | tail -3
+rm -rf dist && npm run build 2>&1 | tail -3
 # every link in the rendered page must exist on disk:
 grep -o '/assets/documents/[^"]*' dist/documents/index.html | while read -r l; do
   [ -f "dist${l}" ] && echo "OK   $l" || echo "MISSING $l"
 done
 ```
 
-For a revision, also confirm the redirect line is present in `src/_redirects`
-and that `dist/assets/documents/` no longer contains the old filename.
+For a revision, also confirm the redirect line is present in
+`public/_redirects` and that `dist/assets/documents/` no longer contains the
+old filename.
 
 ## Rules
 
@@ -179,6 +181,6 @@ and that `dist/assets/documents/` no longer contains the old filename.
   other special characters in its name — always normalise to the convention.
 - Never change a document's `slug` between revisions; only the date changes.
 - Never delete an old revision without first adding the old→new redirect and
-  updating the reference in `_data/documents.yml`.
-- Keep `_data/documents.yml` links un-encoded (the convention guarantees safe
+  updating the reference in `src/data/documents.yml`.
+- Keep `src/data/documents.yml` links un-encoded (the convention guarantees safe
   filenames).

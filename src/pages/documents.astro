@@ -1,0 +1,67 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import documents from "../data/documents.yml";
+
+interface Document {
+  title: string;
+  description?: string;
+  link: string;
+}
+
+interface Section {
+  title: string;
+  description?: string;
+  documents: Document[];
+}
+
+const sections: Section[] = documents.sections;
+---
+
+<Base title="Documents">
+  <div class="bg-gradient-agreement-header">
+    <section id="supporters">
+      <div class="container">
+        <div class="poly"><Icon name="poly/poly-thin" /></div>
+        <div class="grid">
+          <div class="content col-s-12 col-m-8 col-m-offset-3">
+            <h1 class="text-center mb-24">Documents</h1>
+            <p class="text-center mb-24 subtitle">
+              The Open Home Foundation is committed to transparency. That's why we
+              share many of our internal documents: from regulatory filings, to
+              financial reports, to our positions as an organization. We believe
+              it fosters trust and benefits collaboration within the community.<br /><br />
+              It's also the right thing to do.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    {
+      sections.map((section) => (
+        <section class="documents">
+          <div class="container">
+            <div class="grid">
+              <div class="col-s-12 col-m-8">
+                <h2 class="mb-24">{section.title}</h2>
+              </div>
+            </div>
+            <div class="grid mb-64">
+              {section.documents.map((document) => (
+                <div class="col-s-12 col-m-4">
+                  <a class="document swiper-slide" target="_blank" rel="noopener noreferrer" href={document.link}>
+                    <div>
+                      <span>{document.title}</span>
+                      <span class="description">{document.description}</span>
+                    </div>
+                    <Icon name="arrow_outward" />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</Base>
