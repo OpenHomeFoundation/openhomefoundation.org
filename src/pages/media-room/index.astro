@@ -1,0 +1,163 @@
+---
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import BlogCard from "../../components/BlogCard.astro";
+import hardwarePressKits from "../../data/hardware-press-kits.yml";
+import { getSortedPosts } from "../../lib/blog";
+
+interface PressKit {
+  title: string;
+  description: string;
+  link?: string;
+}
+
+const kits: PressKit[] = hardwarePressKits;
+const recentPosts = (await getSortedPosts()).slice(0, 3);
+---
+
+<Base
+  title="Media Room"
+  description="Media resources, brand assets, and press contacts for journalists and creators covering the Open Home Foundation."
+>
+  <div class="bg-gradient-agreement-header">
+    <section id="media-room-intro">
+      <div class="container">
+        <div class="poly"><Icon name="poly/poly-thin" /></div>
+        <div class="grid">
+          <div class="content col-s-12 col-m-8 col-m-offset-3">
+            <h1 class="text-center mb-24">Media Room</h1>
+            <p class="text-center mb-24 subtitle">
+              Media resources, brand assets, and press contacts for journalists
+              and creators covering the Open Home Foundation.
+            </p>
+            <p class="text-center">
+              Media inquiries:
+              <a href="mailto:media@openhomefoundation.org" class="copy-email"> media@openhomefoundation.org </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="bg-primary">
+    <section id="media-room-about">
+      <div class="container">
+        <div class="grid">
+          <div class="column col-s-12 col-m-8 col-m-offset-3 text-center">
+            <h2 class="mb-32">About the Open Home Foundation</h2>
+            <p class="text-secondary">
+              The Open Home Foundation fights for the fundamental principles of
+              privacy, choice, and sustainability for smart homes. And for every
+              person who lives in one. It does this by supporting the development
+              of open source projects, and open connectivity and communication
+              standards.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="media-room-downloads" class="download-section">
+      <div class="container">
+        <div class="grid mb-64">
+          <div class="column col-s-12 col-m-8 col-m-offset-3 text-center">
+            <h2 class="mb-24">Media kit components</h2>
+            <p class="text-secondary">
+              Everything journalists and creators need to cover the foundation and
+              its ecosystem.
+            </p>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="col-s-12 col-m-6 col-l-4">
+            <a class="download-card" href="/media-room/factsheet/">
+              <Icon name="arrow_outward" />
+              <h3>Open Home Foundation factsheet</h3>
+              <p>
+                Covering our mission, principles, background, scale, and
+                leadership.
+              </p>
+            </a>
+          </div>
+          <div class="col-s-12 col-m-6 col-l-4">
+            <a class="download-card" href="/media-room/boilerplates/">
+              <Icon name="arrow_outward" />
+              <h3>Boilerplates</h3>
+              <p>
+                Standardized descriptions for the Open Home Foundation and our
+                core projects: Home Assistant, ESPHome, and Music Assistant.
+              </p>
+            </a>
+          </div>
+          <div class="col-s-12 col-m-6 col-l-4">
+            <a class="download-card" href="/media-room/annual-report-factsheet/">
+              <Icon name="arrow_outward" />
+              <h3>2025 Annual Report factsheet</h3>
+              <p>
+                Growth stats, operational maturation highlights, and engineering
+                milestones.
+              </p>
+            </a>
+          </div>
+          <div class="col-s-12 col-m-6 col-l-4">
+            <a class="download-card" href="/media-room/privacy-position-paper/">
+              <Icon name="arrow_outward" />
+              <h3>Policy & position papers</h3>
+              <p>Standpoint summary on privacy in the smart home.</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="media-room-hardware" class="download-section">
+      <div class="container">
+        <div class="grid mb-64">
+          <div class="column col-s-12 col-m-8 col-m-offset-3 text-center">
+            <h2 class="mb-24">Hardware press kits</h2>
+            <p class="text-secondary">
+              Everything you need to write about licensed hardware made by our
+              commercial partners Nabu Casa and Apollo Automation.
+            </p>
+          </div>
+        </div>
+        <div class="grid">
+          {
+            kits.map((kit) => (
+              <div class="col-s-12 col-m-6 col-l-4">
+                <a class="download-card" href={kit.link ?? "#"}>
+                  <Icon name="arrow_outward" />
+                  <h3>{kit.title}</h3>
+                  <p>{kit.description}</p>
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+    <section id="media-room-news">
+      <div class="container">
+        <div class="news-header mb-48">
+          <div>
+            <h2 class="mb-16">Latest news & updates</h2>
+            <p class="text-secondary">
+              We publish all official announcements, technical deep-dives, and
+              foundation milestones directly on our blog.
+            </p>
+          </div>
+          <a href="/blog/" class="button button-outline" aria-label="Read all blog posts">
+            Read all posts <Icon name="arrow" />
+          </a>
+        </div>
+        <div class="grid">
+          {
+            recentPosts.map((post) => (
+              <div class="col-s-12 col-m-6 col-l-4">
+                <BlogCard post={post} badge={false} />
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

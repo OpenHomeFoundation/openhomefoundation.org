@@ -1,0 +1,106 @@
+---
+import Icon from "./Icon.astro";
+
+// Normalise so comparisons work in dev ("/about") and in the built site
+// ("/about/") alike.
+const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.url.pathname}/`;
+
+const whoWeAreActive = path === "/about/" || path === "/structure/" || path === "/supporters/";
+const whatWeDoActive = path === "/projects/";
+const resourcesActive = path === "/documents/" || path === "/papers/privacy/" || path === "/media-room/";
+const blogActive = path.includes("/blog/");
+---
+
+<div class="navbar-container">
+  <div class="navbar">
+    <div class="navbar-bar">
+      <a href="/" class="logo-link">
+        <img class="logo" src="/assets/images/logo/open-home-foundation.svg" alt="Open Home Foundation" />
+      </a>
+      <ul class="menu">
+        <li class:list={["menu-item", "has-dropdown", { active: whoWeAreActive }]}>
+          <a href="#" aria-haspopup="true">Who we are<span class="dropdown-arrow" aria-hidden="true"></span></a>
+          <ul class="dropdown">
+            <li class:list={{ active: path === "/about/" }}><a href="/about/">Our story</a></li>
+            <li class:list={{ active: path === "/structure/" }}><a href="/structure/">Structure</a></li>
+            <li class:list={{ active: path === "/supporters/" }}><a href="/supporters/">Supporters</a></li>
+          </ul>
+        </li>
+        <li class:list={["menu-item", "has-dropdown", { active: whatWeDoActive }]}>
+          <a href="#" aria-haspopup="true">What we do<span class="dropdown-arrow" aria-hidden="true"></span></a>
+          <ul class="dropdown">
+            <li class:list={{ active: path === "/projects/" }}><a href="/projects/">Projects</a></li>
+          </ul>
+        </li>
+
+        <li class:list={["menu-item", "has-dropdown", { active: resourcesActive }]}>
+          <a href="#" aria-haspopup="true">Resources<span class="dropdown-arrow" aria-hidden="true"></span></a>
+          <ul class="dropdown">
+            <li class:list={{ active: path === "/papers/privacy/" }}>
+              <a href="/papers/privacy/">Privacy paper</a>
+            </li>
+            <li class:list={{ active: path === "/documents/" }}><a href="/documents/">Documents</a></li>
+            <li class:list={{ active: path === "/media-room/" }}><a href="/media-room/">Media room</a></li>
+          </ul>
+        </li>
+
+        <li class:list={["menu-item", { active: blogActive }]}><a href="/blog/">Blog</a></li>
+        <li class="menu-item">
+          <a href="https://store.openhomefoundation.org/" target="_blank">Store</a>
+        </li>
+      </ul>
+      <a href="/structure/#support-our-work" class="button">Support us</a>
+      <button
+        class="menu-button"
+        id="navbar-menu-button"
+        aria-haspopup="true"
+        aria-controls="navbar-menu"
+        aria-expanded="false"
+        aria-label="Toggle menu"
+      >
+        <Icon name="menu" />
+      </button>
+    </div>
+    <ul class="navbar-menu" id="navbar-menu" role="menu" aria-labelledby="navbar-menu-button">
+      <li class:list={["navbar-menu-item", "has-dropdown", { active: whoWeAreActive }]}>
+        <details open={whoWeAreActive}>
+          <summary>Who we are<span class="dropdown-arrow" aria-hidden="true"></span></summary>
+          <ul class="dropdown">
+            <li class:list={{ active: path === "/about/" }}><a href="/about/">Our story</a></li>
+            <li class:list={{ active: path === "/structure/" }}><a href="/structure/">Structure</a></li>
+            <li class:list={{ active: path === "/supporters/" }}><a href="/supporters/">Supporters</a></li>
+          </ul>
+        </details>
+      </li>
+      <li class:list={["navbar-menu-item", "has-dropdown", { active: whatWeDoActive }]}>
+        <details open={whatWeDoActive}>
+          <summary>What we do<span class="dropdown-arrow" aria-hidden="true"></span></summary>
+          <ul class="dropdown">
+            <li class:list={{ active: path === "/projects/" }}><a href="/projects/">Projects</a></li>
+          </ul>
+        </details>
+      </li>
+      <li class:list={["navbar-menu-item", "has-dropdown", { active: resourcesActive }]}>
+        <details open={path === "/documents/"}>
+          <summary>Resources<span class="dropdown-arrow" aria-hidden="true"></span></summary>
+          <ul class="dropdown">
+            <li class:list={{ active: path === "/papers/privacy/" }}>
+              <a href="/papers/privacy/">Privacy paper</a>
+            </li>
+            <li class:list={{ active: path === "/documents/" }}><a href="/documents/">Documents</a></li>
+            <li class:list={{ active: path === "/media-room/" }}><a href="/media-room/">Media room</a></li>
+          </ul>
+        </details>
+      </li>
+      <li class:list={["navbar-menu-item", { active: blogActive }]}>
+        <a href="/blog/">Blog</a>
+      </li>
+      <li class="navbar-menu-item">
+        <a href="https://store.openhomefoundation.org/" target="_blank">Store</a>
+      </li>
+      <li class="navbar-menu-item">
+        <a href="/structure/#support-our-work">Support us</a>
+      </li>
+    </ul>
+  </div>
+</div>

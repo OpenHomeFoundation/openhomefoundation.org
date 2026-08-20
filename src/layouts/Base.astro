@@ -1,0 +1,146 @@
+---
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import { allowedReferrers } from "../lib/allowed-referrers.js";
+import { SITE_URL, DEFAULT_DESCRIPTION } from "../lib/site";
+// Swiper's core CSS is global on purpose: besides the carousels, several
+// pages (documents, supporters) reuse .swiper-slide for card layout.
+import "swiper/css";
+import "../styles/style.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  /** Site-relative canonical URL, e.g. "/blog/". */
+  canonicalUrl?: string;
+  /** Crossposts: canonicalises to the source article. */
+  externalUrl?: string;
+  ogImage?: string;
+  authorDisplay?: string | null;
+  category?: string;
+  /** Reading time in minutes; only blog posts pass this. */
+  readingTime?: number;
+}
+
+const { title, description, noindex, canonicalUrl, externalUrl, ogImage, authorDisplay, category, readingTime } =
+  Astro.props;
+
+const fullTitle = title ? `${title} – Open Home Foundation` : "Open Home Foundation";
+const fullDescription = description || DEFAULT_DESCRIPTION;
+
+const og = ogImage || "/assets/images/opengraph.jpg";
+const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={fullDescription} />
+    <meta name="viewport" content="width=device-width" />
+    {noindex && <meta name="robots" content="noindex" />}
+    {canonicalUrl && <link rel="canonical" href={`${SITE_URL}${canonicalUrl}`} />}
+    {externalUrl && <link rel="canonical" href={externalUrl} />}
+    {/* Send the full crosspost URL (path included) as the referrer to the source, not just the origin. */}
+    {externalUrl && <meta name="referrer" content="no-referrer-when-downgrade" />}
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={fullDescription} />
+    <meta property="og:image" content={ogImageUrl} />
+    {authorDisplay && <meta property="og:image:author" content={authorDisplay} />}
+    {category && <meta property="og:image:category" content={category} />}
+    {readingTime && (
+      <>
+        <meta name="twitter:label1" value="Reading time" />
+        <meta name="twitter:data1" value={`~${readingTime} ${readingTime === 1 ? "minute" : "minutes"}`} />
+      </>
+    )}
+    {authorDisplay && (
+      <>
+        <meta name="twitter:label2" value="Written by" />
+        <meta name="twitter:data2" value={authorDisplay} />
+      </>
+    )}
+    <link rel="alternate" type="application/atom+xml" title="Open Home Foundation Blog" href="/blog/feed.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="icon" type="image/png" href="/favicon-dark-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/favicon-dark-32x32.png" sizes="32x32" />
+
+    <!-- Light mode favicon -->
+    <link
+      rel="icon"
+      href="/favicon-16x16.png"
+      type="image/x-icon"
+      media="(prefers-color-scheme: light)"
+      sizes="16x16"
+    />
+    <link
+      rel="icon"
+      href="/favicon-32x32.png"
+      type="image/x-icon"
+      media="(prefers-color-scheme: light)"
+      sizes="32x32"
+    />
+
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet" />
+
+    <script is:inline async src="https://plausible.openhomefoundation.org/js/pa-M8_u5edrDOz5Ui2iONt2_.js"></script>
+    <script is:inline define:vars={{ OHF_ALLOWED_REFERRERS: allowedReferrers }}>
+      // Visitors arriving from their own Home Assistant or ESPHome instance send
+      // their private URL as the referrer. Anything not on the allowlist is
+      // replaced before Plausible ever sees it, so those URLs are never
+      // recorded. Source of truth: list/allowed-referrers.txt
+
+      (window.plausible =
+        window.plausible ||
+        function () {
+          (plausible.q = plausible.q || []).push(arguments);
+        }),
+        (plausible.init =
+          plausible.init ||
+          function (i) {
+            plausible.o = i || {};
+          });
+      plausible.init({
+        transformRequest: function (payload) {
+          var ref = payload.r;
+          if (!ref) return payload;
+
+          var host = "";
+          try {
+            host = new URL(ref).hostname.replace(/\.$/, "");
+          } catch (e) {
+            // Unparseable referrer: falls through and gets replaced.
+          }
+
+          for (var i = 0; i < OHF_ALLOWED_REFERRERS.length; i++) {
+            var d = OHF_ALLOWED_REFERRERS[i];
+            if (host === d || (host.length > d.length && host.slice(-(d.length + 1)) === "." + d)) {
+              return payload;
+            }
+          }
+
+          // One aggregate bucket in Plausible, so we can see how much we filter
+          // without learning anything about individual visitors. .invalid is
+          // reserved by RFC 2606 and can never collide with a real domain.
+          payload.r = "https://unlisted.invalid/";
+          return payload;
+        },
+      });
+    </script>
+    <script>
+      import "../scripts/nav-menu.js";
+      import "../scripts/copy-email.js";
+      import "../scripts/code-copy.js";
+    </script>
+  </head>
+  <body>
+    <header><Navbar /></header>
+    <div class="content"><slot /></div>
+    <footer><Footer /></footer>
+  </body>
+</html>

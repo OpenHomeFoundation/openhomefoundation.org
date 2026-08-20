@@ -2,19 +2,21 @@
   "name": "open-home-foundation-website",
   "version": "1.0.0",
   "description": "This is the source of the Open Home Foundation website.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.3",
     "swiper": "^11.1.1"
   },
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.4.4",
-    "autoprefixer": "^10.4.19",
-    "cssnano": "^6.1.2",
-    "esbuild": "^0.20.2",
-    "js-yaml": "^4.1.0",
-    "postcss": "^8.4.38",
-    "postcss-import": "^16.1.0",
-    "postcss-import-ext-glob": "^2.1.1",
-    "prettier": "^3.2.5"
+    "@rollup/plugin-yaml": "^5.0.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

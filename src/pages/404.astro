@@ -1,0 +1,24 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<Base>
+
+<div class="bg-gradient-project">
+  <section id="not-found">
+    <div class="container text-center text-light-grey column">
+      <div class="poly"><Icon name="poly/poly-thin" /></div>
+      <h1 class="mb-24">Page not found.</h1>
+      <p class="mb-24 text-center">This page doesn't exist.</p>
+      <a href="/" class="button">Return to home</a>
+    </div>
+  </section>
+</div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    plausible("404");
+  });
+</script>
+</Base>

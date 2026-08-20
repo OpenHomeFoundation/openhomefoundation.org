@@ -2,10 +2,10 @@
 	"name": "OpenHomeFoundation/website",
 	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 	"forwardPorts": [
-		8080
+		4321
 	],
 	"portsAttributes": {
-		"8080": {
+		"4321": {
 			"label": "Preview"
 		}
 	},
@@ -20,6 +20,7 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"astro-build.astro-vscode",
 				"esbenp.prettier-vscode",
 				"yzhang.markdown-all-in-one",
 				"davidanson.vscode-markdownlint"

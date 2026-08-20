@@ -1,0 +1,210 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+
+// Projects shown in the marquee. Rendered twice: swiper 11.2+ disables loop
+// mode unless there are more slides than fit in the viewport, and doubling
+// the set is the standard pattern for a continuous ticker.
+const marqueeProjects = [
+  { name: "ESP Web Tools", href: "https://esphome.github.io/esp-web-tools/" },
+  { name: "Improv Wi-Fi", href: "https://www.improv-wifi.com/" },
+  { name: "HACS", href: "https://github.com/hacs/integration" },
+  { name: "Zigpy", href: "https://github.com/zigpy/zigpy" },
+  { name: "Matter.js", href: "https://github.com/matter-js/matter.js" },
+  { name: "Z-Wave JS", href: "https://github.com/zwave-js/zwave-js" },
+  { name: "microWakeWord", href: "https://github.com/OHF-Voice/micro-wake-word" },
+  { name: "Piper", href: "https://github.com/OHF-Voice/piper1-gpl" },
+];
+---
+
+<Base>
+
+<div class="bg-gradient-home">
+  <section id="intro">
+    <div class="container">
+      <div class="poly"><Icon name="poly/poly-thin" /></div>
+      <div class="grid">
+        <div class="column col-s-12 col-m-offset-3 col-m-8">
+          <p class="text-center mb-32 p-16">
+            The <strong>Open Home Foundation</strong> fights for the fundamental
+            principles of <strong>privacy</strong>, <strong>choice</strong>, and
+            <strong>sustainability</strong> for smart homes. And for every
+            person who lives in one. It does this by supporting the development
+            of open source projects, and open connectivity and communication
+            standards.
+          </p>
+          <a href="/about/" class="button button-outline" aria-label="Learn more about the principles">
+            Learn more <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="principles">
+    <div class="container">
+      <h2 class="text-center mb-64">Our principles</h2>
+      <div class="cards grid">
+        <div class="card col-s-12 col-m-4">
+          <div class="card-header primary">
+            <Icon name="privacy" />
+            <h3>Privacy</h3>
+            <p>Control your personal data.</p>
+          </div>
+          <div class="card-content">
+            <p>
+              Share only what you want. With whom you want. Without modifying
+              your behavior because of an algorithm. To ensure privacy, smart
+              home devices must work locally, and cloud services must be
+              optional and opt-in.
+            </p>
+          </div>
+        </div>
+        <div class="card col-s-12 col-m-4">
+          <div class="card-header secondary">
+            <Icon name="choice" />
+            <h3>Choice</h3>
+            <p>Mix and match devices.</p>
+          </div>
+          <div class="card-content">
+            <p>
+              Across manufacturers. Without vendor lock-in, or arbitrary
+              barriers to interoperability. To ensure user choice, devices and
+              the management of data they gather should operate via open
+              standards and local APIs.
+            </p>
+          </div>
+        </div>
+        <div class="card col-s-12 col-m-4">
+          <div class="card-header tertiary">
+            <Icon name="sustainability" />
+            <h3>Sustainability</h3>
+            <p>Repurpose your hardware.</p>
+          </div>
+          <div class="card-content">
+            <p>
+              And reduce your environmental impact. To ensure sustainability,
+              devices must be built for durability, open to modification, and
+              part of a system providing tools to track, automate, and reduce
+              waste and emissions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="bg-linear-gradient-dark-blue">
+  <section id="work">
+    <div class="container">
+      <div class="grid">
+        <div class="col-s-12 col-m-6 col-m-offset-4">
+          <h2 class="text-center text-branding-primary mb-64">Our work</h2>
+          <p class="text-center text-grey p-16 mb-32">
+            The Open Home Foundation owns and governs over
+            <strong>250 open source projects, standards, drivers, and
+              libraries</strong>
+            like <i>Home Assistant</i>, <i>ESPHome</i>, <i>Music Assistant</i>,
+            <i>HACS</i>, <i>Piper</i>, and more. <br /><br />
+            We also advocate for better privacy, choice, and sustainability
+            across the smart home industry.
+          </p>
+        </div>
+      </div>
+      <div class="main-projects">
+        <a target="_blank" rel="noopener noreferrer" href="https://www.home-assistant.io/"
+          aria-label="Vist Home Assistant website">
+          <img src="/assets/images/logo/home-assistant.svg" alt="Home Assistant" />
+        </a>
+        <a target="_blank" rel="noopener noreferrer" href="https://esphome.io/" aria-label="Vist ESPHome website">
+          <img src="/assets/images/logo/esphome.svg" alt="ESPHome" />
+        </a>
+        <a target="_blank" rel="noopener noreferrer" href="https://www.music-assistant.io/"
+          aria-label="Vist Music Assistant website">
+          <img src="/assets/images/logo/music-assistant.svg" alt="Music Assistant" />
+        </a>
+      </div>
+      <div class="projects-container">
+        <div class="projects swiper mb-32">
+          <div class="swiper-wrapper">
+            {
+              [...marqueeProjects, ...marqueeProjects].map((project) => (
+                <a class="project swiper-slide" target="_blank" rel="noopener noreferrer" href={project.href}>
+                  <span>{project.name}</span>
+                  <Icon name="arrow_outward" />
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <a href="/projects/#projects" class="button" aria-label="See more projects">See more</a>
+    </div>
+  </section>
+  <section id="collaborations">
+    <div class="container">
+      <div class="poly"><Icon name="poly/poly-home-collabs" /></div>
+      <div class="grid">
+        <div class="column col-s-12 col-m-6 col-m-offset-4">
+          <h2 class="text-center text-branding-primary mb-32">Our collabs</h2>
+          <p class="text-center text-grey mb-32 p-16">
+            Thanks to support from our commercial partners, Apollo Automation
+            and Nabu Casa, we contribute to external member projects that align
+            with our principles. These include WLED and Zigbee2MQTT.
+          </p>
+          <a class="button" href="/projects/#collabs" aria-label="Learn more about what we do">
+            Learn more
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="support-us">
+    <div class="container">
+      <div class="grid">
+        <div class="card col-s-12 col-m-8 col-m-offset-3">
+          <div class="logo mb-32">
+            <Icon name="foundation-support" />
+          </div>
+          <h2 class="mb-32">Support us</h2>
+          <p class="mb-32 text-secondary">
+            Our work is primarily supported through subscriptions to Home
+            Assistant Cloud, and by your contributions to open source projects
+            aligned with our principles.
+          </p>
+          <a class="button button-secondary" href="/structure/#support-our-work">
+            Join the fight
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="news-block">
+    <div class="container">
+      <div class="card">
+        <a class="image" href="/blog/building-whats-next-state-of-the-open-home-2026/"
+          aria-label="Read the State of the Open Home 2026 blog post">
+          <img src="/assets/images/blog/building-whats-next-state-of-the-open-home-2026/art.webp"
+            alt="State of the Open Home 2026" />
+        </a>
+        <div class="content">
+          <p class="title">State of the Open Home 2026</p>
+          <p class="mb-32">
+            From a new Community department to a public roadmap awaiting your input.
+            Catch up on the event highlights and help shape what we build next.
+          </p>
+          <a class="button button-icon button-outline-light"
+            href="/blog/building-whats-next-state-of-the-open-home-2026/"
+            aria-label="Read the State of the Open Home 2026 blog post">
+            <Icon name="arrow" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  import "../scripts/home-carousel.js";
+</script>
+</Base>

@@ -1,0 +1,89 @@
+---
+import BlogCard from "./BlogCard.astro";
+import Icon from "./Icon.astro";
+import { blogPageHref, buildPaginationNav, type Post } from "../lib/blog";
+
+interface Props {
+  posts: Post[];
+  currentPage: number;
+  totalPages: number;
+}
+
+const { posts, currentPage, totalPages } = Astro.props;
+const paginationNav = buildPaginationNav(currentPage, totalPages);
+---
+
+<div class="bg-gradient-blog">
+  <section id="news-header">
+    <div class="container">
+      <div class="grid">
+        <div class="column col-s-12 col-m-10 col-m-offset-2">
+          <h1 class="text-center mb-48">Blog</h1>
+          <p class="text-center">News and updates from the Open Home Foundation</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="bg-primary">
+  <section id="blog-list">
+    <div class="container">
+      <div class="grid">
+        {
+          posts.map((post) => (
+            <div class="col-s-12 col-m-6 col-l-4">
+              <BlogCard post={post} />
+            </div>
+          ))
+        }
+      </div>
+      {
+        totalPages > 1 && (
+          <nav class="pagination" aria-label="Blog pagination">
+            {currentPage > 1 ? (
+              <a
+                href={blogPageHref(currentPage - 1)}
+                class="pagination-arrow pagination-arrow-prev"
+                aria-label="Previous page"
+              >
+                <Icon name="arrow" />
+              </a>
+            ) : (
+              <span class="pagination-arrow pagination-arrow-prev is-disabled" aria-hidden="true">
+                <Icon name="arrow" />
+              </span>
+            )}
+
+            <ul class="pagination-list">
+              {paginationNav.map((item) => (
+                <li>
+                  {item.ellipsis ? (
+                    <span class="pagination-ellipsis">&hellip;</span>
+                  ) : (
+                    <a
+                      href={item.href}
+                      class:list={["pagination-number", { "is-current": item.current }]}
+                      aria-current={item.current ? "page" : undefined}
+                    >
+                      {item.number}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            {currentPage < totalPages ? (
+              <a href={blogPageHref(currentPage + 1)} class="pagination-arrow pagination-arrow-next" aria-label="Next page">
+                <Icon name="arrow" />
+              </a>
+            ) : (
+              <span class="pagination-arrow pagination-arrow-next is-disabled" aria-hidden="true">
+                <Icon name="arrow" />
+              </span>
+            )}
+          </nav>
+        )
+      }
+    </div>
+  </section>
+</div>

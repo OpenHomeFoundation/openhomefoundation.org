@@ -1,0 +1,67 @@
+---
+import Base from "./Base.astro";
+import Icon from "../components/Icon.astro";
+
+// Markdown layout: papers and media room resources set frontmatter fields
+// lead, title, description, pdf, paper, hero, and noindex.
+const { frontmatter } = Astro.props;
+const { lead, title, description, pdf, paper, hero, noindex } = frontmatter;
+
+const blueHero = hero === "blue";
+---
+
+<Base title={title} description={description} noindex={noindex}>
+  <div class={blueHero ? "bg-gradient-agreement-header" : "bg-gradient-paper-header"}>
+    <section id="paper-header" class:list={{ "hero-light": blueHero }}>
+      <div class="container">
+        <div class="grid">
+          <div class="column col-s-12 col-m-10 col-m-offset-2">
+            {lead && <p class="lead text-center">{lead}</p>}
+            <h1 class="text-center mb-48">
+              {title}
+            </h1>
+            {description && <p class="text-center">{description}</p>}
+            {
+              pdf && (
+                <p class="text-center mt-32">
+                  <a
+                    href={pdf}
+                    class:list={["button", blueHero ? "button-outline" : "button-outline-light"]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Download PDF
+                    <Icon name="arrow_outward" />
+                  </a>
+                </p>
+              )
+            }
+            {
+              paper && (
+                <p class="text-center mt-32">
+                  <a href={paper} class:list={["button", blueHero ? "button-outline" : "button-outline-light"]}>
+                    Read paper
+                    <Icon name="arrow_outward" />
+                  </a>
+                </p>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="bg-primary">
+    <section id="paper">
+      <div class="container">
+        <div class="grid">
+          <div class="col-s-12 col-m-8 col-m-offset-3">
+            <div class="content">
+              <slot />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

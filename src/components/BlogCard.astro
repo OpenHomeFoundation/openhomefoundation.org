@@ -1,0 +1,24 @@
+---
+import { cardImage, formatDate, postUrl, readingTime, truncate, type Post } from "../lib/blog";
+
+interface Props {
+  post: Post;
+  /** The media room's news cards don't show the crosspost badge. */
+  badge?: boolean;
+}
+
+const { post, badge = true } = Astro.props;
+const { title, description, external_url, external_source } = post.data;
+---
+
+<a href={postUrl(post)} class="blog-card">
+  <div class="blog-card-image">
+    <img src={cardImage(post)} alt={title} />
+  </div>
+  <div class="blog-card-content">
+    {badge && external_url && <span class="blog-card-badge">Shared from {external_source}</span>}
+    <p class="blog-card-date">{formatDate(post.data.date)} · {readingTime(post)} minute read</p>
+    <h3 class="blog-card-title">{title}</h3>
+    {description && <p class="blog-card-description">{truncate(description, 160)}</p>}
+  </div>
+</a>

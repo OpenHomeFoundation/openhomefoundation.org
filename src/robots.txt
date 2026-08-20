@@ -1,7 +1,0 @@
-User-agent: *
-Disallow:
-
-Sitemap: https://www.openhomefoundation.org/sitemap.xml
-
-# Content usage preferences (https://contentsignals.org/)
-Content-Signal: search=yes, ai-input=yes, ai-train=no
