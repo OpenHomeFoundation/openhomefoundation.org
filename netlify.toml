@@ -1,0 +1,10 @@
+# Overrides the build settings configured in the Netlify UI, which still
+# point at the old Eleventy setup. This makes deploy previews of the Astro
+# migration build correctly before the UI settings are updated.
+#
+# Once the Netlify project settings are changed to match (build command
+# "npm run build", publish directory "dist"), this file can either be removed
+# or kept — keeping it means the build configuration lives in the repo.
+[build]
+  command = "npm run build"
+  publish = "dist"
