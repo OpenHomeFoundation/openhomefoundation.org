@@ -1,6 +1,5 @@
 ---
 import Base from "../layouts/Base.astro";
-import "swiper/css/pagination";
 import Icon from "../components/Icon.astro";
 ---
 
@@ -151,9 +150,9 @@ import Icon from "../components/Icon.astro";
           </p>
         </div>
       </div>
-      <div class="collab-container swiper">
-        <div class="swiper-wrapper">
-          <div class="collab-card swiper-slide col-s-12 col-l-4">
+      <div class="collab-container">
+        <div class="collab-track" role="region" aria-label="Collaboration projects" tabindex="0">
+          <div class="collab-card">
             <img src="/assets/images/logo/rhasspy.svg" alt="Rhasspy logo" />
             <p>
               Rhasspy is an open source, fully offline, private voice assistant.
@@ -171,7 +170,7 @@ import Icon from "../components/Icon.astro";
               >Learn more</a
             >
           </div>
-          <div class="collab-card swiper-slide col-s-12 col-l-4">
+          <div class="collab-card">
             <img src="/assets/images/logo/wled.svg" alt="WLED logo" />
             <p>
               WLED is an ESP-based webserver to control digital LEDs over Wi-Fi.
@@ -191,7 +190,7 @@ import Icon from "../components/Icon.astro";
               >Learn more</a
             >
           </div>
-          <div class="collab-card swiper-slide col-s-12 col-l-4">
+          <div class="collab-card">
             <img
               src="/assets/images/logo/zigbee2mqtt.svg"
               alt="Zigbee2MQTT logo"
@@ -212,7 +211,7 @@ import Icon from "../components/Icon.astro";
               >Learn more</a
             >
           </div>
-          <div class="collab-card swiper-slide col-s-12 col-l-4">
+          <div class="collab-card">
             <img
               src="/assets/images/logo/opendisplay.png"
               alt="OpenDisplay logo"
@@ -235,7 +234,7 @@ import Icon from "../components/Icon.astro";
             >
           </div>
         </div>
-        <div class="swiper-pagination"></div>
+        <div class="collab-pagination" aria-label="Collaboration slides"></div>
       </div>
     </div>
   </section>

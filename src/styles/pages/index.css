@@ -113,8 +113,40 @@
   margin: 32px -24px 64px -24px;
 }
 
+/* Projects marquee: a CSS-only infinite ticker. The track holds two identical
+   groups; translating it by -50% moves exactly one group, so the loop is
+   seamless. */
 #work .projects {
-  --swiper-wrapper-transition-timing-function: linear;
+  overflow: hidden;
+}
+
+#work .projects .marquee-track {
+  display: flex;
+  width: max-content;
+  animation: projects-marquee 96s linear infinite;
+}
+
+#work .projects:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+#work .projects .marquee-group {
+  display: flex;
+  flex: none;
+  gap: 24px;
+  padding-right: 24px;
+}
+
+@keyframes projects-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #work .projects .marquee-track {
+    animation: none;
+  }
 }
 
 @media (min-width: 768px) {
