@@ -506,7 +506,6 @@ getaipilot.com
 git.hubp.de
 github.blog
 go.aftvnews.com
-go.michaelsleen.com
 google.at
 google.be
 google.bg
@@ -601,7 +600,6 @@ opendisplay.org
 ottelo.jimdofree.com
 perfectmediaserver.com
 pidiylab.com
-press.opera.com
 prodindego.b2clogin.com
 psmart.pl
 pushover.net
@@ -858,3 +856,46 @@ webshed.org
 yahoo.co.jp
 zenodo.org
 zuidwijk.com
+
+# --- Community, blogs, docs, vendors and forums (reviewed 2026-08, batch 6) ---
+# "www." prefixes normalised to bare domains; entries covered by a broader
+# domain were dropped. Excluded a self-hosted LibreChat instance (lib.biton.pro).
+3dpm.ru
+acciyo.com
+authelia.com
+bafista.ru
+bindicator.net
+blog.disane.dev
+blog.michivonah.ch
+braiins.com
+cgx13.de
+cnblogs.com
+community.evnex.com
+community.hubitat.com
+digikey.com
+digital-io.de
+docs.fregata.app
+domocraft.fr
+duurzamerhand.nl
+forum.ecoflow.com
+gitee.com
+haeo.io
+hanselman.com
+homeautocentral.com
+hotmart.com
+it.makeinlab.fr
+magicareas.io
+michaelsleen.com
+mikesolin.com
+mrdarrengriffin.com
+openhasp.haswitchplate.com
+opera.com
+programarfacil.com
+remote-logger.rhizomatics.org.uk
+roboter-forum.com
+sergiocarracedo.es
+shop.haus-automatisierung.com
+smartmania.cz
+speaktothegeek.co.uk
+splitbrain.org
+university.revotion.app
