@@ -71,79 +71,21 @@
 
 #collabs .collab-container {
   display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
-/* The carousel is a scroll-snap container; slide widths mirror the previous
-   slides-per-view values (1.1 / 2.2 / 3.2 / 3.4 / 4 across breakpoints). */
-.collab-track {
-  --slides-per-view: 1.1;
-  position: relative;
-  display: flex;
   gap: 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  --swiper-wrapper-transition-timing-function: linear;
 }
 
-.collab-track::-webkit-scrollbar {
-  display: none;
+.collab-container.swiper {
+  overflow: visible;
 }
 
-.collab-track > .collab-card {
-  flex: none;
-  width: calc((100% - (var(--slides-per-view) - 1) * 24px) / var(--slides-per-view));
-  scroll-snap-align: start;
-}
+.collab-container .swiper-pagination {
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
 
-@media (min-width: 768px) {
-  .collab-track {
-    --slides-per-view: 2.2;
-  }
-}
-
-@media (min-width: 992px) {
-  .collab-track {
-    --slides-per-view: 3.2;
-  }
-}
-
-@media (min-width: 1200px) {
-  .collab-track {
-    --slides-per-view: 3.4;
-  }
-}
-
-@media (min-width: 1400px) {
-  .collab-track {
-    --slides-per-view: 4;
-  }
-}
-
-.collab-pagination {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.collab-pagination[hidden] {
-  display: none;
-}
-
-.collab-pagination button {
-  width: 10px;
-  height: 10px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: var(--on-primary-color);
-  opacity: 0.2;
-  cursor: pointer;
-}
-
-.collab-pagination button.is-active {
-  opacity: 1;
+  --swiper-pagination-bullet-inactive-color: var(--on-primary-color);
+  --swiper-pagination-color: var(--on-primary-color);
+  --swiper-pagination-bottom: -2.5rem;
 }
 
 #collabs .collab-card {

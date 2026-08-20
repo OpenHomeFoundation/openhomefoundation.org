@@ -1,18 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
-
-// Projects shown in the scrolling marquee (see scripts/home-marquee.js).
-const marqueeProjects = [
-  { name: "ESP Web Tools", href: "https://esphome.github.io/esp-web-tools/" },
-  { name: "Improv Wi-Fi", href: "https://www.improv-wifi.com/" },
-  { name: "HACS", href: "https://github.com/hacs/integration" },
-  { name: "Zigpy", href: "https://github.com/zigpy/zigpy" },
-  { name: "Matter.js", href: "https://github.com/matter-js/matter.js" },
-  { name: "Z-Wave JS", href: "https://github.com/zwave-js/zwave-js" },
-  { name: "microWakeWord", href: "https://github.com/OHF-Voice/micro-wake-word" },
-  { name: "Piper", href: "https://github.com/OHF-Voice/piper1-gpl" },
-];
 ---
 
 <Base>
@@ -122,18 +110,48 @@ const marqueeProjects = [
         </a>
       </div>
       <div class="projects-container">
-        <div class="projects mb-32">
-          <div class="marquee-track">
-            <div class="marquee-group">
-              {
-                marqueeProjects.map((project) => (
-                  <a class="project" target="_blank" rel="noopener noreferrer" href={project.href}>
-                    <span>{project.name}</span>
-                    <Icon name="arrow_outward" />
-                  </a>
-                ))
-              }
-            </div>
+        <div class="projects swiper mb-32">
+          <div class="swiper-wrapper">
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://esphome.github.io/esp-web-tools/">
+              <span>ESP Web Tools</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://www.improv-wifi.com/">
+              <span>Improv Wi-Fi</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/hacs/integration">
+              <span>HACS</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/zigpy/zigpy">
+              <span>Zigpy</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/matter-js/matter.js">
+              <span>Matter.js</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/zwave-js/zwave-js">
+              <span>Z-Wave JS</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/OHF-Voice/micro-wake-word">
+              <span>microWakeWord</span>
+              <Icon name="arrow_outward" />
+            </a>
+            <a class="project swiper-slide" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/OHF-Voice/piper1-gpl">
+              <span>Piper</span>
+              <Icon name="arrow_outward" />
+            </a>
           </div>
         </div>
       </div>
@@ -205,6 +223,6 @@ const marqueeProjects = [
   </section>
 </div>
 <script>
-  import "../scripts/home-marquee.js";
+  import "../scripts/home-carousel.js";
 </script>
 </Base>

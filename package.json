@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^7.2.3"
+    "astro": "^7.2.3",
+    "swiper": "^11.1.1"
   },
   "devDependencies": {
     "@rollup/plugin-yaml": "^5.0.0",

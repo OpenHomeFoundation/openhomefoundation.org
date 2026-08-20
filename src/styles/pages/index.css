@@ -75,6 +75,15 @@
   z-index: 1;
 }
 
+#work .projects {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 #work .main-projects {
   display: flex;
   align-items: center;
@@ -104,34 +113,8 @@
   margin: 32px -24px 64px -24px;
 }
 
-/* Projects marquee: a scroll container that auto-scrolls while idle and can
-   be dragged, swiped, or wheel-scrolled (see scripts/home-marquee.js, which
-   also clones the group so the loop wraps seamlessly). */
 #work .projects {
-  overflow-x: auto;
-  scrollbar-width: none;
-  cursor: grab;
-}
-
-#work .projects::-webkit-scrollbar {
-  display: none;
-}
-
-#work .projects.is-dragging {
-  cursor: grabbing;
-}
-
-#work .projects .marquee-track {
-  display: flex;
-  width: max-content;
-  user-select: none;
-}
-
-#work .projects .marquee-group {
-  display: flex;
-  flex: none;
-  gap: 24px;
-  padding-right: 24px;
+  --swiper-wrapper-transition-timing-function: linear;
 }
 
 @media (min-width: 768px) {

@@ -3,6 +3,9 @@ import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import { allowedReferrers } from "../lib/allowed-referrers.js";
 import { SITE_URL, DEFAULT_DESCRIPTION } from "../lib/site";
+// Swiper's core CSS is global on purpose: besides the carousels, several
+// pages (documents, supporters) reuse .swiper-slide for card layout.
+import "swiper/css";
 import "../styles/style.css";
 
 interface Props {
