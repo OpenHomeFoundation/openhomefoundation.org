@@ -11,7 +11,10 @@ new Swiper(".projects", {
   loop: true,
   autoplay: {
     delay: 0,
-    disableOnInteraction: true,
+    // Auto-scroll pauses while the user hovers or drags, and resumes on its
+    // own afterwards.
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true,
   },
   speed: 12000,
 });
