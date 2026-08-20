@@ -75,15 +75,6 @@
   z-index: 1;
 }
 
-#work .projects {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
 #work .main-projects {
   display: flex;
   align-items: center;
@@ -113,21 +104,27 @@
   margin: 32px -24px 64px -24px;
 }
 
-/* Projects marquee: a CSS-only infinite ticker. The track holds two identical
-   groups; translating it by -50% moves exactly one group, so the loop is
-   seamless. */
+/* Projects marquee: a scroll container that auto-scrolls while idle and can
+   be dragged, swiped, or wheel-scrolled (see scripts/home-marquee.js, which
+   also clones the group so the loop wraps seamlessly). */
 #work .projects {
-  overflow: hidden;
+  overflow-x: auto;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+#work .projects::-webkit-scrollbar {
+  display: none;
+}
+
+#work .projects.is-dragging {
+  cursor: grabbing;
 }
 
 #work .projects .marquee-track {
   display: flex;
   width: max-content;
-  animation: projects-marquee 96s linear infinite;
-}
-
-#work .projects:hover .marquee-track {
-  animation-play-state: paused;
+  user-select: none;
 }
 
 #work .projects .marquee-group {
@@ -135,18 +132,6 @@
   flex: none;
   gap: 24px;
   padding-right: 24px;
-}
-
-@keyframes projects-marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #work .projects .marquee-track {
-    animation: none;
-  }
 }
 
 @media (min-width: 768px) {

@@ -2,8 +2,7 @@
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
 
-// Projects shown in the scrolling marquee. Rendered twice (the second copy
-// aria-hidden) so the CSS animation can loop seamlessly.
+// Projects shown in the scrolling marquee (see scripts/home-marquee.js).
 const marqueeProjects = [
   { name: "ESP Web Tools", href: "https://esphome.github.io/esp-web-tools/" },
   { name: "Improv Wi-Fi", href: "https://www.improv-wifi.com/" },
@@ -125,24 +124,16 @@ const marqueeProjects = [
       <div class="projects-container">
         <div class="projects mb-32">
           <div class="marquee-track">
-            {
-              [false, true].map((duplicate) => (
-                <div class="marquee-group" aria-hidden={duplicate || undefined}>
-                  {marqueeProjects.map((project) => (
-                    <a
-                      class="project"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={project.href}
-                      tabindex={duplicate ? -1 : undefined}
-                    >
-                      <span>{project.name}</span>
-                      <Icon name="arrow_outward" />
-                    </a>
-                  ))}
-                </div>
-              ))
-            }
+            <div class="marquee-group">
+              {
+                marqueeProjects.map((project) => (
+                  <a class="project" target="_blank" rel="noopener noreferrer" href={project.href}>
+                    <span>{project.name}</span>
+                    <Icon name="arrow_outward" />
+                  </a>
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
@@ -213,4 +204,7 @@ const marqueeProjects = [
     </div>
   </section>
 </div>
+<script>
+  import "../scripts/home-marquee.js";
+</script>
 </Base>
