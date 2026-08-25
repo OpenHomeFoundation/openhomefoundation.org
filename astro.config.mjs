@@ -1,8 +1,11 @@
 // @ts-check
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import { satteri } from "@astrojs/markdown-satteri";
 import sitemap from "@astrojs/sitemap";
 import yaml from "@rollup/plugin-yaml";
+
+const scssMixinsPath = fileURLToPath(new URL("./src/styles/scss/mixins.scss", import.meta.url));
 
 export default defineConfig({
   site: "https://www.openhomefoundation.org",
@@ -31,6 +34,15 @@ export default defineConfig({
     syntaxHighlight: false,
   },
   vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // Available in every Astro component's <style lang="scss">
+          // block without an explicit @use.
+          additionalData: `@use "${scssMixinsPath}" as *;`,
+        },
+      },
+    },
     plugins: [yaml()],
     build: {
       // Browser floor for CSS: keeps/adds vendor prefixes (e.g.
