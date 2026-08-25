@@ -31,25 +31,29 @@ import Faqs from "../components/community-day/Faqs.astro";
 
   body {
     color: var(--body-color);
+    background-color: #F7F6F2;
   }
 
   :global(.heading) {
     color: var(--title-color);
+    font-weight: 700;
   }
 
   :global(#hero) {
     margin-top: 4rem;
   }
 
-  :global(h2) {
+  :global(h2),
+  :global(.h2) {
     font-size: 3rem;
-    font-weight: 600;
   }
 
   :global(.title-container) {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 2rem;
+    text-align: center;
   }
 
   :global(.content-container p) {
