@@ -34,6 +34,10 @@ import Section from "./Section.astro";
 </Section>
 
 <style lang="scss">
+  .inner {
+    padding: 80px 100px;
+  }
+
   .cards {
     display: flex;
     flex-direction: column;
@@ -45,8 +49,6 @@ import Section from "./Section.astro";
       grid-template-columns: repeat(3, 1fr);
     }
 
-    // Without this, a grid/flex item's default min-width: auto can keep a
-    // card from shrinking below its content, breaking the equal 33% split.
     > * {
       min-width: 0;
     }
@@ -75,10 +77,6 @@ import Section from "./Section.astro";
           display: inline-block;
           border-radius: 50%;
         }
-      }
-
-      p {
-
       }
     }
   }
