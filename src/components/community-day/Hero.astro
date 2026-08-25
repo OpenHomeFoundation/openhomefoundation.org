@@ -3,5 +3,95 @@ import Section from "./Section.astro";
 ---
 
 <Section id="hero">
-  <h1>Community Day</h1>
+  <div class="inner">
+    <div class="project-logos">
+      <a href="https://www.home-assistant.io/"><img src="https://brands.openhomefoundation.org/api/home-assistant/logo/screen/lockup/main/monochrome/light/svg" /></a>
+      <a href="https://esphome.io/"><img src="https://brands.openhomefoundation.org/api/esphome/logo/screen/lockup/main/monochrome/light/svg" /></a>
+      <a href="https://music-assistant.io/"><img src="https://brands.openhomefoundation.org/api/music-assistant/logo/screen/lockup/main/monochrome/light/svg" /></a>
+    </div>
+
+    <div class="heading-meta">
+      <h1 class="h1 heading">Community Day 2026 <span class="date">Saturday, <strong>November 7</strong></span></h1>
+    </div>
+    <div class="content-container">
+      <p>Once a year, the Open Home Foundation community comes together in cities all over the world to meet, share, and connect. Mark your calendar!</p>
+
+      <div class="button-container">
+        <a href="">See all Meetups</a>
+        <a href="">Host your own</a>
+      </div>
+    </div>
+  </div>
 </Section>
+
+<style lang="scss">
+  .inner {
+    background-color: var(--accent-green);
+    border-radius: 1.5rem;
+    padding: 120px 132px;
+  }
+
+  .project-logos {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    @include bp(tablet) {
+      gap: 4rem;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+    }
+
+    img {
+      width: auto;
+      max-width: 177px;
+      max-height: 24px;
+    }
+  }
+
+  .heading-meta {
+    width: 100%;
+    max-width: 584px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 4.125rem;
+    }
+
+    .date {
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: var(--title-color);
+      background-color: #ffffff;
+      border-radius: 0.5rem;
+      padding: 6px 12px 8px;
+      transform: translateY(-1.5ch);
+      display: inline-flex;
+    }
+  }
+
+  .content-container {
+    max-width: 584px;
+
+    p {
+      font-size: 1.5rem;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: row;
+      gap: 0.875rem;
+      margin-top: 3.75rem;
+    }
+  }
+</style>

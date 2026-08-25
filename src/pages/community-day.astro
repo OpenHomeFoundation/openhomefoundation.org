@@ -19,3 +19,25 @@ import Faqs from "../components/community-day/Faqs.astro";
   <ReadyToJoin />
   <Faqs />
 </Base>
+
+<style lang="scss">
+  :root {
+    --title-color: #002332;
+    --body-color: #4F606E;
+
+    --accent-green: #41D09B;
+    --accent-blue: #99DFFC;
+  }
+
+  body {
+    color: var(--body-color);
+  }
+
+  :global(.heading) {
+    color: var(--title-color);
+  }
+
+  :global(#hero) {
+    margin-top: 4rem;
+  }
+</style>
