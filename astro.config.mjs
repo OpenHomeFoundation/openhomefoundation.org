@@ -6,6 +6,12 @@ import yaml from "@rollup/plugin-yaml";
 
 export default defineConfig({
   site: "https://www.openhomefoundation.org",
+  server: {
+    // Astro's dev server only binds to localhost by default. In a
+    // devcontainer/Codespace, forwarded ports can't reach a
+    // localhost-only listener, so bind to all interfaces.
+    host: true,
+  },
   integrations: [
     sitemap({
       filter: (page) => {
