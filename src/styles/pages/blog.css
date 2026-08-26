@@ -320,7 +320,7 @@
 #post .content .button {
   width: 100%;
   max-width: max-content;
-  margin-top: 2rem;
+  margin: 2rem auto 0;
 }
 
 
