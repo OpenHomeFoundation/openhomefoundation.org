@@ -317,6 +317,12 @@
   margin-bottom: 0;
 }
 
+#post .content .button {
+  width: 100%;
+  max-width: max-content;
+  margin-top: 2rem;
+}
+
 
 /* Blog listing styles */
 #blog-list {
