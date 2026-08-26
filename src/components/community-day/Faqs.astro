@@ -43,13 +43,17 @@ const rendered = items.map((item) => ({
 
 <style lang="scss">
   .inner {
-    padding: 80px 100px;
+    @include fluid(32px, 80px, $property: padding-top);
+    @include fluid(32px, 80px, $property: padding-bottom);
+
+    @include fluid(0, 100px, $property: padding-right);
+    @include fluid(0, 100px, $property: padding-left);
   }
 
   .faq-items {
     display: flex;
     flex-direction: column;
-    margin-top: 4rem;
+    @include fluid(24px, 64px, $property: margin-top);
   }
 
   .faq-item {

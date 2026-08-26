@@ -28,15 +28,21 @@ import Section from "./Section.astro";
   .inner {
     background-color: var(--accent-green);
     border-radius: 1.5rem;
-    padding: 120px 132px;
+
+    @include fluid(20px, 120px, $property: padding-top);
+    @include fluid(20px, 120px, $property: padding-bottom);
+
+    @include fluid(20px, 132px, $property: padding-right);
+    @include fluid(20px, 132px, $property: padding-left);
   }
 
   .project-logos {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 1rem;
+    @include fluid(24px, 32px, $property: margin-bottom);
 
     @include bp(tablet) {
       gap: 4rem;
@@ -62,7 +68,7 @@ import Section from "./Section.astro";
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
-    margin-bottom: 2rem;
+    @include fluid(24px, 32px, $property: margin-bottom);
 
     .date {
       font-size: 1.125rem;
@@ -71,8 +77,12 @@ import Section from "./Section.astro";
       background-color: #ffffff;
       border-radius: 0.5rem;
       padding: 6px 12px 8px;
-      transform: translateY(-1.5ch);
-      display: inline-flex;
+      display: inline-block;
+
+      @include bp(tablet) {
+        display: inline-flex;
+        transform: translateY(-1.5ch);
+      }
     }
   }
 
@@ -80,11 +90,10 @@ import Section from "./Section.astro";
     max-width: 584px;
 
     .button-container {
-      margin-top: 3.75rem;
+      @include fluid(24px, 60px, $property: margin-top);
       justify-content: flex-start;
 
       .button {
-
         border-radius: 0.75rem;
         font-size: 1.25rem;
         color: var(--title-color);

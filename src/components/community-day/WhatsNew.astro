@@ -35,14 +35,21 @@ import Section from "./Section.astro";
 
 <style lang="scss">
   .inner {
-    padding: 80px;
+    @include fluid(32px, 80px, $property: padding-top);
+    @include fluid(32px, 80px, $property: padding-bottom);
+
+    @include fluid(0, 80px, $property: padding-right);
+    @include fluid(0, 80px, $property: padding-left);
   }
 
   .cards {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    margin: 3.75rem auto;
+    margin-right: auto;
+    margin-left: auto;
+    @include fluid(32px, 60px, $property: margin-top);
+    @include fluid(32px, 60px, $property: margin-bottom);
 
     @include bp(tablet) {
       display: grid;
@@ -58,6 +65,7 @@ import Section from "./Section.astro";
       border: 1px solid #ffffff;
       background: transparent;
       padding: 1.5rem;
+      @include fluid(18px, 24px, $property: padding);
 
       display: flex;
       flex-direction: column;

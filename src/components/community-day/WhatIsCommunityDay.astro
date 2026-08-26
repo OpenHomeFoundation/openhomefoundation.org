@@ -39,11 +39,15 @@ import Section from "./Section.astro";
 
 <style lang="scss">
   .inner {
-    padding: 80px 100px;
+    @include fluid(32px, 80px, $property: padding-top);
+    @include fluid(32px, 80px, $property: padding-bottom);
+
+    @include fluid(0, 100px, $property: padding-right);
+    @include fluid(0, 100px, $property: padding-left);
   }
 
   .title-container {
-    margin-bottom: 3.75rem;
+    @include fluid(24px, 60px, $property: margin-bottom);
     align-items: flex-start;
     text-align: left;
 
@@ -56,7 +60,7 @@ import Section from "./Section.astro";
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    margin-top: 3.75rem;
+    @include fluid(40px, 60px, $property: margin-top);
 
     @include bp(tablet) {
       display: grid;

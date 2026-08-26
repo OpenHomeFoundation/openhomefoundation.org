@@ -21,7 +21,11 @@ import Section from "./Section.astro";
 
 <style lang="scss">
   .inner {
-    padding: 80px;
+    @include fluid(32px, 80px, $property: padding);
+  }
+
+  .title-container {
+    @include fluid(32px, 48px, $property: gap);
   }
 
   .button {
