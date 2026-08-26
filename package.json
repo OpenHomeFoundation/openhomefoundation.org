@@ -12,6 +12,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.2.3",
+    "html-to-image": "^1.11.13",
     "micromark": "^4.0.2",
     "swiper": "^11.1.1"
   },
