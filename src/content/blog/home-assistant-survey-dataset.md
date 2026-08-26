@@ -114,7 +114,7 @@ Language barriers, biases, and blown-out survey times are all things that should
 
 Many of you shared great ideas for additional survey questions, covering the status quo of smart homes, future plans, goals, and wishes, other ways of interacting with the community, and current friction points within Home Assistant.
 
-The generous feedback on the content, framing, and even the styling of the survey from community members was greatly appreciated, and points to one of the tensions we ran into while designing this survey in the first place: there’s too much to cover! With so many interesting topics to cover, narrowing the questions down was a challenge, and a big part of why the survey ended up as long as it was.
+The generous feedback on the content, framing, and even the styling of the survey from community members was greatly appreciated, and points to one of the tensions we ran into while designing this survey in the first place: there’s too much to cover! With so many interesting topics to explore, narrowing the questions down was a challenge, and a big part of why the survey ended up as long as it was.
 
 But that’s also the beauty of user research: there’s always so much to learn! For that reason, we’re planning another community survey, so stay tuned!
 
