@@ -1,7 +1,197 @@
 ---
+import { micromark } from "micromark";
 import Section from "./Section.astro";
+import faqItems from "../../data/community-day-faq.yml";
+
+interface FaqItem {
+  title: string;
+  content: string;
+}
+
+const items: FaqItem[] = faqItems ?? [];
+
+// Pre-render Markdown answers to HTML at build time — answers often need to
+// link out (Discord, Luma, etc). Links open in a new tab since they point
+// away from the page.
+const rendered = items.map((item) => ({
+  title: item.title,
+  html: micromark(item.content ?? "").replace(/<a /g, '<a target="_blank" rel="noreferrer noopener" '),
+}));
 ---
 
 <Section id="faqs">
-  <h2>FAQs</h2>
+  <div class="inner">
+    <h2 class="h1 heading">Got some questions?</h2>
+
+    <div class="faq-items">
+      {
+        rendered.map((item) => (
+          <details class="faq-item">
+            <summary class="faq-item-summary">
+              <span class="faq-item-title">{item.title}</span>
+              <span class="faq-item-icon" aria-hidden="true">
+                <span class="faq-item-icon-plus" />
+              </span>
+            </summary>
+            <div class="faq-item-content" set:html={item.html} />
+          </details>
+        ))
+      }
+    </div>
+  </div>
 </Section>
+
+<style lang="scss">
+  .inner {
+    padding: 80px 100px;
+  }
+
+  .faq-items {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4rem;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--body-color);
+  }
+
+  .faq-item-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    padding: 1.25rem 0;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::marker {
+      content: "";
+    }
+
+    @include bp(tablet) {
+      padding: 2rem 0;
+    }
+  }
+
+  .faq-item-title {
+    flex-grow: 1;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: var(--title-color);
+
+    @include bp(tablet) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .faq-item-icon {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transition: background-color 0.1s ease;
+  }
+
+  .faq-item-icon-plus {
+    position: relative;
+    display: block;
+    width: 0.625rem;
+    height: 0.625rem;
+    transition: transform 0.1s ease;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--title-color);
+      transition:
+        opacity 0.1s ease,
+        background-color 0.1s ease;
+    }
+
+    &::before {
+      width: 0.625rem;
+      height: 2px;
+    }
+
+    &::after {
+      width: 2px;
+      height: 0.625rem;
+    }
+  }
+
+  .faq-item[open] .faq-item-icon-plus {
+    transform: rotate(90deg);
+  }
+
+  .faq-item[open] .faq-item-icon-plus::before {
+    opacity: 0;
+  }
+
+  .faq-item-summary:hover .faq-item-icon-plus::before,
+  .faq-item-summary:hover .faq-item-icon-plus::after {
+    background-color: var(--accent-green);
+  }
+
+  .faq-item-content {
+    padding: 0 0 1.5rem;
+    color: var(--body-color);
+    font-size: 1rem;
+    line-height: 1.5;
+
+    :global(p) {
+      margin: 0 0 1rem;
+    }
+
+    :global(p:last-child) {
+      margin-bottom: 0;
+    }
+
+    :global(a) {
+      color: var(--accent-blue);
+      text-decoration: underline;
+    }
+  }
+
+  // Smooth open/close where the browser supports animating to/from `auto`.
+  :global(:root) {
+    interpolate-size: allow-keywords;
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    .faq-item::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 0.15s ease,
+        content-visibility 0.15s ease;
+      transition-behavior: allow-discrete;
+    }
+
+    .faq-item[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item-icon,
+    .faq-item-icon-plus,
+    .faq-item-icon-plus::before,
+    .faq-item-icon-plus::after {
+      transition: none;
+    }
+  }
+</style>

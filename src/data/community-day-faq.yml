@@ -1,0 +1,17 @@
+# FAQ content for the /community-day/ page's "Got some questions?" section
+# (src/components/community-day/Faqs.astro).
+#
+# Each entry needs a `title` (the question) and `content` (the answer).
+# `content` supports Markdown, so links can be added like:
+#   content: "See our [Discord channel](https://discord.com/...) for details."
+#
+# - title: "Question goes here?"
+#   content: "Answer goes here."
+- title: "Can I speak my mind?"
+  content: "You're always free to share your honest perspectives and constructive feedback about Home Assistant in your content. Creator Network members are also given the chance to offer feedback about the monthly changes directly to the team before it releases."
+- title: "Can I speak my mind?"
+  content: "You're always free to share your honest perspectives and constructive feedback about Home Assistant in your content. Creator Network members are also given the chance to offer feedback about the monthly changes directly to the team before it releases."
+- title: "Can I speak my mind?"
+  content: "You're always free to share your honest perspectives and constructive feedback about Home Assistant in your content. Creator Network members are also given the chance to offer feedback about the monthly changes directly to the team before it releases."
+- title: "Can I speak my mind?"
+  content: "You're always free to share your honest perspectives and constructive feedback about Home Assistant in your content. Creator Network members are also given the chance to offer feedback about the monthly changes directly to the team before it releases."
