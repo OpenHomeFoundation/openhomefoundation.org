@@ -21,7 +21,7 @@ In the spirit of building in the open, today we’re thrilled to announce the an
 * The survey had limitations (it ran too long, and was English-only), which we’re addressing in future research.
 * Explore the data yourself on <a href="https://zenodo.org/records/21825688" target="_blank" rel="noopener noreferrer">Zenodo</a>, or the full set of research questions and methodology on our <a href="https://github.com/OpenHomeFoundation/user-research/tree/main/community-survey24" target="_blank" rel="noopener noreferrer">GitHub page</a>.
 
-<p style="text-align: center; margin-top: 40px;"><a href="https://zenodo.org/records/21825688" target="_blank" rel="noopener noreferrer" class="button" style="display: inline-flex;">Explore the data on Zenodo</a></p>
+<p><a href="https://zenodo.org/records/21825688" target="_blank" rel="noopener noreferrer" class="button" style="display: inline-flex;">Explore the data on Zenodo</a></p>
 
 <!--more-->
 
