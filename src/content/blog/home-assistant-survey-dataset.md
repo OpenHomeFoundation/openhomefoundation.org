@@ -5,6 +5,7 @@ hide_header_image: true
 date: 2026-08-26
 author: [annika-schulz, idil-bostan]
 category: "Research"
+comments: true
 ---
 
 Our *why* as an organization is clear: to fight for privacy, choice, and sustainability for smart homes, and for every person who lives in one. But who *does* live in them?
