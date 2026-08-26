@@ -305,6 +305,24 @@
   font-size: 14px;
 }
 
+#post .content blockquote {
+  background: #e7f2fa;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  position: relative;
+}
+
+#post .content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+#post .content .button {
+  width: 100%;
+  max-width: max-content;
+  margin: 2rem auto 0;
+}
+
 
 /* Blog listing styles */
 #blog-list {
