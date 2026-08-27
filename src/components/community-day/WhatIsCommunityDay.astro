@@ -22,7 +22,7 @@ import Section from "./Section.astro";
         <img src="/assets/images/community-day/1600+-registered-guests.webp" alt="" />
       </div>
       <div class="card card-grid__top-right card-grid__compact">
-        <p><span class="number">82</span><span>events in 2025</span></p>
+        <p><span class="number">26</span><span>hours continuous meetups</span></p>
       </div>
       <div class="card card-grid__bottom-left card-grid__media">
         <img src="/assets/images/community-day/82-events-in-2025.webp" alt="" />
@@ -30,8 +30,15 @@ import Section from "./Section.astro";
       <div class="card card-grid__right-middle card-grid__media">
         <img src="/assets/images/community-day/26-hours-continuous-meetups.webp" alt="" />
       </div>
-      <div class="card card-grid__bottom-span card-grid__compact">
+      <div class="card card-grid__bottom-span card-grid__compact card-grid__horizontal">
         <p><span class="number">1,600+</span><span>registered guests</span></p>
+        <div class="event-avatars">
+          <img loading="lazy" src="/assets/images/community-day/avatars/1.webp" alt="" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/2.webp" alt="" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/3.webp" alt="" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/4.webp" alt="" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/5.webp" alt="" />
+        </div>
       </div>
     </div>
   </div>
@@ -109,6 +116,46 @@ import Section from "./Section.astro";
     background: radial-gradient(154.99% 100% at 18.32% 5.15%, rgba(214, 233, 109, 0.20) 0%, rgba(65, 208, 155, 0.20) 100%);
   }
 
+  .card-grid__horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding: 1rem;
+
+    &.card {
+      p {
+        padding: 0;
+      }
+    }
+
+    p {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0 1.25rem;
+      flex-shrink: 1;
+    }
+
+    .event-avatars {
+      display: flex;
+      flex-direction: row;
+      flex-shrink: 0;
+
+      img {
+        max-width: 48px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+
+        &:not(:first-child) {
+          margin-left: -1rem;
+        }
+      }
+    }
+  }
+
   .card-grid__media img {
     display: block;
     width: 100%;
@@ -138,3 +185,7 @@ import Section from "./Section.astro";
     }
   }
 </style>
+
+<script>
+  import "../../scripts/count-up.js";
+</script>
