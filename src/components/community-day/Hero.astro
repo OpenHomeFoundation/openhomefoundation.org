@@ -136,6 +136,12 @@ import Section from "./Section.astro";
             background-size: 50%;
           }
 
+          @media (prefers-reduced-motion: no-preference) {
+            &:hover:after {
+              animation: wiggle 0.4s ease-in-out;
+            }
+          }
+
           &.button--see-all {
             &:after {
               background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cg clip-path='url(%23clip0_246_187)'%3E%3Cpath d='M14 7C10.1349 7 7 3.86504 7 0C7 3.86504 3.86505 7 0 7C3.86505 7 7 10.135 7 14C7 10.135 10.1349 7 14 7Z' fill='%23002332'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_246_187'%3E%3Crect width='14' height='14' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
@@ -149,6 +155,19 @@ import Section from "./Section.astro";
           }
         }
       }
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-14deg);
+    }
+    75% {
+      transform: rotate(14deg);
     }
   }
 </style>

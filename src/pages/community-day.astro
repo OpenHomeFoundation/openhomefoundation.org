@@ -139,6 +139,25 @@ import Faqs from "../components/community-day/Faqs.astro";
       background-color: #ffffff;
       border-radius: 50%;
     }
+
+    @media (prefers-reduced-motion: no-preference) {
+      &:hover:before {
+        animation: wiggle 0.4s ease-in-out;
+      }
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-14deg);
+    }
+    75% {
+      transform: rotate(14deg);
+    }
   }
 
   :global(.button) {
