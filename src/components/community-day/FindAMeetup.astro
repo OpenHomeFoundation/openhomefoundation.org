@@ -158,12 +158,31 @@ const pages = chunk(events, EVENTS_PER_PAGE);
 
     background: radial-gradient(154.99% 100% at 18.32% 5.15%, var(--secondary-OHF-Sustainability-Primary, rgba(214, 233, 109, 0.20)) 0%, var(--secondary-OHF-Sustainability-Accent, rgba(65, 208, 155, 0.20)) 100%);
     border-radius: 1.25rem;
+    position: relative;
+
+    &:after {
+      width: 100%;
+      height: 100%;
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("/assets/images/community-day/community-day-icon.webp");
+      background-repeat: no-repeat;
+      background-size: 60vh;
+      background-position: -25% 20%;
+      z-index: 1;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+      opacity: 0.75;
+    }
   }
 
   .layout {
     display: flex;
     flex-direction: column;
     @include fluid(16px, 32px, $property: gap);
+    position: relative;
+    z-index: 5;
 
     @include bp(tablet) {
       flex-direction: row;
@@ -321,6 +340,8 @@ const pages = chunk(events, EVENTS_PER_PAGE);
 
   .organise-a-meetup {
     @include fluid(32px, 60px, $property: margin-top);
+    position: relative;
+    z-index: 5;
 
     &__cards {
       display: grid;
