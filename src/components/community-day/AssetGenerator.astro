@@ -79,12 +79,20 @@ const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
 
   <div class="panel preview">
     <h2>Preview</h2>
+    {
+      /* loading="lazy": this component can be embedded inside a closed
+        <dialog> (see FindAMeetup.astro), which starts as display: none —
+        without this, the initial src would still fire the render request
+        (and the Netlify function behind it) on every page load whether or
+        not the modal is ever opened. */
+    }
     <img
       src={IMAGE_URL}
       width={tpl.width}
       height={defaultSize.height}
       alt={`Preview of the ${tpl.name} graphic`}
       data-preview
+      loading="lazy"
     />
   </div>
 </section>
@@ -140,12 +148,17 @@ const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
     --ag-border: #e3e7ea;
 
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 1fr;
     gap: 1.75rem;
     align-items: start;
 
-    @media (max-width: 840px) {
-      grid-template-columns: 1fr;
+    // Stacked on mobile; side-by-side columns from tablet up.
+    @include bp(tablet) {
+      grid-template-columns: 360px 1fr;
+    }
+
+    @include bp(desktop) {
+      grid-template-columns: 1fr auto;
     }
   }
 
