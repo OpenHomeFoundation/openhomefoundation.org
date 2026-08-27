@@ -318,8 +318,97 @@ function loadAllowedReferrers(allowFileText, denyFileText) {
   return published;
 }
 
+// The "pa-…" part of a Plausible script filename. Deliberately strict: the
+// site map is interpolated into the served /plausible.js, so every character
+// that can appear there is pinned down here.
+const SCRIPT_ID = /^pa-[A-Za-z0-9_-]{8,64}$/;
+
+/**
+ * Validate and normalise the Plausible site registry, given the raw text of
+ * list/plausible-sites.json: a flat JSON object of { "domain": "script-id" }.
+ *
+ * Takes the raw text (not a parsed object) so it can catch what JSON.parse
+ * would hide: a syntax error gets a readable message instead of a bundler
+ * stack trace, and a duplicated key — which JSON.parse silently resolves to
+ * the last value — is reported as the mistake it is.
+ *
+ * Returns a plain { domain: scriptId } object, sorted by domain. Throws with
+ * every problem listed if anything is wrong, so a bad registry fails the build
+ * just like a bad allowlist does.
+ */
+function loadPlausibleSites(fileText) {
+  const where = "list/plausible-sites.json";
+  const problems = [];
+
+  let parsed;
+  try {
+    parsed = JSON.parse(fileText);
+  } catch (err) {
+    problems.push(`${where}  is not valid JSON — ${err.message}`);
+  }
+  if (parsed !== undefined && (typeof parsed !== "object" || parsed === null || Array.isArray(parsed))) {
+    problems.push(`${where}  must be a single JSON object of { "domain": "script-id" }`);
+    parsed = undefined;
+  }
+
+  const sites = new Map();
+  for (const [rawDomain, scriptId] of Object.entries(parsed || {})) {
+    const result = classifyEntry(rawDomain);
+    if (result.kind !== "domain") {
+      const detail = result.detail ? ` — ${result.detail}` : "";
+      problems.push(`${where}  "${rawDomain}" is not a valid domain (${result.kind})${detail}`);
+      continue;
+    }
+    if (typeof scriptId !== "string" || !SCRIPT_ID.test(scriptId)) {
+      problems.push(
+        `${where}  ${JSON.stringify(scriptId)} for "${rawDomain}" does not look like a ` +
+          `Plausible script id (expected the "pa-…" part of the script filename)`,
+      );
+      continue;
+    }
+    if (result.canonical.startsWith("www.")) {
+      // The loader strips a leading "www." from the ?site= value before the
+      // lookup, so a "www." entry here could never match anything.
+      problems.push(
+        `${where}  "${result.canonical}" — use the bare domain, the loader treats www. as an alias`,
+      );
+      continue;
+    }
+    if (result.detail) {
+      problems.push(
+        `${where}  "${rawDomain}" ${result.detail} — the file must contain the exact ` +
+          `domain the loader will match against`,
+      );
+      continue;
+    }
+    // JSON.parse keeps only the last of duplicated keys, so count occurrences
+    // in the raw text. Keys are validated to [a-z0-9.-] above, so escaping the
+    // dots is all it takes to match them literally.
+    const occurrences = fileText.match(
+      new RegExp(`"${result.canonical.replace(/\./g, "\\.")}"\\s*:`, "g"),
+    );
+    if (occurrences && occurrences.length > 1) {
+      problems.push(`${where}  duplicate entry for "${result.canonical}"`);
+      continue;
+    }
+
+    sites.set(result.canonical, scriptId);
+  }
+
+  if (problems.length) {
+    throw new Error(
+      `\n\nRefusing to build — ${problems.length} invalid Plausible site registry entr` +
+        `${problems.length === 1 ? "y" : "ies"}:\n\n  ${problems.join("\n  ")}\n\n` +
+        `See src/lib/plausible-sites.js and the Analytics section of README.md.\n`,
+    );
+  }
+
+  return Object.fromEntries([...sites.entries()].sort(([a], [b]) => (a < b ? -1 : 1)));
+}
+
 export {
   loadAllowedReferrers,
+  loadPlausibleSites,
   classifyEntry,
   suffixMatch,
   parseListFile,

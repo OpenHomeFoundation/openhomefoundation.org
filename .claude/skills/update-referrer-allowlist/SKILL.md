@@ -5,7 +5,7 @@ description: Use this whenever adding, removing, or reviewing domains in list/al
 
 # Update Referrer Allowlist
 
-Add, remove, or review entries in [list/allowed-referrers.txt](../../../list/allowed-referrers.txt) — the **public** allowlist published as `openhomefoundation.org/allowed-referrers.json` and consumed by every OHF site running Plausible. Any referrer not on this list is replaced with `https://unlisted.invalid/` before Plausible records it, so the list decides what real referrers get attributed.
+Add, remove, or review entries in [list/allowed-referrers.txt](../../../list/allowed-referrers.txt) — the **public** allowlist baked into the shared loader script `openhomefoundation.org/plausible.js` (embedded by every OHF site running Plausible; site registry in `list/plausible-sites.json`) and also published as `openhomefoundation.org/allowed-referrers.json`. Any referrer not on this list is replaced with `https://unlisted.invalid/` before Plausible records it, so the list decides what real referrers get attributed.
 
 Because the file is public and permanent (git history + CDN + Internet Archive), the cost of a wrong entry is high: it can publish a real person's home URL. Follow this process every time.
 

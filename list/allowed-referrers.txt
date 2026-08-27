@@ -1,5 +1,7 @@
-# Allowed referrers — PUBLIC. Published as openhomefoundation.org/allowed-referrers.json
-# and consumed by every Open Home Foundation site that runs Plausible.
+# Allowed referrers — PUBLIC. Baked into the shared loader script at
+# openhomefoundation.org/plausible.js (which every Open Home Foundation site
+# running Plausible embeds — see list/plausible-sites.json) and also published
+# as openhomefoundation.org/allowed-referrers.json.
 #
 # WHY THIS EXISTS
 # Someone reaching one of our sites from their own Home Assistant or ESPHome
