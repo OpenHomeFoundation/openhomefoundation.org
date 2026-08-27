@@ -34,7 +34,7 @@ import Section from "./Section.astro";
     border-radius: 1.5rem;
 
     @include fluid(20px, 120px, $property: padding-top);
-    @include fluid(20px, 120px, $property: padding-bottom);
+    @include fluid(20px, 96px, $property: padding-bottom);
 
     @include fluid(20px, 132px, $property: padding-right);
     @include fluid(20px, 132px, $property: padding-left);
@@ -55,6 +55,11 @@ import Section from "./Section.astro";
     a {
       display: flex;
       flex-direction: column;
+      transition: filter 150ms ease-in-out;
+
+      &:hover {
+        filter: invert(1);
+      }
     }
 
     img {
