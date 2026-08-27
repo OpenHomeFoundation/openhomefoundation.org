@@ -15,7 +15,12 @@ export default defineConfig({
   // The site is fully prerendered except the routes that opt out with
   // `export const prerender = false` (the asset-generator image endpoint),
   // which the adapter runs as a Netlify function.
-  adapter: netlify(),
+  adapter: netlify({
+    // satori shapes text with harfbuzzjs, which reads its wasm from disk at
+    // runtime; the function bundler's trace only picks up the .js, so ship
+    // the wasm explicitly or every render crashes with ENOENT hb.wasm.
+    includeFiles: ["node_modules/harfbuzzjs/hb.wasm"],
+  }),
   server: {
     // Astro's dev server only binds to localhost by default. In a
     // devcontainer/Codespace, forwarded ports can't reach a
