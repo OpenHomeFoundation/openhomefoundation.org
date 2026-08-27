@@ -12,6 +12,11 @@ import Faqs from "../components/community-day/Faqs.astro";
   title="Community Day"
   description="Community Day returns on Saturday, November 7, 2026. Find—or host—a local meetup celebrating Home Assistant, ESPHome, Music Assistant, and the wider Open Home Foundation community."
 >
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Instrument+Sans:ital,wdth,wght@0,99,400..700;1,99,400..700&"
+  />
   <Hero />
   <WhatIsCommunityDay />
   <WhatsNew />
@@ -32,6 +37,25 @@ import Faqs from "../components/community-day/Faqs.astro";
   body {
     color: var(--body-color);
     background-color: #F7F6F2;
+  }
+
+  // Loaded via the <link slot="head"> above. Scoped to .content (the page's
+  // own slotted content in Base.astro) rather than body: the Navbar/Footer
+  // are rendered as siblings of .content within the same <body>, and
+  // font-family inherits — setting it on body directly would leak into
+  // their sitewide font too.
+  :global(.content) {
+    font-family: "Instrument Sans", sans-serif;
+  }
+
+  :global(h1),
+  :global(h2),
+  :global(h3),
+  :global(h4),
+  :global(h5),
+  :global(h6),
+  :global(.heading) {
+    font-family: Figtree, sans-serif;
   }
 
   :global(.heading) {
