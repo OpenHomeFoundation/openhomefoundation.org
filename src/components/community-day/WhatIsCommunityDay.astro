@@ -15,13 +15,13 @@ import Section from "./Section.astro";
       <p>But what makes Community Day really special is that on this one day, your local gathering is part of something much bigger: you're joining communities all over the world in a global celebration of privacy, choice, and sustainability in the smart home!</p>
     </div>
     <div class="card-grid">
-      <div class="card card-grid__top-left card-grid__compact">
+      <div class="card card-grid__top-left card-grid__compact" style="--i: 0">
         <p><span class="number">82</span><span>events in 2025</span></p>
       </div>
       <div class="card card-grid__middle-top card-grid__media">
         <img src="/assets/images/community-day/1600+-registered-guests.webp" alt="" />
       </div>
-      <div class="card card-grid__top-right card-grid__compact">
+      <div class="card card-grid__top-right card-grid__compact" style="--i: 1">
         <p><span class="number">26</span><span>hours continuous meetups</span></p>
       </div>
       <div class="card card-grid__bottom-left card-grid__media">
@@ -30,7 +30,7 @@ import Section from "./Section.astro";
       <div class="card card-grid__right-middle card-grid__media">
         <img src="/assets/images/community-day/26-hours-continuous-meetups.webp" alt="" />
       </div>
-      <div class="card card-grid__bottom-span card-grid__compact card-grid__horizontal">
+      <div class="card card-grid__bottom-span card-grid__compact card-grid__horizontal" style="--i: 2">
         <p><span class="number">1,600+</span><span>registered guests</span></p>
         <div class="event-avatars">
           <img loading="lazy" src="/assets/images/community-day/avatars/1.webp" alt="" />
@@ -114,6 +114,22 @@ import Section from "./Section.astro";
     align-items: center;
     justify-content: center;
     background: radial-gradient(154.99% 100% at 18.32% 5.15%, rgba(214, 233, 109, 0.20) 0%, rgba(65, 208, 155, 0.20) 100%);
+    background-size: 200% 200%;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: drift-gradient 14s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * 3.5s);
+    }
+  }
+
+  @keyframes drift-gradient {
+    0%,
+    100% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
   }
 
   .card-grid__horizontal {
