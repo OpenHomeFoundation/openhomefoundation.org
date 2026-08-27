@@ -325,36 +325,44 @@ const SCRIPT_ID = /^pa-[A-Za-z0-9_-]{8,64}$/;
 
 /**
  * Validate and normalise the Plausible site registry, given the raw text of
- * list/plausible-sites.txt: one "<domain> <script-id>" pair per line.
+ * list/plausible-sites.json: a flat JSON object of { "domain": "script-id" }.
+ *
+ * Takes the raw text (not a parsed object) so it can catch what JSON.parse
+ * would hide: a syntax error gets a readable message instead of a bundler
+ * stack trace, and a duplicated key — which JSON.parse silently resolves to
+ * the last value — is reported as the mistake it is.
  *
  * Returns a plain { domain: scriptId } object, sorted by domain. Throws with
  * every problem listed if anything is wrong, so a bad registry fails the build
  * just like a bad allowlist does.
  */
 function loadPlausibleSites(fileText) {
+  const where = "list/plausible-sites.json";
   const problems = [];
+
+  let parsed;
+  try {
+    parsed = JSON.parse(fileText);
+  } catch (err) {
+    problems.push(`${where}  is not valid JSON — ${err.message}`);
+  }
+  if (parsed !== undefined && (typeof parsed !== "object" || parsed === null || Array.isArray(parsed))) {
+    problems.push(`${where}  must be a single JSON object of { "domain": "script-id" }`);
+    parsed = undefined;
+  }
+
   const sites = new Map();
-
-  for (const { lineNumber, raw } of parseListFile(fileText)) {
-    const where = `list/plausible-sites.txt:${lineNumber}`;
-
-    const parts = raw.split(/\s+/);
-    if (parts.length !== 2) {
-      problems.push(`${where}  expected "<domain> <script-id>", got "${raw}"`);
-      continue;
-    }
-    const [rawDomain, scriptId] = parts;
-
+  for (const [rawDomain, scriptId] of Object.entries(parsed || {})) {
     const result = classifyEntry(rawDomain);
     if (result.kind !== "domain") {
       const detail = result.detail ? ` — ${result.detail}` : "";
       problems.push(`${where}  "${rawDomain}" is not a valid domain (${result.kind})${detail}`);
       continue;
     }
-    if (!SCRIPT_ID.test(scriptId)) {
+    if (typeof scriptId !== "string" || !SCRIPT_ID.test(scriptId)) {
       problems.push(
-        `${where}  "${scriptId}" does not look like a Plausible script id ` +
-          `(expected the "pa-…" part of the script filename)`,
+        `${where}  ${JSON.stringify(scriptId)} for "${rawDomain}" does not look like a ` +
+          `Plausible script id (expected the "pa-…" part of the script filename)`,
       );
       continue;
     }
@@ -366,15 +374,21 @@ function loadPlausibleSites(fileText) {
       );
       continue;
     }
-    if (sites.has(result.canonical)) {
-      problems.push(`${where}  duplicate entry for "${result.canonical}"`);
-      continue;
-    }
     if (result.detail) {
       problems.push(
         `${where}  "${rawDomain}" ${result.detail} — the file must contain the exact ` +
           `domain the loader will match against`,
       );
+      continue;
+    }
+    // JSON.parse keeps only the last of duplicated keys, so count occurrences
+    // in the raw text. Keys are validated to [a-z0-9.-] above, so escaping the
+    // dots is all it takes to match them literally.
+    const occurrences = fileText.match(
+      new RegExp(`"${result.canonical.replace(/\./g, "\\.")}"\\s*:`, "g"),
+    );
+    if (occurrences && occurrences.length > 1) {
+      problems.push(`${where}  duplicate entry for "${result.canonical}"`);
       continue;
     }
 
@@ -383,9 +397,9 @@ function loadPlausibleSites(fileText) {
 
   if (problems.length) {
     throw new Error(
-      `\n\nRefusing to build — ${problems.length} invalid Plausible site entr` +
+      `\n\nRefusing to build — ${problems.length} invalid Plausible site registry entr` +
         `${problems.length === 1 ? "y" : "ies"}:\n\n  ${problems.join("\n  ")}\n\n` +
-        `See the comments at the top of list/plausible-sites.txt.\n`,
+        `See src/lib/plausible-sites.js and the Analytics section of README.md.\n`,
     );
   }
 

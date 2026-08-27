@@ -1,6 +1,6 @@
 # Allowed referrers — PUBLIC. Baked into the shared loader script at
 # openhomefoundation.org/plausible.js (which every Open Home Foundation site
-# running Plausible embeds — see list/plausible-sites.txt) and also published
+# running Plausible embeds — see list/plausible-sites.json) and also published
 # as openhomefoundation.org/allowed-referrers.json.
 #
 # WHY THIS EXISTS

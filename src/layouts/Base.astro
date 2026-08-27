@@ -89,7 +89,7 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
 
     {/* Plausible via the shared loader (src/pages/plausible.js.ts) — the same
         script every OHF site embeds. It resolves this site's Plausible script
-        id from list/plausible-sites.txt and replaces any referrer not on
+        id from list/plausible-sites.json and replaces any referrer not on
         list/allowed-referrers.txt, so visitors' private Home Assistant and
         ESPHome URLs are never recorded. Root-relative on purpose: dev,
         previews, and production all exercise the script they serve. */}

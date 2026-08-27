@@ -3,7 +3,7 @@
 //
 //   <script async src="https://www.openhomefoundation.org/plausible.js?site=example.org"></script>
 //
-// The site map (list/plausible-sites.txt) and the referrer allowlist
+// The site map (list/plausible-sites.json) and the referrer allowlist
 // (list/allowed-referrers.txt) are baked in at build time, both validated by
 // src/lib/referrers.js down to characters that are safe to interpolate.
 // Because embedding sites always fetch this file from us, updating either
@@ -21,7 +21,7 @@ const source = `/*!
  *
  *   <script async src="https://www.openhomefoundation.org/plausible.js?site=example.org"></script>
  *
- * where ?site= names a site registered in list/plausible-sites.txt. This
+ * where ?site= names a site registered in list/plausible-sites.json. This
  * script resolves the site's Plausible script id, installs a referrer filter,
  * and then loads the real Plausible script.
  *
@@ -31,7 +31,7 @@ const source = `/*!
  * ever sees it, so those URLs are never recorded.
  *
  * Source: https://github.com/OpenHomeFoundation/openhomefoundation.org
- *   Site registry:      list/plausible-sites.txt
+ *   Site registry:      list/plausible-sites.json
  *   Referrer allowlist: list/allowed-referrers.txt
  */
 (function () {
@@ -72,7 +72,7 @@ const source = `/*!
   var scriptId = SITES[site.toLowerCase().replace(/^www\\./, "")];
   if (!scriptId) {
     warn(
-      '"' + site + '" is not a registered site — add it to list/plausible-sites.txt ' +
+      '"' + site + '" is not a registered site — add it to list/plausible-sites.json ' +
       "in the openhomefoundation.org repository, not loading Plausible"
     );
     return;
