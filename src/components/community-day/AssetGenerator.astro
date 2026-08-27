@@ -1,0 +1,232 @@
+---
+// Community Day social-asset generator: edit the meetup details, preview the
+// graphic live, and download a rendered PNG. The rendering happens entirely in
+// the browser (html-to-image), so it works on our static Netlify hosting — no
+// server-side rendering or adapter required. The project logos are loaded live
+// from the OHF branding API; the fixed backdrop art and the Figtree font are
+// self-hosted so exports never depend on third-party hosts.
+//
+// Ported from https://github.com/elcaptain/social-templates
+// (Figma file 61SfzG7xiYlR5YUheV82F9).
+---
+
+<section class="asset-generator">
+  <div class="panel">
+    <h2>Content</h2>
+    <div data-ag-controls></div>
+    <div class="actions">
+      <button data-ag-download>Download PNG</button>
+      <span data-ag-status role="status"></span>
+    </div>
+  </div>
+
+  <div class="panel preview">
+    <h2>Preview</h2>
+    <div data-ag-scaler>
+      <div data-ag-stage></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initAssetGenerator } from "../../scripts/asset-generator.js";
+  initAssetGenerator();
+</script>
+
+{
+  /* Global on purpose: the stage layers and control fields are created by the
+    script at runtime, so Astro's scoped-style attributes would never reach
+    them. Everything is namespaced under .asset-generator instead. */
+}
+<style lang="scss" is:global>
+  /* Figtree — the typeface of the social template (matches the Figma design).
+     Variable font (wght 300–900) self-hosted so html-to-image can inline it
+     into the exported PNG without cross-origin issues. */
+  @font-face {
+    font-family: Figtree;
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: block;
+    src: url("/assets/fonts/figtree-variable-latin.woff2") format("woff2");
+    unicode-range:
+      U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+      U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+      U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  /* Latin-ext for accented city names (Zürich, Kraków, São Paulo, …). */
+  @font-face {
+    font-family: Figtree;
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: block;
+    src: url("/assets/fonts/figtree-variable-latin-ext.woff2") format("woff2");
+    unicode-range:
+      U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+      U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+      U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  .asset-generator {
+    --ag-title: #002332;
+    --ag-muted: #4f606e;
+    --ag-accent: #41d09b;
+    --ag-border: #e3e7ea;
+
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+
+    @media (max-width: 840px) {
+      grid-template-columns: 1fr;
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--ag-border);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+    }
+
+    .panel h2 {
+      margin: 0 0 1rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ag-muted);
+    }
+
+    .field {
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .field-label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 0.375rem;
+      color: var(--ag-title);
+    }
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 10px 12px;
+      font: inherit;
+      font-size: 0.9375rem;
+      border: 1px solid var(--ag-border);
+      border-radius: 0.5rem;
+      outline: none;
+      background: #ffffff;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--ag-accent);
+      box-shadow: 0 0 0 3px rgba(65, 208, 155, 0.25);
+    }
+    .field input:disabled {
+      background: #f1f3f4;
+      color: #9aa4ab;
+      cursor: not-allowed;
+    }
+
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0.25rem 0 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ag-title);
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--ag-accent);
+      cursor: pointer;
+    }
+
+    .actions {
+      margin-top: 1.375rem;
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+    }
+    [data-ag-download] {
+      appearance: none;
+      border: 0;
+      background: var(--ag-accent);
+      color: var(--ag-title);
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      padding: 0.75rem 1.375rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition:
+        background-color 150ms ease-in-out,
+        color 150ms ease-in-out;
+
+      &:hover {
+        background-color: var(--ag-title);
+        color: #ffffff;
+      }
+      &:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+    }
+    [data-ag-status] {
+      font-size: 0.8125rem;
+      color: var(--ag-muted);
+    }
+
+    /* The scaler reserves space; the stage is rendered at native size and scaled down. */
+    [data-ag-scaler] {
+      position: relative;
+      width: 100%;
+    }
+    [data-ag-stage] {
+      position: relative;
+      overflow: hidden;
+      transform-origin: top left;
+      background: #000000;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+      font-family:
+        Figtree,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    /* Layer primitives (created at runtime by asset-generator.js). */
+    .layer-image {
+      position: absolute;
+      display: block;
+      transition: transform 0.18s ease;
+    }
+    .layer-text {
+      position: absolute;
+      white-space: pre-wrap;
+      transition: transform 0.18s ease;
+    }
+    .layer-row {
+      position: absolute;
+      display: inline-flex;
+      flex-direction: row;
+      width: max-content; /* hug content → grows on one line */
+      white-space: nowrap;
+      transition: transform 0.18s ease;
+    }
+    .layer-row .seg {
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .layer-row .layer-image {
+      position: static;
+    }
+  }
+</style>
