@@ -2,6 +2,7 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import { satteri } from "@astrojs/markdown-satteri";
+import netlify from "@astrojs/netlify";
 import sitemap from "@astrojs/sitemap";
 import yaml from "@rollup/plugin-yaml";
 
@@ -11,6 +12,10 @@ const scssMixinsPath = fileURLToPath(
 
 export default defineConfig({
   site: "https://www.openhomefoundation.org",
+  // The site is fully prerendered except the routes that opt out with
+  // `export const prerender = false` (the asset-generator image endpoint),
+  // which the adapter runs as a Netlify function.
+  adapter: netlify(),
   server: {
     // Astro's dev server only binds to localhost by default. In a
     // devcontainer/Codespace, forwarded ports can't reach a
