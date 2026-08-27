@@ -137,6 +137,7 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
       import "../scripts/copy-email.js";
       import "../scripts/code-copy.js";
     </script>
+    <slot name="head" />
   </head>
   <body>
     <header><Navbar /></header>
