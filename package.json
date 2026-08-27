@@ -10,10 +10,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/netlify": "^8.2.4",
     "@astrojs/sitemap": "^3.7.3",
+    "@resvg/resvg-js": "^2.6.2",
     "astro": "^7.2.3",
-    "html-to-image": "^1.11.13",
     "micromark": "^4.0.2",
+    "satori": "^0.33.4",
     "swiper": "^11.1.1"
   },
   "devDependencies": {
