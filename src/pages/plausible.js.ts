@@ -25,6 +25,17 @@ const source = `/*!
  * script resolves the site's Plausible script id, installs a referrer filter,
  * and then loads the real Plausible script.
  *
+ * Add &manual to take over pageview tracking yourself:
+ *
+ *   <script async src="https://www.openhomefoundation.org/plausible.js?site=example.org&manual"></script>
+ *
+ * Nothing is tracked automatically; the page calls plausible("pageview") /
+ * plausible("SomeEvent") itself (calls made before Plausible finishes loading
+ * are queued and sent once it has). This replaces the legacy script.manual.js,
+ * which predates transformRequest and so can never enforce the referrer
+ * filter below — with &manual the same current-generation script is loaded,
+ * just with automatic pageviews off, and the filter applies to every event.
+ *
  * Why the filter: visitors arriving from their own Home Assistant or ESPHome
  * instance send their private URL as the referrer. Any referrer not on the
  * public allowlist is replaced with https://unlisted.invalid/ before Plausible
@@ -59,8 +70,14 @@ const source = `/*!
   }
 
   var site = null;
+  var manual = false;
   try {
-    site = new URL(script.src).searchParams.get("site");
+    var params = new URL(script.src).searchParams;
+    site = params.get("site");
+    // Bare "&manual" is the documented form; tolerate =true/=1 and treat an
+    // explicit =false/=0 as off.
+    var manualParam = params.get("manual");
+    manual = manualParam !== null && manualParam !== "false" && manualParam !== "0";
   } catch (e) {
     // Unparseable src: handled below.
   }
@@ -96,7 +113,7 @@ const source = `/*!
       window.plausible.o = i || {};
     };
 
-  window.plausible.init({
+  var config = {
     transformRequest: function (payload) {
       var ref = payload.r;
       if (!ref) return payload;
@@ -121,7 +138,14 @@ const source = `/*!
       payload.r = "https://unlisted.invalid/";
       return payload;
     },
-  });
+  };
+  if (manual) {
+    // Manual mode: the page triggers its own pageviews with
+    // plausible("pageview"). The transformRequest filter above still runs on
+    // every event — it is set once at init and applies for the page lifetime.
+    config.autoCapturePageviews = false;
+  }
+  window.plausible.init(config);
 
   var loader = document.createElement("script");
   loader.async = true;
