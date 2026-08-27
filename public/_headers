@@ -1,0 +1,9 @@
+# /plausible.js and /allowed-referrers.json are embedded/fetched by OTHER
+# sites, which never get a new URL when we deploy — so cap how long a copy can
+# be served without revalidation. One hour keeps the CDN effective while
+# letting allowlist and site-registry updates reach every site within the hour.
+/plausible.js
+  Cache-Control: public, max-age=3600
+
+/allowed-referrers.json
+  Cache-Control: public, max-age=3600

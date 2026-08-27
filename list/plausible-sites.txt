@@ -1,0 +1,26 @@
+# Plausible site registry — PUBLIC. Baked into the loader script published as
+# openhomefoundation.org/plausible.js.
+#
+# WHY THIS EXISTS
+# Every Open Home Foundation site runs Plausible behind the referrer allowlist
+# (see list/allowed-referrers.txt). Instead of each site vendoring the Plausible
+# snippet and a copy of the allowlist into its own build, a site adds one tag:
+#
+#   <script async src="https://www.openhomefoundation.org/plausible.js?site=example.org"></script>
+#
+# The loader looks the site up in this file, installs the referrer filter, and
+# then loads that site's real Plausible script. Sites without a build step
+# (Squarespace, the forums) get an always-current allowlist this way too.
+#
+# HOW IT WORKS
+# One site per line: the site's domain, whitespace, then its Plausible script id
+# (the "pa-…" part of the script filename shown in the Plausible dashboard under
+# Site Settings → Site Installation). Blank lines and anything after a "#" are
+# ignored. The domain must match the ?site= value in the tag exactly (the loader
+# only forgives case and a leading "www.").
+#
+# Script ids are not secrets — they are visible in the HTML of every page that
+# uses them — but only add sites we actually operate: an entry here lets that
+# ?site= value send events into our Plausible dashboards.
+
+openhomefoundation.org    pa-M8_u5edrDOz5Ui2iONt2_

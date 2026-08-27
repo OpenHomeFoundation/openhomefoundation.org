@@ -318,8 +318,83 @@ function loadAllowedReferrers(allowFileText, denyFileText) {
   return published;
 }
 
+// The "pa-…" part of a Plausible script filename. Deliberately strict: the
+// site map is interpolated into the served /plausible.js, so every character
+// that can appear there is pinned down here.
+const SCRIPT_ID = /^pa-[A-Za-z0-9_-]{8,64}$/;
+
+/**
+ * Validate and normalise the Plausible site registry, given the raw text of
+ * list/plausible-sites.txt: one "<domain> <script-id>" pair per line.
+ *
+ * Returns a plain { domain: scriptId } object, sorted by domain. Throws with
+ * every problem listed if anything is wrong, so a bad registry fails the build
+ * just like a bad allowlist does.
+ */
+function loadPlausibleSites(fileText) {
+  const problems = [];
+  const sites = new Map();
+
+  for (const { lineNumber, raw } of parseListFile(fileText)) {
+    const where = `list/plausible-sites.txt:${lineNumber}`;
+
+    const parts = raw.split(/\s+/);
+    if (parts.length !== 2) {
+      problems.push(`${where}  expected "<domain> <script-id>", got "${raw}"`);
+      continue;
+    }
+    const [rawDomain, scriptId] = parts;
+
+    const result = classifyEntry(rawDomain);
+    if (result.kind !== "domain") {
+      const detail = result.detail ? ` — ${result.detail}` : "";
+      problems.push(`${where}  "${rawDomain}" is not a valid domain (${result.kind})${detail}`);
+      continue;
+    }
+    if (!SCRIPT_ID.test(scriptId)) {
+      problems.push(
+        `${where}  "${scriptId}" does not look like a Plausible script id ` +
+          `(expected the "pa-…" part of the script filename)`,
+      );
+      continue;
+    }
+    if (result.canonical.startsWith("www.")) {
+      // The loader strips a leading "www." from the ?site= value before the
+      // lookup, so a "www." entry here could never match anything.
+      problems.push(
+        `${where}  "${result.canonical}" — use the bare domain, the loader treats www. as an alias`,
+      );
+      continue;
+    }
+    if (sites.has(result.canonical)) {
+      problems.push(`${where}  duplicate entry for "${result.canonical}"`);
+      continue;
+    }
+    if (result.detail) {
+      problems.push(
+        `${where}  "${rawDomain}" ${result.detail} — the file must contain the exact ` +
+          `domain the loader will match against`,
+      );
+      continue;
+    }
+
+    sites.set(result.canonical, scriptId);
+  }
+
+  if (problems.length) {
+    throw new Error(
+      `\n\nRefusing to build — ${problems.length} invalid Plausible site entr` +
+        `${problems.length === 1 ? "y" : "ies"}:\n\n  ${problems.join("\n  ")}\n\n` +
+        `See the comments at the top of list/plausible-sites.txt.\n`,
+    );
+  }
+
+  return Object.fromEntries([...sites.entries()].sort(([a], [b]) => (a < b ? -1 : 1)));
+}
+
 export {
   loadAllowedReferrers,
+  loadPlausibleSites,
   classifyEntry,
   suffixMatch,
   parseListFile,
