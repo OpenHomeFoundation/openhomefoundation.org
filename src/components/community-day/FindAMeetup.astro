@@ -67,18 +67,18 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
 
 <Section id="find-a-meetup">
   <div class="inner">
-    <div class="title-container title-container--row">
+    <div class="title-container title-container--row animate--fade-up-in">
       <h2 class="h2 heading">Find a meetup near you</h2>
       <a href="https://luma.com/communityday2026" target="_blank" rel="noopener noreferrer" class="button button--secondary button--has-icon button--find">Browse all meetups on Luma</a>
     </div>
-    <div class="map-column">
+    <div class="map-column animate--fade-up-in">
       <div id="find-a-meetup-map" class="map" aria-label="Map of Community Day meetups" />
     </div>
 
     <script type="application/json" id="find-a-meetup-events" is:inline set:html={mapEventsJson} />
 
     <div class="organise-a-meetup">
-      <div class="title-container">
+      <div class="title-container animate--fade-up-in">
         <h2 class="h2 heading">Don’t see your city yet?</h2>
         <div class="content-container">
           <p>Take matters into your own hands!</p>
@@ -87,22 +87,22 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
       </div>
 
       <div class="organise-a-meetup__cards">
-        <div class="organise-a-meetup__card card">
+        <div class="organise-a-meetup__card card animate--fade-up-in">
           <p class="title heading">Reimbursement Guidelines</p>
           <p>What the Open Home Foundation covers, how to submit expenses, and ways we can support you financially.</p>
           <a class="button button--primary" href="https://docs.google.com/document/d/1kcziY3ZJfut2mPez7zY6xcjv8VKcynFxvKYI51NJ8-Y" target="_blank" rel="noopener noreferrer">Read guidelines</a>
         </div>
-        <div class="organise-a-meetup__card card">
+        <div class="organise-a-meetup__card card animate--fade-up-in">
           <p class="title heading">Host Playbook</p>
           <p>Planning timeline, venue tips, Luma setup, activity ideas and more.</p>
           <a class="button button--primary" href="">Read playbook</a>
         </div>
-        <div class="organise-a-meetup__card card">
+        <div class="organise-a-meetup__card card animate--fade-up-in">
           <p class="title heading">Merchandise requests</p>
           <p>Request stickers, T-shirts, and other goodies.</p>
           <a class="button button--primary" href="https://docs.google.com/forms/d/e/1FAIpQLSfN9opaF-Xov0VTigQxobroGZtr1CUAix0GjNd7WHQz7puFJA/viewform" target="_blank" rel="noopener noreferrer">Fill out form</a>
         </div>
-        <div class="organise-a-meetup__card card">
+        <div class="organise-a-meetup__card card animate--fade-up-in">
           <p class="title heading">Asset generator</p>
           <p>Use to create graphics to help publicize your event.</p>
           <button type="button" class="button button--primary" data-asset-generator-open>Create assets</button>
@@ -155,6 +155,8 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 5;
 
     @include bp(tablet) {
       justify-content: space-between;
@@ -162,6 +164,9 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
   }
 
   .map-column {
+    position: relative;
+    z-index: 5;
+
     .button {
       width: max-content;
       margin-top: 1rem;
@@ -191,8 +196,6 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
       border-color 150ms ease-in-out;
   }
 
-  // "Active" = its popup is open (toggled in find-a-meetup.js) — kept
-  // highlighted even once the pointer leaves the marker for the popup.
   :global(.map-marker:hover),
   :global(.map-marker.is-active) {
     border-color: var(--title-color);
@@ -202,10 +205,6 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
     z-index: 999 !important;
   }
 
-  // Leaflet's own popup chrome (not our .event-popup content inside it).
-  // Its default padding: 1px on the wrapper is a no-op visually — the
-  // actual spacing comes from .leaflet-popup-content's margin, so that has
-  // to be zeroed out or our new padding would just add to it.
   :global(.leaflet-popup-content-wrapper) {
     background: rgba(255, 255, 255, 0.6) !important;
     border: 1px solid #ffffff !important;
@@ -226,12 +225,6 @@ const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
     display: none !important;
   }
 
-  // :global() only exempts the exact selector text inside its parens from
-  // Astro's scoping — a nested SCSS selector like "h3 { ... }" here would
-  // still get scoped to this component, and Leaflet's popup content (built
-  // via document.createElement in find-a-meetup.js, not this template)
-  // would never carry that attribute. Every selector below is fully
-  // wrapped in :global() instead of relying on nesting.
   :global(.event-popup) {
     display: flex;
     flex-direction: column;
