@@ -63,26 +63,58 @@ const mapEvents = events.map((event) => ({
 // Escape "<" so a stray "</script" inside any event text can't end the
 // script tag early.
 const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
+
+// Drives which of each .has-events-content / .no-events-content pair
+// renders below — known at build time, so this picks one at render rather
+// than shipping both and toggling visibility with CSS/JS.
+const hasEvents = events.length > 0;
 ---
 
 <Section id="find-a-meetup">
   <div class="inner">
     <div class="title-container title-container--row animate--fade-up-in">
-      <h2 class="h2 heading">Find a meetup near you</h2>
-      <a href="https://luma.com/communityday2026" target="_blank" rel="noopener noreferrer" class="button button--secondary button--has-icon button--find">Browse all meetups on Luma</a>
+      <h2 class="h2 heading">{hasEvents ? "Find a meetup near you" : "Host an event in your area"}</h2>
+      {
+        hasEvents && (
+          <a
+            href="https://luma.com/communityday2026"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="button button--secondary button--has-icon button--find"
+          >
+            Browse all meetups on Luma
+          </a>
+        )
+      }
     </div>
-    <div class="map-column animate--fade-up-in">
-      <div id="find-a-meetup-map" class="map" aria-label="Map of Community Day meetups" />
-    </div>
+
+    {
+      hasEvents && (
+        <div class="map-column animate--fade-up-in">
+          <div id="find-a-meetup-map" class="map" aria-label="Map of Community Day meetups" />
+        </div>
+      )
+    }
 
     <script type="application/json" id="find-a-meetup-events" is:inline set:html={mapEventsJson} />
 
     <div class="organise-a-meetup">
       <div class="title-container animate--fade-up-in">
-        <h2 class="h2 heading">Don’t see your city yet?</h2>
+        <h2 class="h2 heading">{hasEvents ? "Don’t see your city yet?" : "Need some support?"}</h2>
         <div class="content-container">
-          <p>Take matters into your own hands!</p>
-          <p>If you’d like to host a Community Day meetup in your city, we will support you with venue reimbursements, official merchandise, and a full host playbook.</p>
+          {
+            hasEvents ? (
+              <>
+                <p>Take matters into your own hands!</p>
+                <p>
+                  If you’d like to host a Community Day meetup in your city, we will support you with venue
+                  reimbursements, official merchandise, and a full host playbook.
+                </p>
+              </>
+            ) : (
+              <p>We have everything you need to host a successful meetup: take a look at what we offer below.</p>
+            )
+          }
         </div>
       </div>
 

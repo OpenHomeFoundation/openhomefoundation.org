@@ -124,6 +124,14 @@ if (mapContainer && events.length > 0) {
   if (bounds.length > 0) {
     map.invalidateSize();
     map.fitBounds(bounds, { padding: [16, 16] });
+
+    // The map column is wider on desktop (matches the "desktop" breakpoint
+    // in src/styles/scss/mixins.scss), so fitBounds already lands on a
+    // closer zoom there than on mobile — nudge it in a little further still.
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      map.panBy([-90, -70], { animate: false });
+      map.setZoom(map.getZoom() + 0.5);
+    }
   }
 
   requestAnimationFrame(() => map.invalidateSize());
