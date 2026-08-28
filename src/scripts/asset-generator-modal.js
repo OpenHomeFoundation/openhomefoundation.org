@@ -8,10 +8,12 @@ const openBtn = document.querySelector("[data-asset-generator-open]");
 const closeBtn = document.querySelector("[data-asset-generator-close]");
 
 if (dialog && openBtn) {
-  openBtn.addEventListener("click", () => {
+  function openDialog() {
     dialog.showModal();
     document.documentElement.classList.add("has-open-dialog");
-  });
+  }
+
+  openBtn.addEventListener("click", openDialog);
 
   closeBtn?.addEventListener("click", () => dialog.close());
 
@@ -27,4 +29,17 @@ if (dialog && openBtn) {
   dialog.addEventListener("close", () => {
     document.documentElement.classList.remove("has-open-dialog");
   });
+
+  // Deep link: /community-day/#asset-generator opens it directly on load.
+  // hashchange also covers an in-page link to the same hash without a full
+  // page reload (location.hash doesn't change on a no-op click to the same
+  // hash you're already on, but it does when navigating from elsewhere).
+  function openIfLinked() {
+    if (dialog.id && location.hash === `#${dialog.id}` && !dialog.open) {
+      openDialog();
+    }
+  }
+
+  openIfLinked();
+  window.addEventListener("hashchange", openIfLinked);
 }
