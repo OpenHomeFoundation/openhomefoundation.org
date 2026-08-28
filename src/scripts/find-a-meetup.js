@@ -1,110 +1,131 @@
 import L from "leaflet";
-import Swiper from "swiper";
-import { Pagination } from "swiper/modules";
 
 window.L = L;
 await import("leaflet-gesture-handling");
 
 const mapContainer = document.getElementById("find-a-meetup-map");
-const cards = Array.from(document.querySelectorAll(".event-card"));
+const eventsDataEl = document.getElementById("find-a-meetup-events");
+const events = eventsDataEl ? JSON.parse(eventsDataEl.textContent) : [];
 
-if (mapContainer && cards.length > 0) {
+if (mapContainer && events.length > 0) {
   const map = L.map(mapContainer, {
-    zoomControl: true,
+    // Added manually below, positioned bottom-right instead of Leaflet's
+    // default top-left.
+    zoomControl: false,
     gestureHandling: true,
+    // Without this, dragging far enough lets you pan into a repeated copy
+    // of the world — the tile layer wraps by default, but markers only
+    // ever render at their real coordinates, so the repeated copy looks
+    // empty. maxBoundsViscosity: 1 makes this a hard stop rather than a
+    // rubber-band overshoot.
+    maxBounds: [
+      [-90, -180],
+      [90, 180],
+    ],
+    maxBoundsViscosity: 1.0,
+    // Events span close to the full width of the world, so fitBounds()
+    // zooms out quite far just to fit that — on a tall portrait container
+    // (mobile), the resulting view doesn't reach the container's own top/
+    // bottom edges, leaving grey bands above/below a horizontal strip of
+    // tiles. A floor on how far out it can go trades a few very remote
+    // markers being just outside the initial view (still reachable by
+    // panning) for the map actually filling its box.
+    minZoom: 2,
   });
+
+  L.control.zoom({ position: "bottomright" }).addTo(map);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
+    // Stops the tile layer itself from rendering repeated copies of the
+    // world at low zoom levels, independent of the panning limit above.
+    noWrap: true,
   }).addTo(map);
 
   const markerIcon = L.divIcon({
     className: "map-marker",
-    iconSize: [8, 8],
-    iconAnchor: [4, 4],
+    iconSize: [12, 12],
+    iconAnchor: [6, 6],
   });
 
-  const markersByEventId = new Map();
+  function slugify(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+  }
+
+  function createDetailList(pairs) {
+    const dl = document.createElement("dl");
+    for (const [term, description] of pairs) {
+      const row = document.createElement("div");
+
+      const dt = document.createElement("dt");
+      dt.className = slugify(term);
+      const dtLabel = document.createElement("span");
+      dtLabel.textContent = term;
+      dt.appendChild(dtLabel);
+
+      const dd = document.createElement("dd");
+      dd.textContent = description;
+
+      row.append(dt, dd);
+      dl.appendChild(row);
+    }
+    return dl;
+  }
+
+  function buildPopupContent(event) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "event-popup";
+
+    const title = document.createElement("h3");
+    title.className = "heading";
+    title.textContent = event.summary;
+    wrapper.appendChild(title);
+
+    wrapper.appendChild(
+      createDetailList([
+        ["Starts", event.starts],
+        ["Location", event.location ?? "Register for details"],
+      ]),
+    );
+
+    const link = document.createElement("a");
+    link.className = "button button--secondary button--has-icon button--find";
+    link.href = event.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Join the event";
+    wrapper.appendChild(link);
+
+    return wrapper;
+  }
+
   const bounds = [];
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  function setActive(eventId, isActive) {
-    const entry = markersByEventId.get(eventId);
-    if (!entry) return;
-
-    entry.card.classList.toggle("is-active", isActive);
-    entry.marker.getElement()?.classList.toggle("is-active", isActive);
-  }
-
-  function panToIfNeeded(eventId) {
-    const entry = markersByEventId.get(eventId);
-    if (!entry) return;
-
-    const latlng = entry.marker.getLatLng();
-    if (!map.getBounds().contains(latlng)) {
-      map.panTo(latlng, { animate: !prefersReducedMotion, duration: 0.375 });
-    }
-  }
-
-  cards.forEach((card) => {
-    const lat = parseFloat(card.dataset.lat);
-    const lng = parseFloat(card.dataset.lng);
-    if (Number.isNaN(lat) || Number.isNaN(lng)) return;
-
-    const eventId = card.dataset.eventId;
-    const link = card.querySelector(".event-card-link");
-    const marker = L.marker([lat, lng], { icon: markerIcon });
-    bounds.push([lat, lng]);
-
-    marker.on("mouseover", () => setActive(eventId, true));
-    marker.on("mouseout", () => setActive(eventId, false));
-    card.addEventListener("mouseenter", () => {
-      setActive(eventId, true);
-      panToIfNeeded(eventId);
-    });
-    card.addEventListener("mouseleave", () => setActive(eventId, false));
-
-    if (link) {
-      marker.on("click", () => window.open(link.href, "_blank", "noopener,noreferrer"));
+  for (const event of events) {
+    // Some events come back from the API with no coordinates at all — a
+    // few of them are missing lat/lng outright (undefined, not NaN), so
+    // Number.isNaN() alone doesn't catch them and L.marker() throws.
+    if (typeof event.lat !== "number" || typeof event.lng !== "number" || Number.isNaN(event.lat) || Number.isNaN(event.lng)) {
+      continue;
     }
 
-    markersByEventId.set(eventId, { marker, card });
-  });
+    const marker = L.marker([event.lat, event.lng], { icon: markerIcon }).addTo(map);
+    marker.bindPopup(buildPopupContent(event));
+    // "Active" = its popup is open — kept highlighted even once the pointer
+    // leaves the marker for the popup content (see .map-marker.is-active).
+    marker.on("popupopen", () => marker.getElement()?.classList.add("is-active"));
+    marker.on("popupclose", () => marker.getElement()?.classList.remove("is-active"));
+    bounds.push([event.lat, event.lng]);
+  }
 
   if (bounds.length > 0) {
     map.invalidateSize();
     map.fitBounds(bounds, { padding: [16, 16] });
   }
 
-  function showEventsForSlide(slideEl) {
-    const visibleIds = new Set(Array.from(slideEl.querySelectorAll(".event-card")).map((card) => card.dataset.eventId));
-
-    markersByEventId.forEach(({ marker }, eventId) => {
-      const shouldShow = visibleIds.has(eventId);
-      const isShown = map.hasLayer(marker);
-      if (shouldShow && !isShown) marker.addTo(map);
-      if (!shouldShow && isShown) map.removeLayer(marker);
-    });
-  }
-
-  new Swiper(".events-swiper", {
-    modules: [Pagination],
-    slidesPerView: 1,
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    on: {
-      init(swiper) {
-        showEventsForSlide(swiper.slides[swiper.activeIndex]);
-        requestAnimationFrame(() => map.invalidateSize());
-      },
-      slideChange(swiper) {
-        showEventsForSlide(swiper.slides[swiper.activeIndex]);
-      },
-    },
-  });
-
+  requestAnimationFrame(() => map.invalidateSize());
   window.addEventListener("resize", () => map.invalidateSize());
 }
