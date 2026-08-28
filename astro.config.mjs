@@ -36,9 +36,6 @@ export default defineConfig({
         if (path.startsWith("/media-room/") && path !== "/media-room/")
           return false;
         if (path === "/device-database-data-use-statement/") return false;
-        // Test bed for the Community Day asset generator; noindex until it
-        // moves onto /community-day/ itself.
-        if (path === "/community-day/asset-generator/") return false;
         return true;
       },
     }),

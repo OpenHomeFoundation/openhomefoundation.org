@@ -9,10 +9,25 @@
 // Ported from https://github.com/elcaptain/social-templates
 // (Figma file 61SfzG7xiYlR5YUheV82F9).
 import { TEMPLATES } from "../../lib/asset-templates.js";
+import { renderAsset, parseParams } from "../../lib/render-asset.js";
 
 const tpl = TEMPLATES[0];
 const IMAGE_URL = "/community-day/asset-generator/image.png";
 const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
+
+// Pre-render the default state at build time so the preview shows instantly
+// instead of waiting on a live render on first load. Only this first image
+// is baked in — every edit after that still goes through the live endpoint.
+let initialImageSrc = IMAGE_URL;
+const parsedDefault = parseParams(tpl, new URLSearchParams());
+if (!parsedDefault.error) {
+  try {
+    const png = await renderAsset(tpl, parsedDefault.render);
+    initialImageSrc = `data:image/png;base64,${png.toString("base64")}`;
+  } catch (error) {
+    console.error("Failed to pre-render the default asset-generator preview", error);
+  }
+}
 ---
 
 <section class="asset-generator">
@@ -80,14 +95,17 @@ const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
   <div class="panel preview">
     <h2>Preview</h2>
     {
-      /* loading="lazy": this component can be embedded inside a closed
-        <dialog> (see FindAMeetup.astro), which starts as display: none —
-        without this, the initial src would still fire the render request
-        (and the Netlify function behind it) on every page load whether or
-        not the modal is ever opened. */
+      /* loading="lazy" only matters if the build-time pre-render above
+        failed and initialImageSrc fell back to the live IMAGE_URL — this
+        component can be embedded inside a closed <dialog> (see
+        FindAMeetup.astro), which starts as display: none, and without it
+        that fallback would still fire a render request (and the Netlify
+        function behind it) on every page load whether or not the modal is
+        ever opened. It's a no-op against the normal data: URI src, which
+        never makes a network request in the first place. */
     }
     <img
-      src={IMAGE_URL}
+      src={initialImageSrc}
       width={tpl.width}
       height={defaultSize.height}
       alt={`Preview of the ${tpl.name} graphic`}
@@ -119,17 +137,26 @@ const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
       return `${imageUrl}?${params}`;
     };
 
+    const setLoading = (isLoading: boolean) => {
+      download.classList.toggle("is-loading", isLoading);
+      download.setAttribute("aria-disabled", String(isLoading));
+    };
+
     const apply = () => {
       const url = currentUrl();
       status.textContent = "Rendering…";
+      setLoading(true);
       preview.src = url;
       download.href = `${url}&download=1`;
     };
-    preview.addEventListener("load", () => (status.textContent = ""));
-    preview.addEventListener(
-      "error",
-      () => (status.textContent = "Rendering failed — try again."),
-    );
+    preview.addEventListener("load", () => {
+      status.textContent = "";
+      setLoading(false);
+    });
+    preview.addEventListener("error", () => {
+      status.textContent = "Rendering failed — try again.";
+      setLoading(false);
+    });
 
     let timer: ReturnType<typeof setTimeout>;
     form.addEventListener("input", () => {
@@ -137,6 +164,10 @@ const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
       timer = setTimeout(apply, 400);
     });
     form.addEventListener("submit", (e) => e.preventDefault());
+
+    download.addEventListener("click", (e) => {
+      if (download.getAttribute("aria-disabled") === "true") e.preventDefault();
+    });
   }
 </script>
 
@@ -246,6 +277,13 @@ const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
     &:hover {
       background-color: var(--ag-title);
       color: #ffffff;
+    }
+
+    &.is-loading {
+      filter: grayscale(1);
+      opacity: 0.6;
+      pointer-events: none;
+      cursor: default;
     }
   }
   [data-status] {
