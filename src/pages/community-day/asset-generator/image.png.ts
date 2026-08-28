@@ -3,8 +3,7 @@
 // here); `download=1` additionally serves it as a file download.
 //
 // Query params (all optional, validated against the template config):
-//   size=square|portrait   logo=ha|esphome|ma   date=YYYY-MM-DD
-//   city=…  organizer=…    byline=1|0           download=1
+//   size=portrait|square   location=…   city=…   organizer=…   download=1
 import type { APIRoute } from "astro";
 import { TEMPLATES } from "../../../lib/asset-templates.js";
 import { parseParams, renderAsset } from "../../../lib/render-asset.js";

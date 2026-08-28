@@ -6,8 +6,8 @@
 // plain <img> pointing at that endpoint, so the page works before (and
 // without) JavaScript.
 //
-// Ported from https://github.com/elcaptain/social-templates
-// (Figma file 61SfzG7xiYlR5YUheV82F9).
+// Ported from community-day-2026-template/ (Figma file
+// tbgI56SGDnakPeMVtmuIaY, frame "event-detail-social").
 import { TEMPLATES } from "../../lib/asset-templates.js";
 import { renderAsset, parseParams } from "../../lib/render-asset.js";
 
@@ -47,24 +47,6 @@ if (!parsedDefault.error) {
       </select>
     </label>
 
-    <label class="field">
-      <span class="field-label">Project logo</span>
-      <select name="logo">
-        {
-          tpl.logos.map((l) => (
-            <option value={l.value} selected={l.value === tpl.defaultLogo}>
-              {l.label}
-            </option>
-          ))
-        }
-      </select>
-    </label>
-
-    <label class="field">
-      <span class="field-label">{tpl.datePicker.label}</span>
-      <input type="date" name="date" value={tpl.datePicker.default} />
-    </label>
-
     {
       tpl.fields.map((f) => (
         <label class="field" data-field={f.name}>
@@ -78,11 +60,6 @@ if (!parsedDefault.error) {
         </label>
       ))
     }
-
-    <label class="toggle">
-      <input type="checkbox" name="byline" checked={tpl.byline.default} />
-      <span>{tpl.byline.label}</span>
-    </label>
 
     <div class="actions">
       <a class="download" href={`${IMAGE_URL}?download=1`} data-download
@@ -129,11 +106,10 @@ if (!parsedDefault.error) {
     const currentUrl = () => {
       const data = new FormData(form);
       const params = new URLSearchParams();
-      for (const name of ["size", "logo", "date", "city", "organizer"]) {
+      for (const name of ["size", "location", "city", "organizer"]) {
         const value = data.get(name);
         if (typeof value === "string" && value) params.set(name, value);
       }
-      params.set("byline", data.get("byline") ? "1" : "0");
       return `${imageUrl}?${params}`;
     };
 
@@ -234,25 +210,6 @@ if (!parsedDefault.error) {
     &:focus {
       border-color: var(--ag-accent);
       box-shadow: 0 0 0 3px rgba(65, 208, 155, 0.25);
-    }
-  }
-
-  .toggle {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin: 0.25rem 0 1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--ag-title);
-    cursor: pointer;
-    user-select: none;
-
-    input {
-      width: 17px;
-      height: 17px;
-      accent-color: var(--ag-accent);
-      cursor: pointer;
     }
   }
 

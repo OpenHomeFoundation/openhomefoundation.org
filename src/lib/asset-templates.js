@@ -1,172 +1,220 @@
 // Social-asset template definitions for the Community Day asset generator.
 // Each entry fully describes one Figma frame as a stack of positioned layers.
-// The server-side renderer (render-asset.js) turns a template plus the request
-// parameters into a PNG; the AssetGenerator component builds its form from the
-// same data. Adding a template is a data change here, not a code change.
+// The server-side renderer (render-asset.js) turns a template plus the
+// request parameters into a PNG; the AssetGenerator component builds its
+// form from the same data. Adding a template is a data change here, not a
+// code change.
 //
-// Ported from https://github.com/elcaptain/social-templates (Figma file
-// 61SfzG7xiYlR5YUheV82F9), adapted to source the project logos live from the
-// OHF branding API instead of baked-in Figma exports.
+// Ported from community-day-2026-template/js/templates.js (Figma file
+// tbgI56SGDnakPeMVtmuIaY, frame "event-detail-social", 101:3018), rebuilt for
+// this repo's satori/resvg renderer instead of that prototype's DOM+html-to-
+// image one. Every coordinate below is that frame's value doubled, so the
+// template renders at 1080x1350.
 //
 // Coordinate system: pixels, origin at the frame's top-left, matching Figma.
 //
 // Layer kinds:
-//   'image'  — positioned image at {x,y,w,h}. `asset` names a bundled backdrop
-//              asset; `logo: true` means the logo picked by the request.
-//   'text'   — positioned text block. `text` is static copy.
-//   'row'    — horizontal auto-layout row at {x,y} that hugs its content.
-//              Children are text segments: static `text`, a `field` filled from
-//              the request (city, organizer), or a `datePart` derived from the
-//              event date (weekday / monthday).
+//   'image' — positioned image at {x,y,w,h}. `asset` names a bundled image;
+//             h omitted on a `cover` layer fills the requested output height.
+//   'text'  — positioned static text block.
+//   'row'   — horizontal auto-layout. Hugs its content unless `wrap` is set,
+//             in which case it's a fixed-`width` block that wraps like a
+//             paragraph. Children are `{ text }`, `{ field }` (filled from
+//             the request) or `{ kind: 'image', asset }`.
+//   'stack' — vertical auto-layout. `bottom` (instead of `y`) pins its
+//             bottom edge and lets it grow upward as children wrap. A `fit`
+//             ({maxLines, minScale}) shrinks all of a stack's row children
+//             together — font size, line height and letter spacing in step —
+//             until their combined wrapped line count fits the budget.
 //
-// Sizing: layer coords are authored at `height`; taller outputs bottom-anchor
-// the content layers, `backdrop` layers scale/cover instead (`scaleWithSize`
-// scales proportionally about the frame's top-centre). Hiding the optional
-// by-line slides the `shiftOnCollapse` layers down by its `collapseShift`.
+// Per-format overrides: a `sizes` entry may override any id'd top-level
+// layer (see the `square` entry below), not just the frame height.
+//
+// NOTE ON TYPE: the Figma design is set in Biotif, a commercial face that
+// isn't on Google Fonts, so this substitutes Figtree — sizes and positions
+// match the design but the letterforms don't, and text runs a little wider.
 
-// Shared text colours from the Figma design.
-const INK = "#1D2126";
-const BYLINE_INK = "#09202E";
+const INK = "#09202E";
+const PILL = "#F7F6F2";
 
 export const TEMPLATES = [
   {
-    id: "community-meetup",
-    name: "Community Meetup",
+    id: "community-day-2026",
+    name: "Community Day 2026",
     width: 1080,
-    height: 1080,
-    defaultSize: "square",
+    height: 1350, // base/authoring height; layer y-coords are relative to this
+    defaultSize: "portrait",
     sizes: [
-      { value: "square", label: "Square — 1080 × 1080", height: 1080 },
       { value: "portrait", label: "Portrait — 1080 × 1350", height: 1350 },
-    ],
-    // Project logos come from the branding API: colour lockups on a light
-    // background, matching the Figma "project-logo" component variants.
-    logos: [
-      { value: "ha", label: "Home Assistant", project: "home-assistant" },
-      { value: "esphome", label: "ESPHome", project: "esphome" },
-      { value: "ma", label: "Music Assistant", project: "music-assistant" },
-    ],
-    defaultLogo: "ha",
-    // Weekday + date in the pill are both derived from this one date.
-    datePicker: { label: "Event date", default: "2026-11-07" },
-    fields: [
-      { name: "city", label: "City", default: "Rome", maxLength: 60 },
+      // The square format comes from its own Figma frame ("event-detail-
+      // square", 101:3938): a backdrop whose illustration sits top-right
+      // instead of through the middle, so it doesn't collide with the copy,
+      // plus a smaller logo row and headline to suit the shorter frame. The
+      // detail block is deliberately left alone so both formats wrap and
+      // shrink identically.
       {
-        name: "organizer",
-        label: "Organizer",
-        default: "Organizer",
-        maxLength: 60,
-      },
-    ],
-    byline: { label: 'Show "organized by" line', default: true },
-    layers: [
-      // Backdrop: gradient (cover) with the icon illustration on top, clipped
-      // by the frame. The illustration sits at a negative offset, as in Figma.
-      {
-        kind: "image",
-        asset: "gradient",
-        x: 0,
-        y: 0,
-        w: 1080,
-        h: 1080,
-        cover: true,
-        backdrop: true,
-      },
-      {
-        kind: "image",
-        asset: "illustration",
-        x: -444,
-        y: -179,
-        w: 2361,
-        h: 1272,
-        backdrop: true,
-        scaleWithSize: true,
-      },
-
-      // Project logo — left-anchored at x=69; height fixed, width follows the
-      // logo's own aspect ratio.
-      {
-        kind: "image",
-        logo: true,
-        x: 69,
-        y: 483,
-        h: 73,
-        shiftOnCollapse: true,
-      },
-
-      {
-        kind: "text",
-        text: "Community Meetup",
-        x: 58,
-        y: 587,
-        w: 972,
-        font: {
-          weight: 700,
-          size: 120,
-          lineHeight: 105.6,
-          letterSpacing: -1.2,
+        value: "square",
+        label: "Square — 1080 × 1080",
+        height: 1080,
+        overrides: {
+          backdrop: { asset: "backdropSquare" },
+          logos: {
+            x: 62.4,
+            y: 56,
+            gap: 30.9,
+            children: [{ w: 48.5, h: 48.5 }, { w: 48.5, h: 48.5 }, { w: 48.5, h: 48.5 }],
+          },
+          title: { y: 126.5, font: { size: 70.5, lineHeight: 84.7, letterSpacing: -0.71 } },
+          year: { y: 211.2, font: { size: 70.5, lineHeight: 84.7, letterSpacing: -0.71 } },
         },
-        color: INK,
-        titleCase: true,
-        shiftOnCollapse: true,
       },
+    ],
+    fields: [
+      { name: "location", label: "Location name", default: "Location name", maxLength: 80 },
+      { name: "city", label: "City name", default: "City name", maxLength: 60 },
+      { name: "organizer", label: "Organizer name", default: "Organizer name", maxLength: 60 },
+    ],
+    layers: [
+      // Flattened gradient + pattern + illustration + highlights. Covers the frame.
+      { kind: "image", id: "backdrop", asset: "backdrop", x: 0, y: 0, w: 1080, h: 1350, cover: true, backdrop: true },
 
-      // Date-time pill — auto-layout row that grows on one line.
+      // Logo row (Figma "Frame 8") — all three project marks, 33px @1x, 21px gap.
       {
         kind: "row",
-        shiftOnCollapse: true,
-        x: 68,
-        y: 842,
-        gap: 10,
-        padding: 16,
-        radius: 8,
-        background: "#16F3BE",
-        font: {
-          weight: 400,
-          size: 38,
-          lineHeight: 33.44,
-          letterSpacing: -0.38,
-        },
-        color: INK,
-        titleCase: true,
+        id: "logos",
+        x: 64,
+        y: 56,
+        gap: 42,
+        align: "center",
         children: [
-          { datePart: "weekday" },
-          { datePart: "monthday", font: { weight: 700 } },
-          { text: "|" },
-          { field: "city" },
+          { kind: "image", asset: "logoHa", w: 66, h: 66 },
+          { kind: "image", asset: "logoEsphome", w: 66, h: 66 },
+          { kind: "image", asset: "logoMa", w: 66, h: 66 },
         ],
       },
 
-      // By-line: static text + bold organizer name. Optional — when hidden the
-      // shiftOnCollapse layers slide down so the content stays bottom-anchored.
+      // Headline. The two lines carry different weights in Figma ("Community
+      // Day" Bold, "2026" Regular), so they're two layers one line-height apart.
       {
-        kind: "row",
-        optional: "byline",
-        collapseShift: 104,
-        x: 68,
-        y: 982,
-        gap: 8,
-        font: { weight: 400, size: 30, lineHeight: 28.8, letterSpacing: -0.3 },
-        color: BYLINE_INK,
+        kind: "text",
+        id: "title",
+        text: "Community Day",
+        x: 58,
+        y: 152,
+        w: 964,
+        font: { weight: 700, size: 96, lineHeight: 115.2, letterSpacing: -0.96 },
+        color: INK,
+      },
+      {
+        kind: "text",
+        id: "year",
+        text: "2026",
+        x: 58,
+        y: 267.2,
+        w: 964,
+        font: { weight: 400, size: 96, lineHeight: 115.2, letterSpacing: -0.96 },
+        color: INK,
+      },
+
+      // The whole detail block (Figma "Frame 13"): a vertical auto-layout,
+      // 469px wide @1x, whose bottom is pinned 62.2px from the frame's bottom
+      // edge. It hugs its content and grows upward, so when the location or
+      // city wraps onto extra lines everything above it shifts up instead of
+      // running off the graphic.
+      {
+        kind: "stack",
+        x: 63.2,
+        bottom: 62.2,
+        width: 938,
+        gap: 40,
         children: [
-          { text: "An event organized by " },
-          { field: "organizer", font: { weight: 700 } },
+          // Date pill (Figma "Frame 1"). The Community Day date is fixed for
+          // the whole event, so it's static copy, not an editable field.
+          {
+            kind: "row",
+            gap: 0,
+            // Optical centring, not Figma's raw padding — see the equivalent
+            // comment in the reference template for why. Re-measure if the
+            // font changes.
+            padding: [24.7, 29.1, 24.8, 29.1], // top, right, bottom, left
+            radius: 19.4,
+            background: PILL,
+            align: "center",
+            font: { weight: 400, size: 45.5, lineHeight: 41.9, letterSpacing: -0.46 },
+            color: INK,
+            titleCase: true,
+            children: [
+              { text: "Saturday," },
+              { text: " " }, // NBSP: a plain space would collapse
+              { text: "November 7", font: { weight: 700 } },
+            ],
+          },
+
+          // Location + city (Figma "Frame 12"). Both fill the stack's width
+          // and wrap, sharing a 3-line budget: if the copy wraps past it,
+          // both shrink together until it fits, so the block never grows
+          // into the headline.
+          {
+            kind: "stack",
+            gap: 0,
+            fit: { maxLines: 3, minScale: 0.45 },
+            children: [
+              // The comma is part of the design, so it's a static segment
+              // that stays attached to the end of the editable name as it wraps.
+              {
+                kind: "row",
+                wrap: true,
+                width: 938,
+                font: { weight: 400, size: 96, lineHeight: 115.2, letterSpacing: -0.96 },
+                color: INK,
+                titleCase: true,
+                children: [
+                  { field: "location", label: "Location name", default: "Location name" },
+                  { text: "," },
+                ],
+              },
+              {
+                kind: "row",
+                wrap: true,
+                width: 938,
+                font: { weight: 700, size: 96, lineHeight: 115.2, letterSpacing: -0.96 },
+                color: INK,
+                titleCase: true,
+                children: [{ field: "city", label: "City name", default: "City name" }],
+              },
+            ],
+          },
+
+          // Credits (Figma "Group 12"): the organizer line above the OHF lockup line.
+          {
+            kind: "stack",
+            gap: 14.6,
+            children: [
+              // "Organized by <organizer>" (Figma "Frame 14").
+              {
+                kind: "row",
+                gap: 6,
+                align: "center",
+                font: { weight: 400, size: 29.1, lineHeight: 26.8, letterSpacing: -0.29 },
+                color: INK,
+                children: [
+                  { text: "Organized by" },
+                  { field: "organizer", label: "Organizer name", default: "Organizer name", font: { weight: 700 } },
+                ],
+              },
+              // "and the [Open Home Foundation]" (Figma "Group 11") — static.
+              {
+                kind: "row",
+                gap: 16,
+                align: "center",
+                font: { weight: 400, size: 29.1, lineHeight: 26.8, letterSpacing: -0.29 },
+                color: INK,
+                children: [{ text: "and the" }, { kind: "image", asset: "ohfLockup", w: 419.4, h: 41 }],
+              },
+            ],
+          },
         ],
       },
     ],
   },
 ];
-
-// Parse a YYYY-MM-DD value as date components (avoids UTC-shift issues).
-export function parseIsoDate(value) {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || "");
-  if (!m) return null;
-  const dt = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-  return Number.isNaN(dt.getTime()) ? null : dt;
-}
-
-export const DATE_PARTS = {
-  weekday: (dt) => dt.toLocaleDateString("en-US", { weekday: "long" }) + ",",
-  monthday: (dt) =>
-    dt.toLocaleDateString("en-US", { month: "long", day: "numeric" }),
-};

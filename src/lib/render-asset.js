@@ -4,81 +4,57 @@
 // Runs as a Netlify function via the Astro endpoint
 // src/pages/community-day/asset-generator/image.png.ts.
 //
-// The backdrop art and the Figtree fonts are bundled into the function as
-// data URIs (Vite `?inline`), so a render only ever fetches the project logo
-// from the branding API — and those responses are cached in memory.
+// Every asset (backdrop, logomarks, OHF lockup, Figtree) is bundled into the
+// function as a data URI (Vite `?inline`), so a render makes no network
+// requests at all.
 
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
-import { DATE_PARTS, parseIsoDate } from "./asset-templates.js";
+import { create as createFont } from "fontkitten";
 
-import gradientUri from "../assets/asset-generator/gradient.png?inline";
-import illustrationUri from "../assets/asset-generator/illustration.svg?inline";
+import backdropUri from "../assets/asset-generator/backdrop.jpg?inline";
+import backdropSquareUri from "../assets/asset-generator/backdrop-square.jpg?inline";
+import logoHaUri from "../assets/asset-generator/logo-ha.svg?inline";
+import logoEsphomeUri from "../assets/asset-generator/logo-esphome.svg?inline";
+import logoMaUri from "../assets/asset-generator/logo-ma.svg?inline";
+import ohfLockupUri from "../assets/asset-generator/ohf-lockup.svg?inline";
 import figtree400Uri from "../assets/asset-generator/fonts/figtree-400.ttf?inline";
 import figtree700Uri from "../assets/asset-generator/fonts/figtree-700.ttf?inline";
 
-const PIXEL_RATIO = 2; // export at 2x → e.g. 2160×2160 for a 1080 frame
+const PIXEL_RATIO = 2; // export at 2x → e.g. 2160×2160 for a 1080-wide frame
 
-const ASSETS = { gradient: gradientUri, illustration: illustrationUri };
+const ASSETS = {
+  backdrop: backdropUri,
+  backdropSquare: backdropSquareUri,
+  logoHa: logoHaUri,
+  logoEsphome: logoEsphomeUri,
+  logoMa: logoMaUri,
+  ohfLockup: ohfLockupUri,
+};
 
-const dataUriToBuffer = (uri) =>
-  Buffer.from(uri.slice(uri.indexOf(",") + 1), "base64");
+const dataUriToBuffer = (uri) => Buffer.from(uri.slice(uri.indexOf(",") + 1), "base64");
+
+const figtree400Buf = dataUriToBuffer(figtree400Uri);
+const figtree700Buf = dataUriToBuffer(figtree700Uri);
+
 const FONTS = [
-  {
-    name: "Figtree",
-    weight: 400,
-    style: "normal",
-    data: dataUriToBuffer(figtree400Uri),
-  },
-  {
-    name: "Figtree",
-    weight: 700,
-    style: "normal",
-    data: dataUriToBuffer(figtree700Uri),
-  },
+  { name: "Figtree", weight: 400, style: "normal", data: figtree400Buf },
+  { name: "Figtree", weight: 700, style: "normal", data: figtree700Buf },
 ];
 
-// --- project logos, from the branding API ---
-
-const logoUrl = (project) =>
-  `https://brands.openhomefoundation.org/api/${project}/logo/screen/lockup/main/color/light/svg`;
-
-// project → {uri, aspect}; refreshed after TTL so brand updates propagate
-// without a redeploy.
-const logoCache = new Map();
-const LOGO_TTL_MS = 60 * 60 * 1000;
-
-async function fetchLogo(project) {
-  const cached = logoCache.get(project);
-  if (cached && Date.now() - cached.at < LOGO_TTL_MS) return cached;
-
-  const res = await fetch(logoUrl(project));
-  if (!res.ok) {
-    // A stale logo beats a failed render.
-    if (cached) return cached;
-    throw new Error(`Branding API returned ${res.status} for ${project}`);
-  }
-  const svg = await res.text();
-  const width = Number(/<svg[^>]*\swidth="([\d.]+)"/.exec(svg)?.[1]);
-  const height = Number(/<svg[^>]*\sheight="([\d.]+)"/.exec(svg)?.[1]);
-  if (!width || !height)
-    throw new Error(`Could not read dimensions of the ${project} logo`);
-
-  const entry = {
-    uri: `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`,
-    aspect: width / height,
-    at: Date.now(),
-  };
-  logoCache.set(project, entry);
-  return entry;
-}
+// Parsed once for text-wrapping estimates (see computeFitScale below) — a
+// separate, much lighter concern from the FONTS array above, which hands the
+// raw bytes to satori for actual glyph rendering.
+const FONT_METRICS = {
+  400: createFont(figtree400Buf),
+  700: createFont(figtree700Buf),
+};
 
 // --- satori element tree ---
 
 // Satori throws on style keys whose value is undefined, so drop them from
 // every style object before handing the tree over.
-const compact = (obj) =>
-  Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined));
+const compact = (obj) => Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined));
 
 const el = (type, { style, ...props }, children) => ({
   type,
@@ -86,167 +62,243 @@ const el = (type, { style, ...props }, children) => ({
 });
 
 // Figma's TITLE case styling (CSS text-transform: capitalize).
-const capitalize = (s) =>
-  s.replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase());
+const capitalize = (s) => s.replace(/(^|\s)(\S)/g, (m, sp, ch) => sp + ch.toUpperCase());
 
 function textStyle(font, color) {
   return {
     fontWeight: font.weight,
     fontSize: font.size,
     lineHeight: font.lineHeight != null ? `${font.lineHeight}px` : undefined,
-    letterSpacing:
-      font.letterSpacing != null ? `${font.letterSpacing}px` : undefined,
+    letterSpacing: font.letterSpacing != null ? `${font.letterSpacing}px` : undefined,
     color,
   };
+}
+
+// --- text-wrap estimation, for the location/city "fit" shrink budget ---
+//
+// Satori does its own real wrapping at render time; this only has to predict
+// it accurately enough to pick a font-size scale, so a plain greedy wrap over
+// per-glyph advance widths (no kerning/shaping) is close enough — the design
+// itself isn't pixel-precise to the Figma source either (see the Figtree/
+// Biotif substitution note in asset-templates.js).
+function measureText(weight, text, fontSize, letterSpacing) {
+  const font = FONT_METRICS[weight] ?? FONT_METRICS[400];
+  const glyphs = font.glyphsForString(text);
+  const scale = fontSize / font.unitsPerEm;
+  const advance = glyphs.reduce((sum, g) => sum + g.advanceWidth * scale, 0);
+  const spacing = letterSpacing ? letterSpacing * Math.max(0, glyphs.length - 1) : 0;
+  return advance + spacing;
+}
+
+function countWrappedLines(weight, text, fontSize, letterSpacing, maxWidth) {
+  const words = text.split(" ").filter(Boolean);
+  if (words.length === 0) return 1;
+  const spaceWidth = measureText(weight, " ", fontSize, letterSpacing);
+  let lines = 1;
+  let lineWidth = 0;
+  for (const word of words) {
+    const wordWidth = measureText(weight, word, fontSize, letterSpacing);
+    const next = lineWidth === 0 ? wordWidth : lineWidth + spaceWidth + wordWidth;
+    if (next > maxWidth && lineWidth > 0) {
+      lines += 1;
+      lineWidth = wordWidth;
+    } else {
+      lineWidth = next;
+    }
+  }
+  return lines;
+}
+
+// Shrink a `fit` stack's row children together — font size, line height and
+// letter spacing in step — until their combined wrapped line count lands
+// inside the budget, mirroring the reference template's applyFits().
+function computeFitScale(fit, rows) {
+  let scale = 1;
+  const totalLines = () =>
+    rows.reduce(
+      (sum, r) => sum + countWrappedLines(r.weight, r.text, r.font.size * scale, r.font.letterSpacing * scale, r.width),
+      0,
+    );
+  while (totalLines() > fit.maxLines && scale > fit.minScale) {
+    scale = Math.max(fit.minScale, scale - 0.02);
+  }
+  return scale;
+}
+
+// --- per-size layer overrides ---
+
+// Deep-ish merge of a layer with a size override: `font` merges key-by-key
+// and `children` merge element-wise, everything else is replaced.
+function mergeLayer(layer, patch) {
+  if (!patch) return layer;
+  const out = { ...layer, ...patch };
+  if (layer.font || patch.font) out.font = { ...layer.font, ...patch.font };
+  if (layer.children) {
+    out.children = layer.children.map((c, i) => mergeLayer(c, patch.children && patch.children[i]));
+  }
+  return out;
+}
+
+function mergeLayers(layers, overrides = {}) {
+  return layers.map((l) => mergeLayer(l, l.id && overrides[l.id]));
 }
 
 /**
  * Render one template to a PNG.
  *
- * @param {object} tpl     entry from TEMPLATES
- * @param {object} opts    validated request values
- * @param {number} opts.height     output height (from tpl.sizes)
- * @param {string} opts.project    branding-API project slug for the logo
- * @param {Date}   opts.date       event date
- * @param {object} opts.fields     {city, organizer}
- * @param {boolean} opts.byline    show the "organized by" line
+ * @param {object} tpl    entry from TEMPLATES
+ * @param {object} opts   validated request values
+ * @param {object} opts.size    entry from tpl.sizes (carries height + any layer overrides)
+ * @param {object} opts.fields  {location, city, organizer}
  * @returns {Promise<Buffer>} PNG bytes, tpl.width*2 wide
  */
-export async function renderAsset(
-  tpl,
-  { height, project, date, fields, byline },
-) {
-  const logo = await fetchLogo(project);
-  const delta = height - tpl.height;
+export async function renderAsset(tpl, { size, fields }) {
+  const height = size.height;
+  const resolveText = (seg) => seg.text ?? fields[seg.field] ?? "";
+  const rowText = (row) => row.children.map((child) => resolveText(child)).join("");
 
-  const resolveText = (seg) =>
-    seg.text ??
-    (seg.datePart ? DATE_PARTS[seg.datePart](date) : (fields[seg.field] ?? ""));
+  const positionStyle = (layer, flow) => {
+    if (flow) return {};
+    const style = { position: "absolute", left: layer.x };
+    if (layer.bottom != null) style.bottom = layer.bottom;
+    else style.top = layer.y;
+    return style;
+  };
 
-  const children = [];
-  for (const layer of tpl.layers) {
-    if (layer.optional && !byline) continue;
-    // Content layers are bottom-anchored; when the optional by-line is off,
-    // the layers above it slide down to stay anchored.
-    let shift = layer.backdrop ? 0 : delta;
-    if (layer.shiftOnCollapse && !byline) shift += collapseShiftOf(tpl);
-
-    if (layer.kind === "image") {
-      let { x, y, w, h } = layer;
-      if (layer.logo) w = h * logo.aspect;
-      if (layer.scaleWithSize) {
-        // Scale proportionally about the frame's top-centre, like the Figma
-        // frame does when it grows (transform-origin at 540,0 frame-relative).
-        const s = height / tpl.height;
-        const ox = tpl.width / 2 - x;
-        const oy = 0 - y;
-        x += ox * (1 - s);
-        y += oy * (1 - s);
-        w *= s;
-        h *= s;
-      } else if (layer.cover) {
-        h = height; // gradient fills the frame; object-fit keeps proportions
-      }
-      children.push(
-        el("img", {
-          src: layer.logo ? logo.uri : ASSETS[layer.asset],
-          width: w,
-          height: h,
-          style: {
-            position: "absolute",
-            left: x,
-            top: y + shift,
-            ...(layer.cover ? { objectFit: "cover" } : {}),
-          },
-        }),
-      );
-      continue;
-    }
-
-    if (layer.kind === "text") {
-      const text = layer.titleCase ? capitalize(layer.text) : layer.text;
-      children.push(
-        el(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: layer.x,
-              top: layer.y + shift,
-              width: layer.w,
-              ...textStyle(layer.font, layer.color),
-            },
-          },
-          text,
-        ),
-      );
-      continue;
-    }
-
-    if (layer.kind === "row") {
-      const segs = layer.children.map((seg) => {
-        const raw = resolveText(seg);
-        const text = layer.titleCase ? capitalize(raw) : raw;
-        return el(
-          "span",
-          {
-            style: {
-              whiteSpace: "pre", // keep single-line, preserve deliberate spaces
-              ...textStyle({ ...layer.font, ...seg.font }, layer.color),
-            },
-          },
-          text,
-        );
-      });
-      children.push(
-        el(
-          "div",
-          {
-            style: {
-              position: "absolute",
-              left: layer.x,
-              top: layer.y + shift,
-              display: "flex",
-              alignItems: "center",
-              gap: layer.gap ?? 0,
-              padding: layer.padding,
-              borderRadius: layer.radius,
-              backgroundColor: layer.background,
-            },
-          },
-          segs,
-        ),
-      );
-    }
+  function buildImage(layer, flow) {
+    let { w, h } = layer;
+    if (layer.backdrop && layer.cover) h = height; // cover backdrop fills the requested height
+    return el("img", {
+      src: ASSETS[layer.asset],
+      width: w,
+      height: h,
+      style: { ...positionStyle(layer, flow), ...(layer.cover ? { objectFit: "cover" } : {}) },
+    });
   }
+
+  function buildText(layer, flow) {
+    const text = layer.titleCase ? capitalize(layer.text) : layer.text;
+    return el(
+      "div",
+      { style: { ...positionStyle(layer, flow), width: layer.w, ...textStyle(layer.font, layer.color) } },
+      text,
+    );
+  }
+
+  function buildRow(layer, flow) {
+    if (layer.wrap) {
+      // A wrapping row is really one run of copy assembled from static +
+      // editable segments (e.g. "<location>," or "<city>"), rendered as a
+      // single text block so satori's own line-breaking keeps trailing
+      // punctuation attached to the last word — the way a real paragraph
+      // would. A flex row with flex-wrap instead treats each segment as an
+      // atomic item and can break between them (e.g. stranding the comma on
+      // its own line).
+      const raw = rowText(layer);
+      const text = layer.titleCase ? capitalize(raw) : raw;
+      return el(
+        "div",
+        { style: { ...positionStyle(layer, flow), width: layer.width, ...textStyle(layer.font, layer.color) } },
+        text,
+      );
+    }
+    const segs = layer.children.map((child) => {
+      if (child.kind === "image") return buildImage(child, true);
+      const raw = resolveText(child);
+      const text = layer.titleCase ? capitalize(raw) : raw;
+      return el(
+        "span",
+        {
+          style: {
+            whiteSpace: layer.wrap ? undefined : "pre", // preserve deliberate single-line spacing
+            ...textStyle({ ...layer.font, ...child.font }, layer.color),
+          },
+        },
+        text,
+      );
+    });
+    return el(
+      "div",
+      {
+        style: {
+          ...positionStyle(layer, flow),
+          display: "flex",
+          flexWrap: layer.wrap ? "wrap" : undefined,
+          width: layer.wrap ? layer.width : undefined,
+          alignItems: layer.align || "flex-start",
+          gap: layer.gap ?? 0,
+          padding: Array.isArray(layer.padding) ? layer.padding.map((v) => `${v}px`).join(" ") : layer.padding,
+          borderRadius: layer.radius,
+          backgroundColor: layer.background,
+        },
+      },
+      segs,
+    );
+  }
+
+  function buildStack(layer, flow) {
+    let children = layer.children;
+    if (layer.fit) {
+      const rows = layer.children.map((c) => ({
+        weight: c.font.weight,
+        font: c.font,
+        width: c.width,
+        text: c.titleCase ? capitalize(rowText(c)) : rowText(c),
+      }));
+      const scale = computeFitScale(layer.fit, rows);
+      if (scale < 1) {
+        children = layer.children.map((c) => ({
+          ...c,
+          font: {
+            ...c.font,
+            size: c.font.size * scale,
+            lineHeight: c.font.lineHeight * scale,
+            letterSpacing: c.font.letterSpacing * scale,
+          },
+        }));
+      }
+    }
+    return el(
+      "div",
+      {
+        style: {
+          ...positionStyle(layer, flow),
+          display: "flex",
+          flexDirection: "column",
+          width: layer.width,
+          // Flexbox's default align-items is stretch, which would force
+          // every child (e.g. the pill, which should hug its own text) to
+          // the stack's full width.
+          alignItems: layer.align || "flex-start",
+          gap: layer.gap ?? 0,
+        },
+      },
+      children.map((c) => buildLayer(c, true)),
+    );
+  }
+
+  function buildLayer(layer, flow) {
+    if (layer.kind === "image") return buildImage(layer, flow);
+    if (layer.kind === "text") return buildText(layer, flow);
+    if (layer.kind === "row") return buildRow(layer, flow);
+    if (layer.kind === "stack") return buildStack(layer, flow);
+    return el("div", {}, undefined);
+  }
+
+  const layers = mergeLayers(tpl.layers, size.overrides);
+  const children = layers.map((layer) => buildLayer(layer, false));
 
   const svg = await satori(
     el(
       "div",
-      {
-        style: {
-          width: tpl.width,
-          height,
-          display: "flex",
-          position: "relative",
-          fontFamily: "Figtree",
-        },
-      },
+      { style: { width: tpl.width, height, display: "flex", position: "relative", fontFamily: "Figtree" } },
       children,
     ),
     { width: tpl.width, height, fonts: FONTS },
   );
 
-  const png = new Resvg(svg, {
-    fitTo: { mode: "width", value: tpl.width * PIXEL_RATIO },
-  })
-    .render()
-    .asPng();
+  const png = new Resvg(svg, { fitTo: { mode: "width", value: tpl.width * PIXEL_RATIO } }).render().asPng();
   return Buffer.from(png);
-}
-
-function collapseShiftOf(tpl) {
-  return tpl.layers.find((l) => l.optional)?.collapseShift ?? 0;
 }
 
 /**
@@ -255,18 +307,8 @@ function collapseShiftOf(tpl) {
  * options object for renderAsset plus the pieces the endpoint needs.
  */
 export function parseParams(tpl, params) {
-  const size = tpl.sizes.find(
-    (s) => s.value === (params.get("size") ?? tpl.defaultSize),
-  );
+  const size = tpl.sizes.find((s) => s.value === (params.get("size") ?? tpl.defaultSize));
   if (!size) return { error: "unknown size" };
-
-  const logo = tpl.logos.find(
-    (l) => l.value === (params.get("logo") ?? tpl.defaultLogo),
-  );
-  if (!logo) return { error: "unknown logo" };
-
-  const date = parseIsoDate(params.get("date") ?? tpl.datePicker.default);
-  if (!date) return { error: "date must be YYYY-MM-DD" };
 
   const fields = {};
   for (const f of tpl.fields) {
@@ -275,17 +317,5 @@ export function parseParams(tpl, params) {
     fields[f.name] = (params.get(f.name) ?? f.default).slice(0, f.maxLength);
   }
 
-  const byline =
-    (params.get("byline") ?? (tpl.byline.default ? "1" : "0")) !== "0";
-
-  return {
-    size,
-    render: {
-      height: size.height,
-      project: logo.project,
-      date,
-      fields,
-      byline,
-    },
-  };
+  return { size, render: { size, fields } };
 }
