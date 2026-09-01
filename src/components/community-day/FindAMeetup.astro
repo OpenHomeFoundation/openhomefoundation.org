@@ -9,6 +9,7 @@ interface MeetupEvent {
   end: string;
   description: string;
   location: string;
+  address: string[];
   url: string;
   host?: string;
   latitude: number;
@@ -24,15 +25,6 @@ interface CommunityDayCalendar {
 }
 
 const EVENTS_API_URL = "https://web-api.openhomefoundation.org/events/ohf-community-day";
-
-function isUrl(value: string): boolean {
-  try {
-    new URL(value);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
@@ -50,15 +42,20 @@ try {
   console.error(`Failed to fetch Community Day events from ${EVENTS_API_URL}`, error);
 }
 
-const mapEvents = events.map((event) => ({
-  id: event.id,
-  summary: event.summary,
-  starts: timeFormatter.format(new Date(event.start)),
-  location: isUrl(event.location) ? null : event.location,
-  url: event.url,
-  lat: event.latitude,
-  lng: event.longitude,
-}));
+const mapEvents = events.map((event) => {
+  const address = (event.address ?? []).map((line) => line.trim()).filter(Boolean);
+  const place = address.slice(Math.max(1, address.length - 2));
+
+  return {
+    id: event.id,
+    title: address[0] ?? event.summary,
+    starts: timeFormatter.format(new Date(event.start)),
+    location: place.length > 0 ? place.join(", ") : null,
+    url: event.url,
+    lat: event.latitude,
+    lng: event.longitude,
+  };
+});
 
 // Escape "<" so a stray "</script" inside any event text can't end the
 // script tag early.
@@ -91,7 +88,7 @@ const hasEvents = events.length > 0;
     {
       hasEvents && (
         <div class="map-column animate--fade-up-in">
-          <div id="find-a-meetup-map" class="map" aria-label="Map of Community Day meetups" />
+          <div id="find-a-meetup-map" class="map is-loading" aria-label="Map of Community Day meetups" />
         </div>
       )
     }
@@ -210,9 +207,45 @@ const hasEvents = events.length > 0;
     aspect-ratio: 3 / 4;
     border-radius: 0.75rem;
     overflow: hidden;
+    background: rgba(255, 255, 255, 0.3);
 
     @include bp(tablet) {
       aspect-ratio: 16 / 9;
+    }
+
+    &.is-loading {
+      :global(.leaflet-pane),
+      :global(.leaflet-control-container) {
+        opacity: 0;
+      }
+
+      animation: map-placeholder-pulse 1.6s ease-in-out infinite;
+    }
+
+    :global(.leaflet-pane),
+    :global(.leaflet-control-container) {
+      transition: opacity 400ms ease-out;
+    }
+  }
+
+  @keyframes map-placeholder-pulse {
+    0%,
+    100% {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    50% {
+      background-color: rgba(255, 255, 255, 0.45);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .map.is-loading {
+      animation: none;
+    }
+
+    .map :global(.leaflet-pane),
+    .map :global(.leaflet-control-container) {
+      transition: none;
     }
   }
 
@@ -237,12 +270,14 @@ const hasEvents = events.length > 0;
   }
 
   :global(.leaflet-popup-content-wrapper) {
+    max-width: 300px;
     background: rgba(255, 255, 255, 0.8) !important;
     border: 1px solid #ffffff !important;
     padding: 16px !important;
     box-shadow: none !important;
 
     @include bp(tablet) {
+      max-width: 500px;
       padding: 18px 24px !important;
     }
   }

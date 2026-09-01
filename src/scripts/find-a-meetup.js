@@ -35,7 +35,7 @@ if (mapContainer && events.length > 0) {
 
   L.control.zoom({ position: "bottomright" }).addTo(map);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  const tiles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
     // Stops the tile layer itself from rendering repeated copies of the
@@ -82,7 +82,7 @@ if (mapContainer && events.length > 0) {
 
     const title = document.createElement("h3");
     title.className = "heading";
-    title.textContent = event.summary;
+    title.textContent = event.title;
     wrapper.appendChild(title);
 
     wrapper.appendChild(
@@ -121,19 +121,40 @@ if (mapContainer && events.length > 0) {
     bounds.push([event.lat, event.lng]);
   }
 
-  if (bounds.length > 0) {
-    map.invalidateSize();
-    map.fitBounds(bounds, { padding: [16, 16] });
+  function fitToEvents() {
+    map.invalidateSize({ pan: false });
+    if (bounds.length === 0) return;
+
+    map.fitBounds(bounds, { padding: [16, 16], animate: false });
 
     // The map column is wider on desktop (matches the "desktop" breakpoint
     // in src/styles/scss/mixins.scss), so fitBounds already lands on a
     // closer zoom there than on mobile — nudge it in a little further still.
     if (window.matchMedia("(min-width: 1024px)").matches) {
       map.panBy([-90, -70], { animate: false });
-      map.setZoom(map.getZoom() + 0.5);
+      map.setZoom(map.getZoom() + 0.5, { animate: false });
     }
   }
 
-  requestAnimationFrame(() => map.invalidateSize());
-  window.addEventListener("resize", () => map.invalidateSize());
+  let revealed = false;
+  let revealTimer;
+
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    clearTimeout(revealTimer);
+    fitToEvents();
+    mapContainer.classList.remove("is-loading");
+  }
+
+  revealTimer = setTimeout(reveal, 2000);
+  tiles.on("load", reveal);
+
+  new ResizeObserver(() => {
+    if (revealed) {
+      map.invalidateSize();
+    } else {
+      fitToEvents();
+    }
+  }).observe(mapContainer);
 }
