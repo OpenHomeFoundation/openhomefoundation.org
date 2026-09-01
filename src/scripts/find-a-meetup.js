@@ -7,7 +7,7 @@ const mapContainer = document.getElementById("find-a-meetup-map");
 const eventsDataEl = document.getElementById("find-a-meetup-events");
 const events = eventsDataEl ? JSON.parse(eventsDataEl.textContent) : [];
 
-if (mapContainer && events.length > 0) {
+if (mapContainer) {
   const map = L.map(mapContainer, {
     // Added manually below, positioned bottom-right instead of Leaflet's
     // default top-left.
@@ -31,6 +31,8 @@ if (mapContainer && events.length > 0) {
     // markers being just outside the initial view (still reachable by
     // panning) for the map actually filling its box.
     minZoom: 2,
+    center: [20, 0],
+    zoom: 2,
   });
 
   L.control.zoom({ position: "bottomright" }).addTo(map);
@@ -122,9 +124,9 @@ if (mapContainer && events.length > 0) {
   }
 
   function fitToEvents() {
-    map.invalidateSize({ pan: false });
     if (bounds.length === 0) return;
 
+    map.invalidateSize({ pan: false });
     map.fitBounds(bounds, { padding: [16, 16], animate: false });
 
     // The map column is wider on desktop (matches the "desktop" breakpoint
@@ -151,7 +153,7 @@ if (mapContainer && events.length > 0) {
   tiles.on("load", reveal);
 
   new ResizeObserver(() => {
-    if (revealed) {
+    if (revealed || bounds.length === 0) {
       map.invalidateSize();
     } else {
       fitToEvents();

@@ -33,11 +33,15 @@ const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZoneName: "short",
 });
 
+const now = Date.now();
+
 let events: MeetupEvent[] = [];
 try {
   const response = await fetch(EVENTS_API_URL);
   const data: CommunityDayCalendar = await response.json();
-  events = [...data.events].sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+  events = data.events
+    .filter((event) => new Date(event.end || event.start).getTime() >= now)
+    .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 } catch (error) {
   console.error(`Failed to fetch Community Day events from ${EVENTS_API_URL}`, error);
 }
@@ -71,27 +75,19 @@ const hasEvents = events.length > 0;
   <div class="inner">
     <div class="title-container title-container--row animate--fade-up-in">
       <h2 class="h2 heading">{hasEvents ? "Find a meetup near you" : "Host an event in your area"}</h2>
-      {
-        hasEvents && (
-          <a
-            href="https://luma.com/communityday2026"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="button button--secondary button--has-icon button--find"
-          >
-            Browse all meetups on Luma
-          </a>
-        )
-      }
+      <a
+        href="https://luma.com/communityday2026"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="button button--secondary button--has-icon button--find"
+      >
+        {hasEvents ? "Browse all meetups on Luma" : "Host a meetup"}
+      </a>
     </div>
 
-    {
-      hasEvents && (
-        <div class="map-column animate--fade-up-in">
-          <div id="find-a-meetup-map" class="map is-loading" aria-label="Map of Community Day meetups" />
-        </div>
-      )
-    }
+    <div class="map-column animate--fade-up-in">
+      <div id="find-a-meetup-map" class="map is-loading" aria-label="Map of Community Day meetups" />
+    </div>
 
     <script type="application/json" id="find-a-meetup-events" is:inline set:html={mapEventsJson} />
 
