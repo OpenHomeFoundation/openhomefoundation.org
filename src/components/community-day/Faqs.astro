@@ -10,17 +10,31 @@ interface FaqItem {
 
 const items: FaqItem[] = faqItems ?? [];
 
+const EMAIL_PATTERN = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
+
+// Turns any email address written in the answer into a click-to-copy button,
+// handled site-wide by src/scripts/copy-email.js. Splitting on tags first
+// keeps the pattern to text nodes, so an address inside an href or another
+// attribute is left alone.
+function copyableEmails(html: string): string {
+  return html
+    .split(/(<[^>]*>)/)
+    .map((chunk) =>
+      chunk.startsWith("<")
+        ? chunk
+        : chunk.replace(
+            EMAIL_PATTERN,
+            (email) => `<button type="button" class="copy-email" data-email="${email}">${email}</button>`,
+          ),
+    )
+    .join("");
+}
+
 // Pre-render Markdown answers to HTML at build time — answers often need to
-// link out (Discord, Luma, etc). Links open in a new tab since they point
-// away from the page; mailto: links instead get the site-wide copy-email
-// treatment (src/scripts/copy-email.js), which copies the address on click.
+// link out (Discord, Luma, etc).
 const rendered = items.map((item) => ({
   title: item.title,
-  html: micromark(item.content ?? "").replace(/<a href="([^"]*)"/g, (_match, href) =>
-    href.startsWith("mailto:")
-      ? `<a class="copy-email" href="${href}"`
-      : `<a target="_blank" rel="noreferrer noopener" href="${href}"`,
-  ),
+  html: copyableEmails(micromark(item.content ?? "")),
 }));
 ---
 
@@ -169,9 +183,18 @@ const rendered = items.map((item) => ({
       margin-bottom: 0;
     }
 
-    :global(a) {
+    :global(a),
+    :global(.copy-email) {
       color: var(--title-color);
       text-decoration: underline;
+    }
+
+    :global(button.copy-email) {
+      padding: 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      cursor: pointer;
     }
   }
 
