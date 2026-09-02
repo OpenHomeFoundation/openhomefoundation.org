@@ -99,7 +99,7 @@ One big item missing last year was a Host Playbook – I’m thrilled to say we�
 
 In addition to this timeline, the playbook also talks about finding the right kind of venue, how to set up your Luma event, activity ideas, and handling guest privacy when it comes to photography.
 
-Did I lose you? 😅 Don’t worry. My team is genuinely happy to help! You can reach out to me, Florencia, Isabelle, or Inês either in the <a href="https://discord.com/channels/330944238910963714/1537054268933144677" target="_blank" rel="noopener noreferrer">Community Day Discord channel</a> (tag one of us!) or by [emailing the team](mailto:communityday@openhomefoundation.org).
+Did I lose you? 😅 Don’t worry. My team is genuinely happy to help! You can reach out to me, Florencia, Isabelle, or Inês either in the <a href="https://discord.com/channels/330944238910963714/1537054268933144677" target="_blank" rel="noopener noreferrer">Community Day Discord channel</a> (tag one of us!) (tag one of us!) or by emailing the team at <a href="mailto:communityday@openhomefoundation.org" class="copy-email" aria-label="communityday@openhomefoundation.org – click to copy email address">communityday@openhomefoundation.org</a>.
 
 <img src="/assets/images/blog/countdown-to-community-day-2026-starts-now/image3.webp" alt="Portraits of the five members of the Community department: Isabelle, Melissa, Florencia, Missy, and Inês." style="border: 0;box-shadow: none;">
 
@@ -128,4 +128,4 @@ We know there’s a lot more information to digest for this year’s Community D
 
 The <a href="https://discord.com/channels/330944238910963714/1537054268933144677" target="_blank" rel="noopener noreferrer">#community-day</a> channel in Discord is where you can chat with other hosts to share ideas for activities you’ll have at your meetups, and make threads to talk more closely with your own guests. I’ll hang out in there as well to answer any questions you may have, and keep hosts updated on the latest news.
 
-If you don’t have Discord, or simply prefer email communications, we’ll happily provide the same support when you [email us](mailto:community@openhomefoundation.org). I personally cannot wait to hear from you, and look forward to seeing all the photos from this year’s celebration of the community 🤩
+If you don’t have Discord, or simply prefer email communications, we’ll happily provide the same support when you email us at <a href="mailto:communityday@openhomefoundation.org" class="copy-email" aria-label="communityday@openhomefoundation.org – click to copy email address">communityday@openhomefoundation.org</a>. I personally cannot wait to hear from you, and look forward to seeing all the photos from this year’s celebration of the community 🤩
