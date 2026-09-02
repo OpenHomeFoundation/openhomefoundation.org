@@ -12,10 +12,15 @@ const items: FaqItem[] = faqItems ?? [];
 
 // Pre-render Markdown answers to HTML at build time — answers often need to
 // link out (Discord, Luma, etc). Links open in a new tab since they point
-// away from the page.
+// away from the page; mailto: links instead get the site-wide copy-email
+// treatment (src/scripts/copy-email.js), which copies the address on click.
 const rendered = items.map((item) => ({
   title: item.title,
-  html: micromark(item.content ?? "").replace(/<a /g, '<a target="_blank" rel="noreferrer noopener" '),
+  html: micromark(item.content ?? "").replace(/<a href="([^"]*)"/g, (_match, href) =>
+    href.startsWith("mailto:")
+      ? `<a class="copy-email" href="${href}"`
+      : `<a target="_blank" rel="noreferrer noopener" href="${href}"`,
+  ),
 }));
 ---
 
@@ -187,6 +192,14 @@ const rendered = items.map((item) => ({
 
     .faq-item[open]::details-content {
       block-size: auto;
+    }
+
+    // The clip above keeps the open/close animation tidy, but it also cuts
+    // off the copy-email tooltip, which sits above its link. Widen the clip
+    // region for the couple of seconds the tooltip is up — by then the panel
+    // is open and sized to its content, so nothing else can spill out.
+    .faq-item:has(.copy-email.is-copied)::details-content {
+      overflow-clip-margin: 3rem;
     }
   }
 
