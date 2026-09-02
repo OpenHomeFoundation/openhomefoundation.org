@@ -1,0 +1,207 @@
+---
+import Section from "./Section.astro";
+---
+
+<Section id="what-is-community-day">
+  <div class="inner">
+    <div class="title-container animate--fade-up-in">
+      <h2 class="h2 heading">What is Community&nbsp;Day?</h2>
+      <div class="content-container">
+        <p>Community Day is a worldwide event for people who use Open Home Foundation platforms. It’s your chance to get together with fellow fans in your area, swap hardware, show off your automations, run quizzes or presentations, and generally connect with others who share your enthusiasm. There’s no fixed format – you can shape your event however you (and your guests) like!</p>
+      </div>
+    </div>
+    <div class="content-container animate--fade-up-in">
+      <p>But what makes Community Day really special is that on this one day, your local gathering is part of something much bigger: you’re joining communities all over the world in a global celebration of privacy, choice, and sustainability in the smart home!</p>
+    </div>
+    <div class="card-grid">
+      <div class="animate--fade-up-in card card-grid__top-left card-grid__compact" style="--i: 0">
+        <p><span class="number">82</span><span>events in 2025</span></p>
+      </div>
+      <div class="animate--fade-up-in card card-grid__middle-top card-grid__media">
+        <img src="/assets/images/community-day/1600+-registered-guests.webp" alt="A group of community members at a Community Day event" width="727" height="628" />
+      </div>
+      <div class="animate--fade-up-in card card-grid__top-right card-grid__compact" style="--i: 1">
+        <p><span class="number">26</span><span>hours continuous meetups</span></p>
+      </div>
+      <div class="animate--fade-up-in card card-grid__bottom-left card-grid__media">
+        <img src="/assets/images/community-day/82-events-in-2025.webp" alt="A presentation given at a Community Day event in 2025" width="727" height="628" />
+      </div>
+      <div class="animate--fade-up-in card card-grid__right-middle card-grid__media">
+        <img src="/assets/images/community-day/26-hours-continuous-meetups.webp" alt="Cutting a slice of cake themed with the Home Assistant logo" width="727" height="308" />
+      </div>
+      <div class="animate--fade-up-in card card-grid__bottom-span card-grid__compact card-grid__horizontal" style="--i: 2">
+        <p><span class="number">1,600+</span><span>registered guests</span></p>
+        <div class="event-avatars">
+          <img loading="lazy" src="/assets/images/community-day/avatars/1.webp" alt="Community avatar" width="96" height="96" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/2.webp" alt="Community avatar" width="96" height="96" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/3.webp" alt="Community avatar" width="96" height="96" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/4.webp" alt="Community avatar" width="96" height="96" />
+          <img loading="lazy" src="/assets/images/community-day/avatars/5.webp" alt="Community avatar" width="96" height="96" />
+        </div>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style lang="scss">
+  .inner {
+    @include fluid(32px, 80px, $property: padding-top);
+    @include fluid(32px, 80px, $property: padding-bottom);
+
+    @include fluid(0, 100px, $property: padding-right);
+    @include fluid(0, 100px, $property: padding-left);
+  }
+
+  .title-container {
+    @include fluid(24px, 60px, $property: margin-bottom);
+    align-items: flex-start;
+    text-align: left;
+
+    @include bp(tablet) {
+      flex-direction: row;
+    }
+  }
+
+  .card-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    @include fluid(40px, 60px, $property: margin-top);
+
+    @include bp(tablet) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 1.25rem;
+      grid-template-areas:
+        "top-left    middle-top  top-right"
+        "bottom-left middle-top  right-middle"
+        "bottom-left bottom-span bottom-span";
+    }
+
+    > * {
+      min-width: 0;
+    }
+  }
+
+  .card-grid__top-left {
+    grid-area: top-left;
+  }
+
+  .card-grid__bottom-left {
+    grid-area: bottom-left;
+  }
+
+  .card-grid__middle-top {
+    grid-area: middle-top;
+  }
+
+  .card-grid__top-right {
+    grid-area: top-right;
+  }
+
+  .card-grid__right-middle {
+    grid-area: right-middle;
+  }
+
+  .card-grid__bottom-span {
+    grid-area: bottom-span;
+  }
+
+  .card-grid__compact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(154.99% 100% at 18.32% 5.15%, rgba(214, 233, 109, 0.20) 0%, rgba(65, 208, 155, 0.20) 100%);
+    background-size: 200% 200%;
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: drift-gradient 14s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * 3.5s);
+    }
+  }
+
+  @keyframes drift-gradient {
+    0%,
+    100% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+  }
+
+  .card-grid__horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 1rem;
+    padding: 1rem;
+
+    &.card {
+      p {
+        padding: 0;
+      }
+    }
+
+    p {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0 1.25rem;
+      flex-shrink: 1;
+    }
+
+    .event-avatars {
+      display: flex;
+      flex-direction: row;
+      flex-shrink: 0;
+
+      img {
+        max-width: 48px;
+        max-height: 48px;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+
+        &:not(:first-child) {
+          margin-left: -1rem;
+        }
+      }
+    }
+  }
+
+  .card-grid__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card {
+    border-radius: 0.375rem;
+
+    p {
+      text-align: center;
+      padding: 1.25rem;
+      color: var(--title-color);
+
+      span {
+        display: block;
+
+        &.number {
+          font-size: 4rem;
+          font-weight: 700;
+          color: var(--accent-green);
+          letter-spacing: -0.64px;
+          line-height: 1;
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  import "../../scripts/count-up.js";
+</script>

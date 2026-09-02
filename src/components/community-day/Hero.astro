@@ -1,0 +1,224 @@
+---
+import Section from "./Section.astro";
+---
+
+<Section id="hero">
+  <div class="inner">
+    <div class="project-logos animation--fade-up-in">
+      <a href="https://www.home-assistant.io/"><img src="https://brands.openhomefoundation.org/api/home-assistant/logo/screen/lockup/main/monochrome/light/svg" alt="Home Assistant logo" /></a>
+      <a href="https://esphome.io/"><img src="https://brands.openhomefoundation.org/api/esphome/logo/screen/lockup/main/monochrome/light/svg" alt="ESPHome logo" /></a>
+      <a href="https://music-assistant.io/"><img src="https://brands.openhomefoundation.org/api/music-assistant/logo/screen/lockup/main/monochrome/light/svg" alt="Music Assistant logo" /></a>
+    </div>
+
+    <div class="heading-meta animation--fade-up-in">
+      <h1 class="h1 heading">Community Day 2026 <span class="date">Saturday, <strong>November 7</strong></span></h1>
+    </div>
+    <div class="content-container animation--fade-up-in">
+      <p>Once a year, the Open Home Foundation community comes together in cities all over the world to meet, share, and connect. Mark your calendar!</p>
+
+      <div class="button-container">
+        <a class="button button--hollow button--has-icon-after button--see-all" href="#find-a-meetup">See all meetups</a>
+        <a class="button button--hollow button--has-icon-after button--host" href="https://luma.com/communityday2026" target="_blank" rel="noopener noreferrer">Host your own</a>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style lang="scss">
+  .inner {
+    background-color: var(--accent-green);
+    border-radius: 1.5rem;
+    position: relative;
+    overflow: hidden;
+
+    @include fluid(20px, 120px, $property: padding-top);
+    @include fluid(20px, 96px, $property: padding-bottom);
+
+    @include fluid(20px, 132px, $property: padding-right);
+    @include fluid(20px, 132px, $property: padding-left);
+
+    &:before {
+      width: 100%;
+      height: 100%;
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("/assets/images/community-day/community-day-hero.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0;
+
+      animation-name: fade-in;
+      animation-duration: 0.5s;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease-in-out;
+      animation-delay: 0.3s;
+    }
+  }
+
+  .project-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    @include fluid(24px, 32px, $property: margin-bottom);
+
+    @include bp(tablet) {
+      gap: 4rem;
+    }
+
+    a {
+      display: flex;
+      flex-direction: column;
+      transition: filter 150ms ease-in-out;
+
+      &:hover {
+        filter: invert(1);
+      }
+    }
+
+    img {
+      width: auto;
+      max-width: 177px;
+      max-height: 24px;
+    }
+  }
+
+  .heading-meta {
+    width: 100%;
+    max-width: 584px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    @include fluid(24px, 32px, $property: margin-bottom);
+    animation-delay: 0.15s;
+
+    .date {
+      font-size: 1.125rem;
+      font-weight: 400;
+      color: var(--title-color);
+      background-color: #ffffff;
+      border-radius: 0.5rem;
+      padding: 6px 12px 8px;
+      display: inline-block;
+
+      @include bp(tablet) {
+        display: inline-flex;
+        gap: 0.25rem;
+        transform: translateY(-1.5ch);
+      }
+    }
+  }
+
+  .content-container {
+    max-width: 584px;
+    animation-delay: 0.3s;
+
+    .button-container {
+      @include fluid(24px, 60px, $property: margin-top);
+      justify-content: flex-start;
+      animation-delay: 0.35s;
+
+      .button {
+        border-radius: 0.75rem;
+        font-size: 1.25rem;
+        color: var(--title-color);
+        font-weight: 600;
+        padding: 0.75rem;
+
+        &--hollow {
+          border-color: #ffffff;
+          background-color: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(2px);
+          transition: background-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
+
+          &:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 2rem rgba(255,255,255, 1);
+          }
+        }
+
+        &--has-icon-after {
+          align-items: center;
+
+          &:after {
+            width: 2.5rem;
+            height: 2.5rem;
+            content: '';
+            background-color: #ffffff;
+            border-radius: 50%;
+            border: 8px solid var(--accent-green);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 50%;
+          }
+
+          @media (prefers-reduced-motion: no-preference) {
+            &:hover:after {
+              animation: wiggle 0.4s ease-in-out;
+            }
+          }
+
+          &.button--see-all {
+            &:after {
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cg clip-path='url(%23clip0_246_187)'%3E%3Cpath d='M14 7C10.1349 7 7 3.86504 7 0C7 3.86504 3.86505 7 0 7C3.86505 7 7 10.135 7 14C7 10.135 10.1349 7 14 7Z' fill='%23002332'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_246_187'%3E%3Crect width='14' height='14' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+            }
+          }
+
+          &.button--host {
+            &:after {
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='17' viewBox='0 0 14 17' fill='none'%3E%3Cpath d='M1.75 16.8C1.26875 16.8 0.856771 16.6355 0.514063 16.3065C0.171354 15.9775 0 15.582 0 15.12V1.68C0 1.218 0.171354 0.8225 0.514063 0.4935C0.856771 0.1645 1.26875 0 1.75 0H12.25C12.7312 0 13.1432 0.1645 13.4859 0.4935C13.8286 0.8225 14 1.218 14 1.68V15.12C14 15.582 13.8286 15.9775 13.4859 16.3065C13.1432 16.6355 12.7312 16.8 12.25 16.8H1.75ZM1.75 15.12H12.25V1.68H10.5V7.56L8.3125 6.3L6.125 7.56V1.68H1.75V15.12Z' fill='%23002332'/%3E%3C/svg%3E");
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-14deg);
+    }
+    75% {
+      transform: rotate(14deg);
+    }
+  }
+
+  .animation--fade-up-in {
+    opacity: 0;
+    transform: translateY(1rem);
+
+    animation-name: fade-up-in;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes fade-up-in {
+    0% {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+</style>

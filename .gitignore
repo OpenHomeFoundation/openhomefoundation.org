@@ -5,3 +5,6 @@ dist
 .vscode/settings.json
 /create-blog-post/
 /add-document/
+
+# Local Netlify folder
+.netlify

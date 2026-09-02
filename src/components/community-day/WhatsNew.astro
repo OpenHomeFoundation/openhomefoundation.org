@@ -1,0 +1,131 @@
+---
+import Section from "./Section.astro";
+---
+
+<Section id="whats-new">
+  <div class="inner">
+    <div class="title-container animate--fade-up-in">
+      <h2 class="h2 heading">What’s new in 2026?</h2>
+      <div class="content-container">
+        <p>When it comes to Community Day, bigger is better! So we’re leveling up both the event and the hosting experience with some exciting changes:</p>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="animate--fade-up-in card">
+        <p class="heading title">Open door</p>
+        <p>Last year’s Community Day was Home Assistant-specific. This year, we’re inviting communities from all of the foundation’s major projects – now, if you want to host an ESPHome or Music Assistant meetup, you can!</p>
+      </div>
+      <div class="animate--fade-up-in card">
+        <p class="heading title">More support</p>
+        <p>We’re rolling out a dedicated Host Playbook, clearer reimbursement guidelines, and a proper merchandise request form, to make running your event feel super smooth.</p>
+      </div>
+      <div class="animate--fade-up-in card">
+        <p class="heading title">A new look</p>
+        <p>We’ve refreshed the event’s palette to represent the whole foundation, with the colors we use for one of our three core principles: sustainability – because it’s our community who sustains us 💚</p>
+      </div>
+    </div>
+    <div class="title-container animate--fade-up-in">
+      <div class="content-container">
+        <p>We hope these improvements will encourage even more community members to get involved this year!</p>
+      </div>
+    </div>
+  </div>
+</Section>
+
+<style lang="scss">
+  .inner {
+    @include fluid(32px, 80px, $property: padding-top);
+    @include fluid(32px, 80px, $property: padding-bottom);
+
+    @include fluid(0, 80px, $property: padding-right);
+    @include fluid(0, 80px, $property: padding-left);
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-right: auto;
+    margin-left: auto;
+    @include fluid(32px, 60px, $property: margin-top);
+    @include fluid(32px, 60px, $property: margin-bottom);
+
+    @include bp(tablet) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    > * {
+      min-width: 0;
+    }
+
+    .card {
+      text-align: left;
+      border: 1px solid #ffffff;
+      background: transparent;
+      padding: 1.5rem;
+      @include fluid(18px, 24px, $property: padding);
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+      transition: background-color 150ms ease, box-shadow 150ms ease, opacity 150ms ease, transform 0.6s ease;
+
+      &:hover {
+        background-color: #ffffff;
+        box-shadow: 0 0 2rem rgba(255,255,255, 1);
+
+        .title {
+          &:after {
+            @media (prefers-reduced-motion: no-preference) {
+              animation: scale-opacity 700ms ease;
+            }
+          }
+        }
+      }
+
+      .title {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+
+        &:before,
+        &:after {
+          width: 0.5rem;
+          height: 0.5rem;
+          content: "";
+          background-color: var(--accent-green);
+          display: inline-block;
+          border-radius: 50%;
+          position: relative;
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        &:after {
+          position: absolute;
+          z-index: 1;
+          opacity: 0;
+
+          @media (prefers-reduced-motion: no-preference) {
+            opacity: 1;
+          }
+        }
+
+        @keyframes scale-opacity {
+          to {
+            transform: scale(4);
+            opacity: 0;
+          }
+        }
+      }
+
+      p {
+        line-height: 1.4;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+// Shared shell for every /community-day/ section: a <section id> (for jump
+// links) wrapping a container capped at 1392px, wider than the site-wide
+// 1200px .container so this page's sections can breathe a bit more.
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<section id={id}>
+  <div class="container">
+    <slot />
+  </div>
+</section>
+
+<style lang="scss">
+  .container {
+    position: relative;
+    width: 100%;
+    max-width: 1392px;
+    margin: 0 auto;
+    padding: 0 16px;
+
+    @include bp(tablet) {
+      padding: 0 24px;
+    }
+  }
+</style>

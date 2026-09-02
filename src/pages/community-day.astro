@@ -1,0 +1,198 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/community-day/Hero.astro";
+import WhatIsCommunityDay from "../components/community-day/WhatIsCommunityDay.astro";
+import WhatsNew from "../components/community-day/WhatsNew.astro";
+import FindAMeetup from "../components/community-day/FindAMeetup.astro";
+import ReadyToJoin from "../components/community-day/ReadyToJoin.astro";
+import Faqs from "../components/community-day/Faqs.astro";
+---
+
+<Base
+  title="Community Day"
+  description="Community Day returns on Saturday, November 7, 2026. Find—or host—a local meetup celebrating Home Assistant, ESPHome, Music Assistant, and the wider Open Home Foundation community."
+>
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Instrument+Sans:ital,wdth,wght@0,99,400..700;1,99,400..700&display=swap"
+  />
+  <Hero />
+  <WhatIsCommunityDay />
+  <WhatsNew />
+  <FindAMeetup />
+  <ReadyToJoin />
+  <Faqs />
+</Base>
+
+<style lang="scss">
+  :root {
+    --title-color: #002332;
+    --body-color: #4F606E;
+
+    --accent-green: #41D09B;
+    --accent-blue: #99DFFC;
+
+    --community-day-bg: #F7F6F2;
+  }
+
+  body {
+    color: var(--body-color);
+    background-color: var(--community-day-bg);
+  }
+
+  // Loaded via the <link slot="head"> above. Scoped to .content (the page's
+  // own slotted content in Base.astro) rather than body: the Navbar/Footer
+  // are rendered as siblings of .content within the same <body>, and
+  // font-family inherits — setting it on body directly would leak into
+  // their sitewide font too.
+  :global(.content) {
+    font-family: "Instrument Sans", sans-serif;
+  }
+
+  :global(h1),
+  :global(h2),
+  :global(h3),
+  :global(h4),
+  :global(h5),
+  :global(h6),
+  :global(.heading) {
+    font-family: Figtree, sans-serif;
+  }
+
+  :global(.heading) {
+    color: var(--title-color);
+    font-weight: 700;
+  }
+
+  :global(#hero) {
+    margin-top: 4rem;
+  }
+
+  :global(h1),
+  :global(.h1) {
+    @include fluid(40, 66, $property: font-size);
+  }
+
+  :global(h2),
+  :global(.h2) {
+    @include fluid(32, 48, $property: font-size);
+  }
+
+  :global(.title-container) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include fluid(16, 32, $property: gap);
+    text-align: center;
+  }
+
+  :global(.content-container p) {
+    @include fluid(18, 24, $property: font-size);
+    color: var(--body-color);
+    font-weight: 400;
+  }
+
+  :global(.content-container .button),
+  :global(.card .button) {
+    text-transform: none;
+  }
+
+  :global(.button-container) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.875rem;
+  }
+
+  :global(.button) {
+    padding-top: 0.6875rem;
+    padding-right: 1.75rem;
+    padding-bottom: 0.6875rem;
+    font-size: 0.875rem;
+    gap: 0.625rem;
+  }
+
+  :global(.button.button--secondary) {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+    transition:
+      border-color 150ms ease-in-out,
+      background-color 150ms ease-in-out;
+
+    &:hover {
+      background-color: var(--title-color);
+      border-color: var(--title-color);
+      color: #ffffff;
+    }
+  }
+
+  :global(.button.button--has-icon) {
+    align-items: center;
+    padding-left: 0.5rem;
+    flex-wrap: nowrap;
+
+    &:before {
+      width: 1.5rem;
+      height: 1.5rem;
+      content: '';
+      background-color: #ffffff;
+      border-radius: 50%;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      &:hover:before {
+        animation: wiggle 0.4s ease-in-out;
+      }
+    }
+  }
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-14deg);
+    }
+    75% {
+      transform: rotate(14deg);
+    }
+  }
+
+  :global(.button) {
+    &.button--has-icon {
+      &:before {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 60%;
+      }
+    }
+
+    &.button--find {
+      &:before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14' fill='none'%3E%3Cg clip-path='url(%23clip0_246_162)'%3E%3Cpath d='M14 7C10.1349 7 7 3.86504 7 0C7 3.86504 3.86505 7 0 7C3.86505 7 7 10.135 7 14C7 10.135 10.1349 7 14 7Z' fill='%23002332'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_246_162'%3E%3Crect width='14' height='14' fill='white'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E");
+      }
+    }
+
+    &.button--host {
+      &:before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cmask id='mask0_193_1605' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='20' height='20'%3E%3Crect width='20' height='20' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_193_1605)'%3E%3Cpath d='M9.33333 9.08333L14.4167 4C14.5682 3.84722 14.7449 3.77083 14.9469 3.77083C15.149 3.77083 15.3264 3.84674 15.4792 3.99854C15.6319 4.15035 15.7083 4.32743 15.7083 4.52979C15.7083 4.73215 15.6319 4.90972 15.4792 5.0625L10.3958 10.1458L9.33333 9.08333ZM11.1042 10.8542L15.4792 6.47917C15.6274 6.32639 15.8033 6.25 16.0069 6.25C16.2106 6.25 16.3889 6.32639 16.5417 6.47917C16.6944 6.63194 16.7708 6.81021 16.7708 7.01396C16.7708 7.21757 16.6944 7.39347 16.5417 7.54167L12.1667 11.9167L11.1042 10.8542ZM4.1875 15.3333C3.0625 14.2083 2.49306 12.8542 2.47917 11.2708C2.46528 9.6875 3.02083 8.33333 4.14583 7.20833L6.5 4.85417L7.60417 5.97917C7.71528 6.09028 7.81944 6.20833 7.91667 6.33333C8.01389 6.45833 8.07639 6.60417 8.10417 6.77083L11.2292 3.64583C11.3774 3.49306 11.5533 3.41667 11.7569 3.41667C11.9606 3.41667 12.1389 3.49306 12.2917 3.64583C12.4444 3.79861 12.5208 3.97687 12.5208 4.18062C12.5208 4.38424 12.4444 4.56014 12.2917 4.70833L8.5 8.5L7.5625 9.45833L7.75 9.64583C8.29167 10.1875 8.55903 10.8333 8.55208 11.5833C8.54514 12.3333 8.27083 12.9792 7.72917 13.5208L7.20833 14.0417L6.14583 12.9792L6.66667 12.4583C6.90278 12.2222 7.02431 11.9306 7.03125 11.5833C7.03819 11.2361 6.92299 10.9422 6.68563 10.7015L5.95833 9.97917C5.80556 9.83097 5.72917 9.65507 5.72917 9.45146C5.72917 9.24771 5.80556 9.06944 5.95833 8.91667L6.5 8.39583C6.69444 8.19583 6.79167 7.95833 6.79167 7.68333C6.79167 7.40833 6.69444 7.17361 6.5 6.97917L5.1875 8.27083C4.35417 9.10417 3.94792 10.1076 3.96875 11.2812C3.98958 12.4549 4.41667 13.4583 5.25 14.2917C6.08333 15.125 7.07792 15.5417 8.23375 15.5417C9.38944 15.5417 10.381 15.125 11.2083 14.2917L15.8502 9.64875C16.0056 9.49403 16.184 9.41667 16.3854 9.41667C16.5868 9.41667 16.7639 9.49306 16.9167 9.64583C17.0694 9.79861 17.1458 9.97688 17.1458 10.1806C17.1458 10.3842 17.0694 10.5601 16.9167 10.7083L12.2708 15.3333C11.1526 16.4583 9.80708 17.0208 8.23417 17.0208C6.66139 17.0208 5.3125 16.4583 4.1875 15.3333ZM14 19V17.5C14.9722 17.5 15.7986 17.1597 16.4792 16.4792C17.1597 15.7986 17.5 14.9722 17.5 14H19C19 15.3832 18.5124 16.5623 17.5373 17.5373C16.5623 18.5124 15.3832 19 14 19ZM1 6C1 4.61681 1.48757 3.43771 2.46271 2.46271C3.43771 1.48757 4.61681 1 6 1V2.5C5.02778 2.5 4.20139 2.84028 3.52083 3.52083C2.84028 4.20139 2.5 5.02778 2.5 6H1Z' fill='%23002332'/%3E%3C/g%3E%3C/svg%3E");
+      }
+    }
+
+    &.button--discord {
+      &:before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='11' viewBox='0 0 14 11' fill='none'%3E%3Cpath d='M11.8593 0.907627C10.9531 0.483617 9.98409 0.175465 8.97102 0C8.84661 0.22494 8.70125 0.527488 8.60104 0.768165C7.52412 0.60621 6.45712 0.60621 5.40001 0.768165C5.29981 0.527488 5.15116 0.22494 5.02563 0C4.01147 0.175465 3.04136 0.484749 2.13511 0.909872C0.307208 3.67207 -0.188307 6.36567 0.0594514 9.02102C1.27181 9.92638 2.44674 10.4764 3.60184 10.8362C3.88704 10.4437 4.14139 10.0265 4.36052 9.58673C3.94319 9.42816 3.54348 9.23246 3.16579 9.00528C3.26599 8.93105 3.364 8.85344 3.45869 8.77358C5.76228 9.85103 8.26519 9.85103 10.5413 8.77358C10.6371 8.85344 10.7351 8.93105 10.8342 9.00528C10.4554 9.23358 10.0546 9.42927 9.63722 9.58786C9.85635 10.0265 10.1096 10.4449 10.3959 10.8374C11.5521 10.4775 12.7281 9.92751 13.9405 9.02102C14.2312 5.94279 13.4439 3.27394 11.8593 0.907627ZM4.67435 7.388C3.98284 7.388 3.41574 6.74243 3.41574 5.95628C3.41574 5.17014 3.97073 4.52345 4.67435 4.52345C5.378 4.52345 5.94508 5.169 5.93297 5.95628C5.93406 6.74243 5.378 7.388 4.67435 7.388ZM9.3256 7.388C8.63408 7.388 8.06699 6.74243 8.06699 5.95628C8.06699 5.17014 8.62196 4.52345 9.3256 4.52345C10.0292 4.52345 10.5963 5.169 10.5842 5.95628C10.5842 6.74243 10.0292 7.388 9.3256 7.388Z' fill='%23002332'/%3E%3C/svg%3E");
+      }
+    }
+
+    &.button--contact {
+      &:before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cmask id='mask0_193_1636' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='0' y='0' width='20' height='20'%3E%3Crect width='20' height='20' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_193_1636)'%3E%3Cpath d='M3.5 14C3.08333 13.9722 2.72917 13.8156 2.4375 13.53C2.14583 13.2443 2 12.901 2 12.5V5.95833C2 5.66667 2.07986 5.39931 2.23958 5.15625C2.39931 4.91319 2.61111 4.72917 2.875 4.60417L8.5 2L14.125 4.60417C14.3194 4.6875 14.4861 4.80903 14.625 4.96875C14.7639 5.12847 14.8611 5.30556 14.9167 5.5H12.5L8.5 3.64583L3.5 5.95833V14ZM6.5 17C6.09722 17 5.74653 16.8507 5.44792 16.5521C5.14931 16.2535 5 15.9028 5 15.5V8.5C5 8.0875 5.14931 7.73438 5.44792 7.44063C5.74653 7.14688 6.09722 7 6.5 7H16.5C16.9028 7 17.2535 7.14688 17.5521 7.44063C17.8507 7.73438 18 8.0875 18 8.5V15.5C18 15.9028 17.8507 16.2535 17.5521 16.5521C17.2535 16.8507 16.9028 17 16.5 17H6.5ZM11.5 13L6.5 10.2292V15.5H16.5V10.2292L11.5 13ZM11.5 11.2708L16.5 8.5H6.5L11.5 11.2708Z' fill='%23002332'/%3E%3C/g%3E%3C/svg%3E");
+      }
+    }
+  }
+</style>
