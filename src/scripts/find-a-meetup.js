@@ -23,9 +23,16 @@ section?.classList.toggle("has-events", events.length > 0);
 // so anyone can zoom in past this themselves.
 const FIT_MAX_ZOOM = 5;
 
+// Quarter-level zoom steps. The floor zoom only has to be high enough for the
+// world to span the container's width; rounding it up to a whole level made
+// the world up to twice as tall as necessary, and a wide north–south spread
+// could no longer fit in the 16:9 frame.
+const ZOOM_SNAP = 0.25;
+
 if (mapContainer) {
   function minZoomForWidth() {
-    return Math.max(2, Math.ceil(Math.log2(mapContainer.clientWidth / 256)));
+    const exact = Math.log2(mapContainer.clientWidth / 256);
+    return Math.max(2, Math.ceil(exact / ZOOM_SNAP) * ZOOM_SNAP);
   }
 
   const floorZoom = minZoomForWidth();
@@ -38,6 +45,7 @@ if (mapContainer) {
       [90, 180],
     ],
     maxBoundsViscosity: 1.0,
+    zoomSnap: ZOOM_SNAP,
     minZoom: floorZoom,
     center: [30, 0],
     zoom: floorZoom,
@@ -129,10 +137,6 @@ if (mapContainer) {
 
     map.invalidateSize({ pan: false });
     map.fitBounds(bounds, { padding: [16, 16], animate: false, maxZoom: FIT_MAX_ZOOM });
-
-    if (window.matchMedia("(min-width: 1024px)").matches) {
-      map.panBy([-90, -70], { animate: false });
-    }
   }
 
   let revealed = false;
