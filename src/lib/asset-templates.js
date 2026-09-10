@@ -160,7 +160,8 @@ export const TEMPLATES = [
             fit: { maxLines: 3, minScale: 0.45 },
             children: [
               // The comma is part of the design, so it's a static segment
-              // that stays attached to the end of the editable name as it wraps.
+              // that stays attached to the end of the editable name as it
+              // wraps. `requires` drops it when there's no city to separate.
               {
                 kind: "row",
                 wrap: true,
@@ -170,7 +171,7 @@ export const TEMPLATES = [
                 titleCase: true,
                 children: [
                   { field: "location", label: "Location name", default: "Location name" },
-                  { text: "," },
+                  { text: ",", requires: "city" },
                 ],
               },
               {

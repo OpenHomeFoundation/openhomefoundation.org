@@ -1,11 +1,27 @@
 import L from "leaflet";
 
+// The page is prerendered, so the embedded list is whatever the feed held at
+// deploy time. Fetch the live list first (overlapping the plugin import) and
+// fall back to the embedded one only if that fails.
+const latestEvents = fetch("/community-day/events.json")
+  .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+  .then((data) => (Array.isArray(data.events) ? data.events : Promise.reject("bad payload")))
+  .catch(() => null);
+
 window.L = L;
 await import("leaflet-gesture-handling");
 
 const mapContainer = document.getElementById("find-a-meetup-map");
 const eventsDataEl = document.getElementById("find-a-meetup-events");
-const events = eventsDataEl ? JSON.parse(eventsDataEl.textContent) : [];
+const section = document.querySelector("[data-find-a-meetup]");
+const events = (await latestEvents) ?? (eventsDataEl ? JSON.parse(eventsDataEl.textContent) : []);
+
+section?.classList.toggle("has-events", events.length > 0);
+
+// Auto-fit ceiling: a cluster of events in one country (or a single event)
+// would otherwise fit to street level. The zoom controls stay unconstrained,
+// so anyone can zoom in past this themselves.
+const FIT_MAX_ZOOM = 5;
 
 if (mapContainer) {
   function minZoomForWidth() {
@@ -112,11 +128,10 @@ if (mapContainer) {
     if (bounds.length === 0) return;
 
     map.invalidateSize({ pan: false });
-    map.fitBounds(bounds, { padding: [16, 16], animate: false });
+    map.fitBounds(bounds, { padding: [16, 16], animate: false, maxZoom: FIT_MAX_ZOOM });
 
     if (window.matchMedia("(min-width: 1024px)").matches) {
       map.panBy([-90, -70], { animate: false });
-      map.setZoom(map.getZoom() + 0.5, { animate: false });
     }
   }
 

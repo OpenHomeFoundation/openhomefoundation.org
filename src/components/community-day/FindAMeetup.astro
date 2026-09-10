@@ -1,87 +1,44 @@
 ---
 import Section from "./Section.astro";
 import AssetGenerator from "./AssetGenerator.astro";
+import { fetchMeetupEvents } from "../../lib/community-day-events.js";
 
-interface MeetupEvent {
-  id: string;
-  summary: string;
-  start: string;
-  end: string;
-  description: string;
-  location: string;
-  address: string[];
-  url: string;
-  host?: string;
-  latitude: number;
-  longitude: number;
-  status: string;
-}
-
-interface CommunityDayCalendar {
-  calendar: string;
-  calendarName: string;
-  events: MeetupEvent[];
-  updatedAt: string;
-}
-
-const EVENTS_API_URL = "https://web-api.openhomefoundation.org/events/ohf-community-day";
-
-const timeFormatter = new Intl.DateTimeFormat("en-GB", {
-  timeZone: "UTC",
-  hour: "2-digit",
-  minute: "2-digit",
-  timeZoneName: "short",
-});
-
-const now = Date.now();
-
-let events: MeetupEvent[] = [];
+// Build-time snapshot, for first paint and for anyone without JavaScript. The
+// page is prerendered, so this list is frozen at deploy time — the client
+// script re-fetches /community-day/events.json on load and every 15 minutes
+// (matching how often the upstream feed refreshes) and takes it from there.
+let mapEvents: Awaited<ReturnType<typeof fetchMeetupEvents>> = [];
 try {
-  const response = await fetch(EVENTS_API_URL);
-  const data: CommunityDayCalendar = await response.json();
-  events = data.events
-    .filter((event) => new Date(event.end || event.start).getTime() >= now)
-    .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
+  mapEvents = await fetchMeetupEvents();
 } catch (error) {
-  console.error(`Failed to fetch Community Day events from ${EVENTS_API_URL}`, error);
+  console.error("Failed to fetch Community Day events", error);
 }
-
-const mapEvents = events.map((event) => {
-  const address = (event.address ?? []).map((line) => line.trim()).filter(Boolean);
-  const place = address.slice(Math.max(1, address.length - 2));
-
-  return {
-    id: event.id,
-    title: address[0] ?? event.summary,
-    starts: timeFormatter.format(new Date(event.start)),
-    location: place.length > 0 ? place.join(", ") : null,
-    url: event.url,
-    lat: event.latitude,
-    lng: event.longitude,
-  };
-});
 
 // Escape "<" so a stray "</script" inside any event text can't end the
 // script tag early.
 const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
 
-// Drives which of each .has-events-content / .no-events-content pair
-// renders below — known at build time, so this picks one at render rather
-// than shipping both and toggling visibility with CSS/JS.
-const hasEvents = events.length > 0;
+// Picks which of each .has-events-content / .no-events-content pair is shown.
+// Both ship, because a deploy that built with an empty (or failed) feed still
+// has to be able to switch over once the client fetch finds meetups.
+const hasEvents = mapEvents.length > 0;
 ---
 
 <Section id="find-a-meetup">
-  <div class="inner">
+  <div class:list={["inner", { "has-events": hasEvents }]} data-find-a-meetup>
     <div class="title-container title-container--row animate--fade-up-in">
-      <h2 class="h2 heading">{hasEvents ? "Find a meetup near you" : "Host an event in your area"}</h2>
+      <h2 class="h2 heading">
+        <span class="has-events-content">Find a meetup near you</span>
+        <span class="no-events-content">Host an event in your area</span>
+      </h2>
       <a
         href="https://luma.com/communityday2026"
         target="_blank"
         rel="noopener noreferrer"
         class="button button--secondary button--has-icon button--find"
       >
-        {hasEvents ? "Browse all meetups on Luma" : "Host a meetup"}
+        <span class="has-events-content">Browse all meetups on Luma</span>
+        <span class="no-events-content">Host a meetup</span>
       </a>
     </div>
 
@@ -93,20 +50,18 @@ const hasEvents = events.length > 0;
 
     <div class="organise-a-meetup">
       <div class="title-container animate--fade-up-in">
-        <h2 class="h2 heading">{hasEvents ? "Don’t see your city yet?" : "Need some support?"}</h2>
+        <h2 class="h2 heading">
+          <span class="has-events-content">Don’t see your city yet?</span>
+          <span class="no-events-content">Need some support?</span>
+        </h2>
         <div class="content-container">
-          {
-            hasEvents ? (
-              <>
-                <p>Take matters into your own hands!</p>
-                <p>
-                  If you’d like to host a Community Day meetup in your city, we will support you with venue reimbursements, official merchandise, and a full Host Playbook. 
-                </p>
-              </>
-            ) : (
-              <p>We have everything you need to host a successful meetup: take a look at what we offer below.</p>
-            )
-          }
+          <div class="has-events-content">
+            <p>Take matters into your own hands!</p>
+            <p>
+              If you’d like to host a Community Day meetup in your city, we will support you with venue reimbursements, official merchandise, and a full Host Playbook. 
+            </p>
+          </div>
+          <p class="no-events-content">We have everything you need to host a successful meetup: take a look at what we offer below.</p>
         </div>
       </div>
 
@@ -139,6 +94,13 @@ const hasEvents = events.length > 0;
 </Section>
 
 <style lang="scss">
+  // Both halves of each pair ship; .has-events on .inner picks one, and the
+  // client script flips it when a refresh changes whether there are meetups.
+  .inner:not(.has-events) .has-events-content,
+  .inner.has-events .no-events-content {
+    display: none;
+  }
+
   .inner {
     @include fluid(32px, 80px, $property: padding-top);
     @include fluid(32px, 80px, $property: padding-bottom);
@@ -243,7 +205,7 @@ const hasEvents = events.length > 0;
     height: 5px;
     border-radius: 50%;
     background-color: var(--community-day-bg);
-    border: 4px solid var(--accent-green);
+    border: 4px solid var(--title-color);
     transition:
       transform 150ms ease-in-out,
       border-color 150ms ease-in-out;
@@ -251,7 +213,7 @@ const hasEvents = events.length > 0;
 
   :global(.map-marker:hover),
   :global(.map-marker.is-active) {
-    border-color: var(--title-color);
+    border-color: var(--accent-green);
   }
 
   :global(.map-marker.is-active) {
