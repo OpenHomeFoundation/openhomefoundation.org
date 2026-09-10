@@ -108,7 +108,7 @@ if (!parsedDefault.error) {
       const params = new URLSearchParams();
       for (const name of ["size", "location", "city", "organizer"]) {
         const value = data.get(name);
-        if (typeof value === "string" && value) params.set(name, value);
+        if (typeof value === "string") params.set(name, value);
       }
       return `${imageUrl}?${params}`;
     };

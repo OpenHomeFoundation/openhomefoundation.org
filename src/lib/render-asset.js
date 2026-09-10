@@ -155,7 +155,21 @@ function mergeLayers(layers, overrides = {}) {
 export async function renderAsset(tpl, { size, fields }) {
   const height = size.height;
   const resolveText = (seg) => seg.text ?? fields[seg.field] ?? "";
-  const rowText = (row) => row.children.map((child) => resolveText(child)).join("");
+  // `requires` names a field a static segment hangs off (the comma between
+  // location and city), so it disappears when that field is cleared.
+  const segVisible = (seg) => !seg.requires || (fields[seg.requires] ?? "").trim() !== "";
+  const rowSegs = (row) => row.children.filter(segVisible);
+  const rowText = (row) => rowSegs(row).map((child) => resolveText(child)).join("");
+
+  // A row whose editable fields are all empty carries nothing but its static
+  // decoration (the comma after the location, the "Organized by" lead-in), so
+  // it drops out of the frame rather than leaving that orphaned on the image.
+  function isBlank(layer) {
+    if (layer.kind === "stack") return layer.children.every(isBlank);
+    if (layer.kind === "image") return false;
+    const fieldSegs = (layer.children ?? []).filter((c) => c.field);
+    return fieldSegs.length > 0 && fieldSegs.every((c) => !resolveText(c).trim());
+  }
 
   const positionStyle = (layer, flow) => {
     if (flow) return {};
@@ -202,7 +216,7 @@ export async function renderAsset(tpl, { size, fields }) {
         text,
       );
     }
-    const segs = layer.children.map((child) => {
+    const segs = rowSegs(layer).map((child) => {
       if (child.kind === "image") return buildImage(child, true);
       const raw = resolveText(child);
       const text = layer.titleCase ? capitalize(raw) : raw;
@@ -237,9 +251,9 @@ export async function renderAsset(tpl, { size, fields }) {
   }
 
   function buildStack(layer, flow) {
-    let children = layer.children;
+    let children = layer.children.filter((c) => !isBlank(c));
     if (layer.fit) {
-      const rows = layer.children.map((c) => ({
+      const rows = children.map((c) => ({
         weight: c.font.weight,
         font: c.font,
         width: c.width,
@@ -247,7 +261,7 @@ export async function renderAsset(tpl, { size, fields }) {
       }));
       const scale = computeFitScale(layer.fit, rows);
       if (scale < 1) {
-        children = layer.children.map((c) => ({
+        children = children.map((c) => ({
           ...c,
           font: {
             ...c.font,
@@ -285,7 +299,7 @@ export async function renderAsset(tpl, { size, fields }) {
     return el("div", {}, undefined);
   }
 
-  const layers = mergeLayers(tpl.layers, size.overrides);
+  const layers = mergeLayers(tpl.layers, size.overrides).filter((layer) => !isBlank(layer));
   const children = layers.map((layer) => buildLayer(layer, false));
 
   const svg = await satori(
