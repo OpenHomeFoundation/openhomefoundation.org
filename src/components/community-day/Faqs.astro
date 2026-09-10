@@ -1,0 +1,237 @@
+---
+import { micromark } from "micromark";
+import Section from "./Section.astro";
+import faqItems from "../../data/community-day-faq.yml";
+
+interface FaqItem {
+  title: string;
+  content: string;
+}
+
+const items: FaqItem[] = faqItems ?? [];
+
+const EMAIL_PATTERN = /[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g;
+
+// Turns any email address written in the answer into a click-to-copy button,
+// handled site-wide by src/scripts/copy-email.js. Splitting on tags first
+// keeps the pattern to text nodes, so an address inside an href or another
+// attribute is left alone.
+function copyableEmails(html: string): string {
+  return html
+    .split(/(<[^>]*>)/)
+    .map((chunk) =>
+      chunk.startsWith("<")
+        ? chunk
+        : chunk.replace(
+            EMAIL_PATTERN,
+            (email) => `<button type="button" class="copy-email" data-email="${email}">${email}</button>`,
+          ),
+    )
+    .join("");
+}
+
+// Pre-render Markdown answers to HTML at build time — answers often need to
+// link out (Discord, Luma, etc).
+const rendered = items.map((item) => ({
+  title: item.title,
+  html: copyableEmails(micromark(item.content ?? "")),
+}));
+---
+
+<Section id="faqs">
+  <div class="inner">
+    <h2 class="h1 heading animate--fade-up-in">Got some questions?</h2>
+
+    <div class="faq-items animate--fade-up-in">
+      {
+        rendered.map((item) => (
+          <details class="faq-item">
+            <summary class="faq-item-summary">
+              <span class="faq-item-title">{item.title}</span>
+              <span class="faq-item-icon" aria-hidden="true">
+                <span class="faq-item-icon-plus" />
+              </span>
+            </summary>
+            <div class="faq-item-content" set:html={item.html} />
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</Section>
+
+<style lang="scss">
+  .inner {
+    @include fluid(32px, 80px, $property: padding-top);
+    @include fluid(32px, 80px, $property: padding-bottom);
+
+    @include fluid(0, 100px, $property: padding-right);
+    @include fluid(0, 100px, $property: padding-left);
+  }
+
+  .faq-items {
+    display: flex;
+    flex-direction: column;
+    @include fluid(24px, 64px, $property: margin-top);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--body-color);
+  }
+
+  .faq-item-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    padding: 1.25rem 0;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::marker {
+      content: "";
+    }
+
+    @include bp(tablet) {
+      padding: 2rem 0;
+    }
+  }
+
+  .faq-item-title {
+    flex-grow: 1;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: var(--title-color);
+
+    @include bp(tablet) {
+      font-size: 1.5rem;
+    }
+  }
+
+  .faq-item-icon {
+    position: relative;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transition: background-color 0.1s ease;
+  }
+
+  .faq-item-icon-plus {
+    position: relative;
+    display: block;
+    width: 0.625rem;
+    height: 0.625rem;
+    transition: transform 0.1s ease;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--title-color);
+      transition:
+        opacity 0.1s ease,
+        background-color 0.1s ease;
+    }
+
+    &::before {
+      width: 0.625rem;
+      height: 2px;
+    }
+
+    &::after {
+      width: 2px;
+      height: 0.625rem;
+    }
+  }
+
+  .faq-item[open] .faq-item-icon-plus {
+    transform: rotate(90deg);
+  }
+
+  .faq-item[open] .faq-item-icon-plus::before {
+    opacity: 0;
+  }
+
+  .faq-item-summary:hover .faq-item-icon-plus::before,
+  .faq-item-summary:hover .faq-item-icon-plus::after {
+    background-color: var(--accent-green);
+  }
+
+  .faq-item-content {
+    padding: 0 0 1.5rem;
+    color: var(--body-color);
+    font-size: 1rem;
+    line-height: 1.5;
+
+    :global(p) {
+      margin: 0 0 1rem;
+    }
+
+    :global(p:last-child) {
+      margin-bottom: 0;
+    }
+
+    :global(a),
+    :global(.copy-email) {
+      color: var(--title-color);
+      text-decoration: underline;
+    }
+
+    :global(button.copy-email) {
+      padding: 0;
+      border: 0;
+      background: none;
+      font: inherit;
+      cursor: pointer;
+    }
+  }
+
+  // Smooth open/close where the browser supports animating to/from `auto`.
+  :global(:root) {
+    interpolate-size: allow-keywords;
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    .faq-item::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size 0.15s ease,
+        content-visibility 0.15s ease;
+      transition-behavior: allow-discrete;
+    }
+
+    .faq-item[open]::details-content {
+      block-size: auto;
+    }
+
+    // The clip above keeps the open/close animation tidy, but it also cuts
+    // off the copy-email tooltip, which sits above its link. Widen the clip
+    // region for the couple of seconds the tooltip is up — by then the panel
+    // is open and sized to its content, so nothing else can spill out.
+    .faq-item:has(.copy-email.is-copied)::details-content {
+      overflow-clip-margin: 3rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item-icon,
+    .faq-item-icon-plus,
+    .faq-item-icon-plus::before,
+    .faq-item-icon-plus::after {
+      transition: none;
+    }
+  }
+</style>

@@ -6,3 +6,17 @@
     transform: rotate(360deg);
   }
 }
+
+/* Scroll-triggered fade/slide-up, driven by src/scripts/animate-on-scroll.js */
+.animate--fade-up-in.will-animate {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}
+
+.animate--fade-up-in.will-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

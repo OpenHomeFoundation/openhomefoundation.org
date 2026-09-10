@@ -26,14 +26,19 @@ h3 {
   text-wrap: balance;
 }
 
-a {
+/* button.copy-email is a link in everything but element name (see
+   src/scripts/copy-email.js), so it takes the same underline treatment
+   rather than drifting from it. */
+a,
+button.copy-email {
   color: inherit;
   text-underline-offset: 4px;
   text-decoration-color: rgba(89, 93, 102, 0.5);
   transition: text-decoration-color 0.2s ease-out;
 }
 
-a:hover {
+a:hover,
+button.copy-email:hover {
   text-decoration-color: rgba(89, 93, 102, 1);
 }
 

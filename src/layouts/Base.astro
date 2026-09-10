@@ -98,7 +98,9 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
       import "../scripts/nav-menu.js";
       import "../scripts/copy-email.js";
       import "../scripts/code-copy.js";
+      import "../scripts/animate-on-scroll.js";
     </script>
+    <slot name="head" />
   </head>
   <body>
     <header><Navbar /></header>

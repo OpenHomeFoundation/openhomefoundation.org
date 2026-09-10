@@ -1,0 +1,259 @@
+---
+// Community Day social-asset generator: edit the meetup details and download
+// the graphic. The image itself is rendered server-side — the form simply
+// drives the query string of /community-day/asset-generator/image.png (see
+// src/pages/community-day/asset-generator/image.png.ts), and the preview is a
+// plain <img> pointing at that endpoint, so the page works before (and
+// without) JavaScript.
+//
+// Ported from community-day-2026-template/ (Figma file
+// tbgI56SGDnakPeMVtmuIaY, frame "event-detail-social").
+import { TEMPLATES } from "../../lib/asset-templates.js";
+import { renderAsset, parseParams } from "../../lib/render-asset.js";
+
+const tpl = TEMPLATES[0];
+const IMAGE_URL = "/community-day/asset-generator/image.png";
+const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
+
+// Pre-render the default state at build time so the preview shows instantly
+// instead of waiting on a live render on first load. Only this first image
+// is baked in — every edit after that still goes through the live endpoint.
+let initialImageSrc = IMAGE_URL;
+const parsedDefault = parseParams(tpl, new URLSearchParams());
+if (!parsedDefault.error) {
+  try {
+    const png = await renderAsset(tpl, parsedDefault.render);
+    initialImageSrc = `data:image/png;base64,${png.toString("base64")}`;
+  } catch (error) {
+    console.error("Failed to pre-render the default asset-generator preview", error);
+  }
+}
+---
+
+<section class="asset-generator">
+  <form class="panel" data-image-url={IMAGE_URL}>
+    <h2>Content</h2>
+
+    <label class="field">
+      <span class="field-label">Size</span>
+      <select name="size">
+        {
+          tpl.sizes.map((s) => (
+            <option value={s.value} selected={s.value === tpl.defaultSize}>
+              {s.label}
+            </option>
+          ))
+        }
+      </select>
+    </label>
+
+    {
+      tpl.fields.map((f) => (
+        <label class="field" data-field={f.name}>
+          <span class="field-label">{f.label}</span>
+          <input
+            type="text"
+            name={f.name}
+            value={f.default}
+            maxlength={f.maxLength}
+          />
+        </label>
+      ))
+    }
+
+    <div class="actions">
+      <a class="download" href={`${IMAGE_URL}?download=1`} data-download
+        >Download PNG</a
+      >
+      <span data-status role="status"></span>
+    </div>
+  </form>
+
+  <div class="panel preview">
+    <h2>Preview</h2>
+    {
+      /* loading="lazy" only matters if the build-time pre-render above
+        failed and initialImageSrc fell back to the live IMAGE_URL — this
+        component can be embedded inside a closed <dialog> (see
+        FindAMeetup.astro), which starts as display: none, and without it
+        that fallback would still fire a render request (and the Netlify
+        function behind it) on every page load whether or not the modal is
+        ever opened. It's a no-op against the normal data: URI src, which
+        never makes a network request in the first place. */
+    }
+    <img
+      src={initialImageSrc}
+      width={tpl.width}
+      height={defaultSize.height}
+      alt={`Preview of the ${tpl.name} graphic`}
+      data-preview
+      loading="lazy"
+    />
+  </div>
+</section>
+
+<script>
+  // Rebuild the endpoint URL from the form and swap the preview/download
+  // targets, debounced so typing a city doesn't fire a render per keystroke.
+  const form = document.querySelector<HTMLFormElement>(".asset-generator form");
+  const preview = document.querySelector<HTMLImageElement>("[data-preview]");
+  const download = document.querySelector<HTMLAnchorElement>("[data-download]");
+  const status = document.querySelector<HTMLElement>("[data-status]");
+
+  if (form && preview && download && status) {
+    const imageUrl = form.dataset.imageUrl!;
+
+    const currentUrl = () => {
+      const data = new FormData(form);
+      const params = new URLSearchParams();
+      for (const name of ["size", "location", "city", "organizer"]) {
+        const value = data.get(name);
+        if (typeof value === "string" && value) params.set(name, value);
+      }
+      return `${imageUrl}?${params}`;
+    };
+
+    const setLoading = (isLoading: boolean) => {
+      download.classList.toggle("is-loading", isLoading);
+      download.setAttribute("aria-disabled", String(isLoading));
+    };
+
+    const apply = () => {
+      const url = currentUrl();
+      status.textContent = "Rendering…";
+      setLoading(true);
+      preview.src = url;
+      download.href = `${url}&download=1`;
+    };
+    preview.addEventListener("load", () => {
+      status.textContent = "";
+      setLoading(false);
+    });
+    preview.addEventListener("error", () => {
+      status.textContent = "Rendering failed — try again.";
+      setLoading(false);
+    });
+
+    let timer: ReturnType<typeof setTimeout>;
+    form.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(apply, 400);
+    });
+    form.addEventListener("submit", (e) => e.preventDefault());
+
+    download.addEventListener("click", (e) => {
+      if (download.getAttribute("aria-disabled") === "true") e.preventDefault();
+    });
+  }
+</script>
+
+<style lang="scss">
+  .asset-generator {
+    --ag-title: #002332;
+    --ag-muted: #4f606e;
+    --ag-accent: #41d09b;
+    --ag-border: #e3e7ea;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    align-items: start;
+
+    // Stacked on mobile; side-by-side columns from tablet up.
+    @include bp(tablet) {
+      grid-template-columns: 360px 1fr;
+    }
+
+    @include bp(desktop) {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .panel {
+    background: #ffffff;
+    border: 1px solid var(--ag-border);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ag-muted);
+    }
+  }
+
+  .field {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .field-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-bottom: 0.375rem;
+    color: var(--ag-title);
+  }
+  .field input,
+  .field select {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    font-size: 0.9375rem;
+    border: 1px solid var(--ag-border);
+    border-radius: 0.5rem;
+    outline: none;
+    background: #ffffff;
+
+    &:focus {
+      border-color: var(--ag-accent);
+      box-shadow: 0 0 0 3px rgba(65, 208, 155, 0.25);
+    }
+  }
+
+  .actions {
+    margin-top: 1.375rem;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+  .download {
+    background: var(--ag-accent);
+    color: var(--ag-title);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    padding: 0.75rem 1.375rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition:
+      background-color 150ms ease-in-out,
+      color 150ms ease-in-out;
+
+    &:hover {
+      background-color: var(--ag-title);
+      color: #ffffff;
+    }
+
+    &.is-loading {
+      filter: grayscale(1);
+      opacity: 0.6;
+      pointer-events: none;
+      cursor: default;
+    }
+  }
+  [data-status] {
+    font-size: 0.8125rem;
+    color: var(--ag-muted);
+  }
+
+  .preview img {
+    display: block;
+    width: 100%;
+    max-width: 540px;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+</style>
