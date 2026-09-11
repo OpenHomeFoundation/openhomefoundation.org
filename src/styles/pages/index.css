@@ -13,27 +13,48 @@
   gap: 16px;
   flex-wrap: nowrap;
   border-radius: 60px;
-  border: 1px solid var(--light-grey-color);
-  background: hsla(300, 3%, 93%, .3);
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  box-shadow: 0 0 2rem rgba(255, 255, 255, 1);
+  color: var(--primary-text-color);
   font-size: 16px;
   font-weight: 500;
   text-decoration: none;
   text-align: center;
   transition:
     border-color 180ms ease-in-out,
-    background-color 180ms ease-in-out;
+    background-color 180ms ease-in-out,
+    box-shadow 180ms ease-in-out,
+    color 180ms ease-in-out;
   outline: none;
   z-index: 1
 }
 
-#intro span {
-  flex: 1;
+#intro .announcement svg {
+  max-width: 24px;
+  height: auto;
+  flex-shrink: 0;
+  transition: color 180ms ease-in-out;
+}
+
+#intro .announcement svg:first-of-type {
+  color: #41d09b;
 }
 
 #intro .announcement:focus-visible,
 #intro .announcement:hover {
-  border-color: var(--light-grey-color);
-  background-color: rgba(9, 41, 59, 0.3);
+  border-color: var(--dark-blue-color);
+  background-color: var(--dark-blue-color);
+  color: #ffffff;
+}
+
+#intro .announcement:focus-visible svg,
+#intro .announcement:hover svg {
+  color: inherit;
+}
+
+#intro span {
+  flex: 1;
 }
 
 #intro p {
