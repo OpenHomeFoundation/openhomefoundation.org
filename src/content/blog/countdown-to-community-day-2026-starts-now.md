@@ -115,7 +115,7 @@ We’ve updated last year’s [reimbursement guidelines](/assets/documents/commu
 - An <a href="https://esphome.io/starter-kit/" target="_blank" rel="noopener noreferrer">ESPHome Starter Kit</a> for each host (also up to three)
 - A yet-to-be released sticker pack for your guests
 - Tote bags
-- Lanyards in two designs (a standard design, and a red design for guests who don’t want their photo taken or shared)
+- Lanyards (a red design for guests who don’t want their photo taken or shared)
 
 If you miss the deadline to request merch from us, or want to use a local provider to create custom merch we don’t offer, please email us at <a href="mailto:communityday@openhomefoundation.org" class="copy-email" aria-label="communityday@openhomefoundation.org – click to copy email address">communityday<span>@</span>openhomefoundation.org</a> so we can make sure you’re covered! We’ll share the official design assets for the items you want to order and reimburse you for your purchases.
 
