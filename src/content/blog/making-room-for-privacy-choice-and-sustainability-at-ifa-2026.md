@@ -5,6 +5,7 @@ hide_header_image: true
 date: 2026-09-15
 author: [florencia-martin]
 category: "Announcements"
+comments: true
 ---
 
 When we started planning our first-ever booth at <a href="https://www.ifa-berlin.com/" target="_blank" rel="noopener noreferrer">IFA Berlin</a>, our goal was simple: to step away from the standard trade show stereotype. If you’ve ever walked the floor at a massive tech event like IFA, you’ll know the feeling all too well – endless aisles of corporate, sales-driven stands, harsh neon lighting, high-pressure pitches, few places to sit, and aircon blasting at full force. It’s enough to give anyone a headache by lunchtime.
@@ -65,7 +66,9 @@ That’s where our web developer Darren stepped in. He spent weeks designing a s
 
 If you’re curious about how the tech team pulled off such a seamless setup, here’s Darren on the behind-the-scenes engineering:
 
-> “Not many people realized that the entire booth was running off a single Home Assistant Green using two ZBT-2s for Zigbee and Thread. Building the CD wall was probably my highlight because people loved that physical interaction. People were also fascinated by what e-ink could do, thanks to screens running on OpenDisplay. And despite the massive amount of Wi-Fi interference on the show floor, we had five Voice Preview Editions running Sendspin via Music Assistant that all stayed perfectly in sync with almost no issues the entire week!”
+> Not many people realized that the entire booth was running off a single Home Assistant Green using two ZBT-2s for Zigbee and Thread. Building the CD wall was probably my highlight because people loved that physical interaction. People were also fascinated by what e-ink could do, thanks to screens running on OpenDisplay. And despite the massive amount of Wi-Fi interference on the show floor, we had five Voice Preview Editions running Sendspin via Music Assistant that all stayed perfectly in sync with almost no issues the entire week!
+>
+> I had a lot of questions about the devices we used and how we set them up, so I've done a deep dive [on Reddit](https://www.reddit.com/r/homeassistant/comments/1wh144y/heres_how_we_built_our_devices_for_our_booth_at/) that goes through the technical details.
 >
 > – Darren Griffin, Web Developer, Open Home Foundation
 
@@ -93,4 +96,4 @@ _Tech shows definitely don’t have to be boring._
 
 A massive thank you to everyone who stopped by for a coffee, took away a magazine, or shared videos and photos online. We built the room, but you made it feel like home ♥️
 
-Did you catch our booth at IFA or see coverage online? Jump into the community forums or [Reddit](https://www.reddit.com/r/homeassistant/comments/1wh144y/heres_how_we_built_our_devices_for_our_booth_at/) to share your thoughts!
+Did you catch our booth at IFA or see coverage online? Jump into the [community forums](https://community.home-assistant.io/c/social/46) or [Reddit](https://www.reddit.com/r/homeassistant/) to share your thoughts!
