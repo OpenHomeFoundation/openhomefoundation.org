@@ -174,6 +174,7 @@ title: "Blog Title"
 description: "Social/OpenGraph description"
 card_image: /assets/images/blog/slug/card.webp
 hide_header_image: true
+comments: true
 date: YYYY-MM-DD
 author: [author-slug]
 category: "Category"
@@ -189,6 +190,7 @@ When no `card.*` image is available (and the user is not supplying one manually)
 title: "Blog Title"
 description: "Social/OpenGraph description"
 hide_header_image: true
+comments: true
 date: YYYY-MM-DD
 author: [author-slug]
 category: "Category"
@@ -237,6 +239,7 @@ This would create:
 - If no `card.*` image is supplied, omit `card_image` — it falls back to `og_image`
 - Omit `og_image` — it defaults to the dynamic OG image service at build time (`ogImage()` in `src/lib/blog.ts`)
 - `hide_header_image: true` suppresses the default header image
+- `comments: true` is included by default on standard posts — it enables the Discourse comments section (the field defaults to `false` when omitted). Only leave it out if the user explicitly asks for comments to be off.
 - `category` is a plain string (not a YAML list)
 - Date format in front matter: `YYYY-MM-DD`
 - No `date_formatted` field
