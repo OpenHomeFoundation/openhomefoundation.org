@@ -81,7 +81,7 @@ Stepping onto that busy show floor each morning reminded me why this movement is
 
 A few key things will stick with us:
 
-- **Open source belongs on the main stage:** Building a privacy-first smart home tech isn’t a niche hobby – we’re taking up space right alongside Big Tech giants.
+- **Open source belongs on the main stage:** Building a privacy-first smart home isn’t a niche hobby – we’re taking up space right alongside Big Tech giants.
 - **Local-first is the future:** People are tired of cloud shutdowns and endless subscriptions; local control is what people actually want in their living rooms – and the rest of the home!
 - **Our community is everything:** The spirit, wisdom, and warmth of our volunteers made visitors feel truly welcome. And best of all, we had a blast doing it!
 
