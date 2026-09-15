@@ -65,7 +65,7 @@ That’s where our web developer Darren stepped in. He spent weeks designing a s
 
 If you’re curious about how the tech team pulled off such a seamless setup, here’s Darren on the behind-the-scenes engineering:
 
-> “Not many people realized that the entire booth was running off a single Home Assistant Green using two ZBT-1s for Zigbee and Thread. Building the CD wall was probably my highlight because people loved that physical interaction. People were also fascinated by what e-ink could do, thanks to screens running on OpenDisplay. And despite the massive amount of Wi-Fi interference on the show floor, we had five Voice Preview Editions running Sendspin via Music Assistant that all stayed perfectly in sync with almost no issues the entire week!”
+> “Not many people realized that the entire booth was running off a single Home Assistant Green using two ZBT-2s for Zigbee and Thread. Building the CD wall was probably my highlight because people loved that physical interaction. People were also fascinated by what e-ink could do, thanks to screens running on OpenDisplay. And despite the massive amount of Wi-Fi interference on the show floor, we had five Voice Preview Editions running Sendspin via Music Assistant that all stayed perfectly in sync with almost no issues the entire week!”
 >
 > – Darren Griffin, Web Developer, Open Home Foundation
 
