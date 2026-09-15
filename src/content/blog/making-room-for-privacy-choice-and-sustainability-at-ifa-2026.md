@@ -93,6 +93,4 @@ _Tech shows definitely don’t have to be boring._
 
 A massive thank you to everyone who stopped by for a coffee, took away a magazine, or shared videos and photos online. We built the room, but you made it feel like home ♥️
 
-<!-- TODO: restore once forum/Reddit links are supplied
-Did you catch our booth at IFA or see coverage online? Jump into the community forums or Reddit to share your thoughts!
--->
+Did you catch our booth at IFA or see coverage online? Jump into the community forums or [Reddit](https://www.reddit.com/r/homeassistant/comments/1wh144y/heres_how_we_built_our_devices_for_our_booth_at/) to share your thoughts!
