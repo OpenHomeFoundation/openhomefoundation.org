@@ -18,25 +18,9 @@ const events = (await latestEvents) ?? (eventsDataEl ? JSON.parse(eventsDataEl.t
 
 section?.classList.toggle("has-events", events.length > 0);
 
-// Auto-fit ceiling: a cluster of events in one country (or a single event)
-// would otherwise fit to street level. The zoom controls stay unconstrained,
-// so anyone can zoom in past this themselves.
-const FIT_MAX_ZOOM = 5;
-
-// Quarter-level zoom steps. The floor zoom only has to be high enough for the
-// world to span the container's width; rounding it up to a whole level made
-// the world up to twice as tall as necessary, and a wide north–south spread
-// could no longer fit in the 16:9 frame.
-const ZOOM_SNAP = 0.25;
+const CENTER_LAT = 15;
 
 if (mapContainer) {
-  function minZoomForWidth() {
-    const exact = Math.log2(mapContainer.clientWidth / 256);
-    return Math.max(2, Math.ceil(exact / ZOOM_SNAP) * ZOOM_SNAP);
-  }
-
-  const floorZoom = minZoomForWidth();
-
   const map = L.map(mapContainer, {
     zoomControl: false,
     gestureHandling: true,
@@ -45,10 +29,9 @@ if (mapContainer) {
       [90, 180],
     ],
     maxBoundsViscosity: 1.0,
-    zoomSnap: ZOOM_SNAP,
-    minZoom: floorZoom,
-    center: [30, 0],
-    zoom: floorZoom,
+    zoomSnap: 0,
+    center: [CENTER_LAT, 0],
+    zoom: 0,
   });
 
   L.control.zoom({ position: "bottomright" }).addTo(map);
@@ -119,7 +102,6 @@ if (mapContainer) {
     return wrapper;
   }
 
-  const bounds = [];
   for (const event of events) {
     if (typeof event.lat !== "number" || typeof event.lng !== "number" || Number.isNaN(event.lat) || Number.isNaN(event.lng)) {
       continue;
@@ -129,15 +111,22 @@ if (mapContainer) {
     marker.bindPopup(buildPopupContent(event));
     marker.on("popupopen", () => marker.getElement()?.classList.add("is-active"));
     marker.on("popupclose", () => marker.getElement()?.classList.remove("is-active"));
-    bounds.push([event.lat, event.lng]);
   }
 
-  function fitToEvents() {
-    if (bounds.length === 0) return;
+  // Zoom at which the world covers the container's longest side.
+  function worldZoom() {
+    const size = Math.max(mapContainer.clientWidth, mapContainer.clientHeight);
+    return Math.max(0, Math.log2(size / 256));
+  }
 
+  function showWholeWorld() {
     map.invalidateSize({ pan: false });
-    map.fitBounds(bounds, { padding: [16, 16], animate: false, maxZoom: FIT_MAX_ZOOM });
+    const zoom = worldZoom();
+    map.setMinZoom(zoom);
+    map.setView([CENTER_LAT, 0], zoom, { animate: false });
   }
+
+  showWholeWorld();
 
   let revealed = false;
   let revealTimer;
@@ -146,20 +135,16 @@ if (mapContainer) {
     if (revealed) return;
     revealed = true;
     clearTimeout(revealTimer);
-    fitToEvents();
+    showWholeWorld();
     mapContainer.classList.remove("is-loading");
   }
 
   revealTimer = setTimeout(reveal, 2000);
   tiles.on("load", reveal);
 
+  let resizeTimer;
   new ResizeObserver(() => {
-    map.setMinZoom(minZoomForWidth());
-
-    if (revealed || bounds.length === 0) {
-      map.invalidateSize();
-    } else {
-      fitToEvents();
-    }
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(showWholeWorld, 150);
   }).observe(mapContainer);
 }
