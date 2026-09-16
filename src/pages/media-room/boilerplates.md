@@ -18,7 +18,7 @@ Beyond this work, the foundation advocates for the ethical use of smart home tec
 
 ### About Home Assistant
 
-Home Assistant is an open source home automation platform trusted by over 2 million households worldwide. It is powered by a global community of contributors united by the principles of privacy, choice, and sustainability.
+Home Assistant is an open source home automation platform trusted by over 2.7 million households worldwide. It is powered by a global community of contributors united by the principles of privacy, choice, and sustainability.
 
 Operating as the brain of the smart home, Home Assistant unifies devices and protocols from any brand under a single interface that runs locally. This means users can control their smart home without the risk of data harvesting or being cut off when a company ends cloud support. Because the tech is open source, users can also modify their setup to suit their needs, including extending the life of devices they already own instead of replacing them. And with dedicated hardware like Home Assistant Green, anyone can enjoy these benefits, regardless of technical expertise.
 
@@ -48,7 +48,7 @@ For use at the bottom of press releases.
 The Open Home Foundation is a Swiss non-profit organization that fights for the fundamental principles of privacy, choice, and sustainability for smart homes. Founded in 2024, it owns and governs over 250 open source projects, standards, and drivers – including the Home Assistant smart home automation platform – protecting them from corporate takeover. Funded through commercial partners that sell official, licensed products, as well as independent donations, the foundation advocates for an open alternative to Big Tech control of the smart home sector.
 
 **Home Assistant**
-Home Assistant is the world's leading open source home automation platform, powering more than 2.2 million households globally. Operating as the "brain" of the smart home, Home Assistant unifies smart devices and protocols from thousands of brands under a single, private interface. It protects users from data harvesting, subscription fees, vendor lock-in, and helps prevent devices becoming e-waste when manufacturers discontinue support. Home Assistant is a core project governed by the Open Home Foundation.
+Home Assistant is the world's leading open source home automation platform, powering more than 2.7 million households globally. Operating as the "brain" of the smart home, Home Assistant unifies smart devices and protocols from thousands of brands under a single, private interface. It protects users from data harvesting, subscription fees, vendor lock-in, and helps prevent devices becoming e-waste when manufacturers discontinue support. Home Assistant is a core project governed by the Open Home Foundation.
 
 **ESPHome**
 ESPHome is an open source system that enables users to create, customize, and reprogram smart home devices without writing complex code, and integrate them directly into automation platforms like Home Assistant. ESPHome also allows users to free their hardware from manufacturers' restraints by replacing proprietary software on microcontroller chips. From custom DIY builds to plug-and-play Ready-Made Projects, ESPHome helps ensure smart home devices remain private, functional, and under user control long term. ESPHome is a core project governed by the Open Home Foundation.
