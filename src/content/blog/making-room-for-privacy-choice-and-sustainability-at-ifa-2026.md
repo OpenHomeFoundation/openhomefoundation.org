@@ -1,6 +1,7 @@
 ---
 title: "Making room for privacy, choice, and sustainability at IFA 2026"
 description: "Our first booth at IFA Berlin was no ordinary trade stand: but we’re no ordinary foundation. Here’s how we brought our principles to the people."
+card_image: /assets/images/blog/making-room-for-privacy-choice-and-sustainability-at-ifa-2026/card.webp
 hide_header_image: true
 date: 2026-09-15
 author: [florencia-martin]
