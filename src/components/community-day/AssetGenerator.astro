@@ -9,25 +9,17 @@
 // Ported from community-day-2026-template/ (Figma file
 // tbgI56SGDnakPeMVtmuIaY, frame "event-detail-social").
 import { TEMPLATES } from "../../lib/asset-templates.js";
-import { renderAsset, parseParams } from "../../lib/render-asset.js";
 
 const tpl = TEMPLATES[0];
 const IMAGE_URL = "/community-day/asset-generator/image.png";
 const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
 
-// Pre-render the default state at build time so the preview shows instantly
-// instead of waiting on a live render on first load. Only this first image
-// is baked in — every edit after that still goes through the live endpoint.
-let initialImageSrc = IMAGE_URL;
-const parsedDefault = parseParams(tpl, new URLSearchParams());
-if (!parsedDefault.error) {
-  try {
-    const png = await renderAsset(tpl, parsedDefault.render);
-    initialImageSrc = `data:image/png;base64,${png.toString("base64")}`;
-  } catch (error) {
-    console.error("Failed to pre-render the default asset-generator preview", error);
-  }
-}
+// The default state is prerendered at build time by
+// src/pages/community-day/asset-generator/preview.webp.ts into a small static
+// webp, so the preview shows instantly without a live render on first load.
+// Only this first image is static — every edit after that still goes through
+// the live endpoint.
+const initialImageSrc = "/community-day/asset-generator/preview.webp";
 ---
 
 <section class="asset-generator">
@@ -72,14 +64,10 @@ if (!parsedDefault.error) {
   <div class="panel preview">
     <h2>Preview</h2>
     {
-      /* loading="lazy" only matters if the build-time pre-render above
-        failed and initialImageSrc fell back to the live IMAGE_URL — this
-        component can be embedded inside a closed <dialog> (see
-        FindAMeetup.astro), which starts as display: none, and without it
-        that fallback would still fire a render request (and the Netlify
-        function behind it) on every page load whether or not the modal is
-        ever opened. It's a no-op against the normal data: URI src, which
-        never makes a network request in the first place. */
+      /* This component can be embedded inside a closed <dialog> (see
+        FindAMeetup.astro), which starts as display: none — loading="lazy"
+        keeps the preview from being fetched on every page load whether or
+        not the modal is ever opened. */
     }
     <img
       src={initialImageSrc}
