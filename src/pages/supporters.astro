@@ -74,7 +74,7 @@ import Icon from "../components/Icon.astro";
       </div>
       <h2 class="text-center mt-64 mb-32 d-block">Donors</h2>
       <div class="grid mb-64">
-        <div class="col-s-12 col-m-6 col-l-4 col-l-offset-3">
+        <div class="col-s-12 col-m-6 col-l-4">
           <a
             class="standard-card"
             target="_blank"
@@ -84,8 +84,11 @@ import Icon from "../components/Icon.astro";
             <Icon name="arrow_outward" />
             <div class="supporter-logo">
               <img
+                width="90"
+                height="90"
                 src="/assets/images/supporters/duckduckgo.svg"
                 alt="DuckDuckGo"
+                loading="lazy"
               />
             </div>
             <h3>DuckDuckGo</h3>
@@ -105,13 +108,43 @@ import Icon from "../components/Icon.astro";
             class="standard-card"
             target="_blank"
             rel="noopener noreferrer"
+            href="https://www.eltako.com/en/home-assistant/"
+          >
+            <Icon name="arrow_outward" />
+            <div class="supporter-logo">
+              <img
+                width="90"
+                height="90"
+                src="/assets/images/supporters/eltako.svg"
+                alt="ELTAKO"
+                loading="lazy"
+              />
+            </div>
+            <h3>ELTAKO</h3>
+            <p>
+              ELTAKO builds relay switches, sensors, smart building controls, and other electronics. Its donation supports the development of open standards for the smart home industry.
+            </p>
+            <div class="tags">
+              <span>Donor</span>
+              <span class="silver">Silver</span>
+            </div>
+          </a>
+        </div>
+        <div class="col-s-12 col-m-6 col-m-offset-4 col-l-4 col-l-offset-auto">
+          <a
+            class="standard-card"
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://www.espressif.com/"
           >
             <Icon name="arrow_outward" />
             <div class="supporter-logo">
               <img
+                width="90"
+                height="90"
                 src="/assets/images/supporters/espressif.svg"
                 alt="Espressif"
+                loading="lazy"
               />
             </div>
             <h3>Espressif</h3>
