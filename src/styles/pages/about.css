@@ -63,7 +63,7 @@
   padding: 0;
   list-style: none;
 
-  animation-name: text-slider;
+  animation-name: text-slider-about;
   animation-timing-function: ease-out;
   animation-iteration-count: infinite;
   animation-duration: 10s;
@@ -75,35 +75,30 @@
   text-align: center;
 }
 
-@keyframes text-slider {
+@keyframes text-slider-about {
 
   0%,
   20% {
     transform: translateY(0);
-    margin: 0 -30px;
   }
 
   25%,
   45% {
     transform: translateY(-20%);
-    margin: 0 -20px;
   }
 
   50%,
   70% {
     transform: translateY(-40%);
-    margin: 0;
   }
 
   75%,
   95% {
     transform: translateY(-60%);
-    margin: 0 -20px;
   }
 
   100% {
     transform: translateY(-80%);
-    margin: 0 -30px;
   }
 }
 
