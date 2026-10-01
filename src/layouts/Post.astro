@@ -19,7 +19,7 @@ const { post } = Astro.props;
 const { title, description, author, category, hide_header_image, comments, external_url, external_source } = post.data;
 
 const authors = (author ?? []).map((slug) => ({ slug, author: AUTHORS[slug] }));
-const minutes = readingTime(post);
+const minutes = external_url ? undefined : readingTime(post);
 const og = ogImage(post);
 const showComments = comments && IS_PRODUCTION;
 const discourseEmbedUrl = `${SITE_URL}${postUrl(post)}`;
@@ -45,7 +45,7 @@ const discourseEmbedUrl = `${SITE_URL}${postUrl(post)}`;
             {description && <p class="text-center">{description}</p>}
             <p class="meta text-center">
               <span class="meta-secondary"
-                >{formatDateWithWeekday(post.data.date)} · {minutes} minute read</span
+                >{formatDateWithWeekday(post.data.date)}{minutes && ` · ${minutes} minute read`}</span
               >{
                 authors.length > 0 && (
                   <span class="meta-author"><span class="author-avatars">{authors.map(({ author: a }) => a?.github ? <img class="author-avatar" src={`https://github.com/${a.github}.png?size=80`} alt={a.name} /> : a?.avatar ? <img class="author-avatar" src={a.avatar} alt={a.name} /> : null)}</span><span class="author-names">{authors.map(({ slug, author: a }, i) => <Fragment>{i > 0 ? ", " : ""}{a ? (a.github ? <a href={`https://github.com/${a.github}`} target="_blank" rel="noopener noreferrer">{a.name}</a> : a.name) : slug}</Fragment>)}</span></span>
