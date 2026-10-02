@@ -271,6 +271,7 @@ Unlike a standard blog post, a crosspost has **no draft file and no local images
 - It uses the normal `post` layout. The page is built and indexed (it appears in the sitemap and the blog archive, and the card/feed links point at the OHF URL so the hit lands on our domain first — good for analytics), then a small JavaScript redirect sends visitors to the `external_url` on page load.
 - The page sets its canonical URL to `external_url` (via the `post` layout), so search engines credit the original article.
 - Comments stay off — crossposts simply omit `comments: true`.
+- Reading time is hidden automatically. The body is only a teaser, so every crosspost would otherwise read "1 minute read". `Post.astro` skips it whenever `external_url` is set, which also drops the `twitter:label1`/`twitter:data1` meta tags, and `BlogCard.astro` leaves it off the listing and media-room cards. Nothing to set in front matter.
 - The Open Graph and card image can come from one of two sources, chosen with the user in the wizard: the dynamic OG service (`https://assets.openhomefoundation.org/opengraph?url=<external_url>`, which auto-updates — this is what an omitted `og_image` resolves to automatically when `external_url` is set), or the source article's own `og:image`. Never point them at the post's own URL.
 
 ### 1. Collect the details with a wizard
@@ -346,7 +347,7 @@ Notes:
 - Wrap `title`, `description`, `external_url`, and `external_source` in double quotes.
 - `author` is a YAML list of slugs from `src/data/authors.yml` (not the display name), same as standard posts.
 - The body is **only** the opening teaser paragraph followed immediately by `<!--more-->`. Do not add the full article text — the reader is redirected to the source.
-- Do **not** set `comments: true`. The `post` layout adds the canonical tag and the instant JavaScript redirect whenever `external_url` is present.
+- Do **not** set `comments: true`. The `post` layout adds the canonical tag, the "Read the full article on …" button, and the instant JavaScript redirect whenever `external_url` is present, and omits the reading time.
 - Use the `og_image`/`card_image` form matching the wizard choice: omitted fields for the OG service (Option A) or static URLs from the source `og:image`/custom URL (Option B).
 - Apply the same prose rules as standard posts (curly apostrophes/quotes in body text, sentence-style capitalization for the title).
 
