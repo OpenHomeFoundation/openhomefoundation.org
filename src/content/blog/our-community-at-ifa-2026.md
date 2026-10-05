@@ -13,7 +13,7 @@ Somewhere in the midst of <a href="https://www.ifa-berlin.com/" target="_blank" 
 
 <!--more-->
 
-Andrej has been using Home Assistant since 2017, and regularly hosts community meetups near Cologne, Germany. He was one of eight community volunteers who joined the Open Home Foundation employees, along with people from our commercial partners Nabu Casa and Apollo Automation, at [our first-ever booth at IFA Berlin](/blog/making-room-for-privacy-choice-and-sustainability-at-ifa-2026/) this year. And it was also the first time we’ve officially invited the community to work at an event with us. After all, our projects exist because of the people who use, build and improve them every day, so who better to show visitors what they’re all about?
+Andrej has been using Home Assistant since 2017, and regularly hosts community meetups near Cologne, Germany. He was one of the eight community volunteers who joined Open Home Foundation staff members, along with people from our commercial partners Nabu Casa and Apollo Automation, at [our first-ever booth at IFA Berlin](/blog/making-room-for-privacy-choice-and-sustainability-at-ifa-2026/) this year. And it was also the first time we’ve officially invited the community to work at an event with us. After all, our projects exist because of the people who use, build and improve them every day, so who better to show visitors what they’re all about?
 
 It certainly paid off: all eight generously donated their time, skills, and years of hard-won knowledge. With a great many of our visitors arriving from all over Germany, their ability to speak the same language was a real bonus!
 
