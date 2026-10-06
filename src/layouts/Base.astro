@@ -1,7 +1,7 @@
 ---
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_URL, DEFAULT_DESCRIPTION } from "../lib/site";
+import { SITE_URL, SITE_NAME, THEME_COLOR, MASTODON_PROFILE_URL, DEFAULT_DESCRIPTION } from "../lib/site";
 // Swiper's core CSS is global on purpose: besides the carousels, several
 // pages (documents, supporters) reuse .swiper-slide for card layout.
 import "swiper/css";
@@ -16,16 +16,33 @@ interface Props {
   /** Crossposts: canonicalises to the source article. */
   externalUrl?: string;
   ogImage?: string;
+  /** Open Graph type; blog posts pass "article". */
+  ogType?: "website" | "article";
   authorDisplay?: string | null;
   category?: string;
   /** Reading time in minutes; only blog posts pass this. */
   readingTime?: number;
 }
 
-const { title, description, noindex, canonicalUrl, externalUrl, ogImage, authorDisplay, category, readingTime } =
-  Astro.props;
+const {
+  title,
+  description,
+  noindex,
+  canonicalUrl,
+  externalUrl,
+  ogImage,
+  ogType = "website",
+  authorDisplay,
+  category,
+  readingTime,
+} = Astro.props;
 
-const fullTitle = title ? `${title} – Open Home Foundation` : "Open Home Foundation";
+const fullTitle = title ? `${title} – ${SITE_NAME}` : SITE_NAME;
+// Link embeds show the site name on its own line above the title, so the
+// social title omits the " – Open Home Foundation" suffix (it would repeat the
+// site name and push the real title into truncation).
+const socialTitle = title || SITE_NAME;
+const ogUrl = externalUrl || `${SITE_URL}${canonicalUrl || Astro.url.pathname}`;
 const fullDescription = description || DEFAULT_DESCRIPTION;
 
 const og = ogImage || "/assets/images/opengraph.jpg";
@@ -45,9 +62,18 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
     {externalUrl && <link rel="canonical" href={externalUrl} />}
     {/* Send the full crosspost URL (path included) as the referrer to the source, not just the origin. */}
     {externalUrl && <meta name="referrer" content="no-referrer-when-downgrade" />}
-    <meta property="og:title" content={fullTitle} />
+    <meta name="theme-color" content={THEME_COLOR} />
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:type" content={ogType} />
     <meta property="og:description" content={fullDescription} />
     <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={fullDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <link rel="me" href={MASTODON_PROFILE_URL} />
     {authorDisplay && <meta property="og:image:author" content={authorDisplay} />}
     {category && <meta property="og:image:category" content={category} />}
     {readingTime && (
