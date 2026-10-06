@@ -2,10 +2,8 @@ export const SITE_URL = "https://www.openhomefoundation.org";
 
 export const SITE_NAME = "Open Home Foundation";
 
-/** Brand colour for the `theme-color` meta tag (link-embed accent stripe). Same value as `--light-blue-color` in src/styles/global/variables.css. */
-export const THEME_COLOR = "#18bcf2";
+export const THEME_COLOR = "#09293B";
 
-/** Fediverse profile, used for the `rel="me"` verification link. */
 export const MASTODON_PROFILE_URL = "https://fosstodon.org/@openhomefoundation";
 
 export const DEFAULT_DESCRIPTION =

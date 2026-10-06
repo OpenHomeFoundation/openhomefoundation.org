@@ -16,7 +16,6 @@ interface Props {
   /** Crossposts: canonicalises to the source article. */
   externalUrl?: string;
   ogImage?: string;
-  /** Open Graph type; blog posts pass "article". */
   ogType?: "website" | "article";
   authorDisplay?: string | null;
   category?: string;
@@ -38,9 +37,6 @@ const {
 } = Astro.props;
 
 const fullTitle = title ? `${title} – ${SITE_NAME}` : SITE_NAME;
-// Link embeds show the site name on its own line above the title, so the
-// social title omits the " – Open Home Foundation" suffix (it would repeat the
-// site name and push the real title into truncation).
 const socialTitle = title || SITE_NAME;
 const ogUrl = externalUrl || `${SITE_URL}${canonicalUrl || Astro.url.pathname}`;
 const fullDescription = description || DEFAULT_DESCRIPTION;
