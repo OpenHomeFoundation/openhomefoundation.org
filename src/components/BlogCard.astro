@@ -1,4 +1,5 @@
 ---
+import Icon from "./Icon.astro";
 import { cardImage, formatDate, postUrl, readingTime, truncate, type Post } from "../lib/blog";
 
 interface Props {
@@ -13,7 +14,10 @@ const { title, description, external_url, external_source } = post.data;
 
 <a href={postUrl(post)} class="blog-card">
   <div class="blog-card-image">
-    <img src={cardImage(post)} alt={title} />
+    <span class="blog-card-placeholder" aria-hidden="true">
+      <Icon name="foundation" />
+    </span>
+    <img src={cardImage(post)} alt={title} width="1200" height="630" loading="lazy" decoding="async" />
   </div>
   <div class="blog-card-content">
     {badge && external_url && <span class="blog-card-badge">Shared from {external_source}</span>}
