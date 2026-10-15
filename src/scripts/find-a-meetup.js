@@ -138,8 +138,7 @@ if (mapContainer) {
       popupContent,
       start: Date.parse(event.startsAt),
       end: Date.parse(event.endsAt),
-      isLive: false,
-      ended: false,
+      state: "upcoming",
     });
   }
 
@@ -177,19 +176,14 @@ if (mapContainer) {
     if (replayClock) replayClock.textContent = `Simulated: ${replayClockFormatter.format(now)}`;
 
     for (const entry of liveMarkers) {
-      if (entry.ended) continue;
-      if (now >= entry.end) {
-        entry.ended = true;
-        entry.marker.closePopup();
-        entry.marker.getElement()?.classList.add("is-ended");
-        continue;
-      }
+      const state = now >= entry.end ? "ended" : now >= entry.start ? "live" : "upcoming";
+      if (state === entry.state) continue;
+      entry.state = state;
 
-      const isLive = now >= entry.start;
-      if (isLive === entry.isLive) continue;
-      entry.isLive = isLive;
-      entry.marker.getElement()?.classList.toggle("is-live", isLive);
-      entry.popupContent.classList.toggle("is-live", isLive);
+      const markerElement = entry.marker.getElement();
+      markerElement?.classList.toggle("is-live", state === "live");
+      markerElement?.classList.toggle("is-ended", state === "ended");
+      entry.popupContent.classList.toggle("is-live", state === "live");
     }
 
     if (isReplay && now >= timelineEnd) clearInterval(liveTimer);

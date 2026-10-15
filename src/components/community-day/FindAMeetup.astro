@@ -225,17 +225,13 @@ const hasEvents = mapEvents.length > 0;
   }
 
   :global(.map-marker.is-live) {
-    border-color: var(--red-color);
+    border-color: var(--accent-green);
     transition-duration: 150ms, 600ms;
   }
 
-  :global(.map-marker.is-ended) {
-    opacity: 0 !important;
-    visibility: hidden;
-    pointer-events: none;
-    transition:
-      opacity 600ms ease-out,
-      visibility 0s 600ms;
+  :global(.map-marker.is-ended:not(:hover, .is-active)) {
+    border-color: var(--grey-color);
+    transition-duration: 150ms, 600ms;
   }
 
   :global(.map-marker.is-live:not(.is-active)) {
@@ -247,14 +243,10 @@ const hasEvents = mapEvents.length > 0;
     position: absolute;
     inset: -4px;
     border-radius: 50%;
-    background-color: var(--red-color);
+    background-color: var(--accent-green);
     opacity: 0;
     animation: live-marker-pulse 1.8s ease-out 600ms infinite;
     pointer-events: none;
-  }
-
-  :global(.map-marker.is-ended::after) {
-    animation: none;
   }
 
   :global(.simulated-clock) {
@@ -328,8 +320,8 @@ const hasEvents = mapEvents.length > 0;
     margin: 0;
     padding: 0.125rem 0.5rem;
     border-radius: 999px;
-    background-color: var(--red-color);
-    color: #ffffff;
+    background-color: var(--accent-green);
+    color: var(--title-color);
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
