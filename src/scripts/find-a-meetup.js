@@ -40,7 +40,15 @@ if (mapContainer) {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
     noWrap: true,
-  }).addTo(map);
+  });
+
+  tiles.on("tileloadstart", ({ tile }) => {
+    const size = tiles.getTileSize();
+    tile.style.width = `${size.x + 1}px`;
+    tile.style.height = `${size.y + 1}px`;
+  });
+
+  tiles.addTo(map);
 
   const markerIcon = L.divIcon({
     className: "map-marker",

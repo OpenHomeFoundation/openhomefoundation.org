@@ -177,6 +177,10 @@ const hasEvents = mapEvents.length > 0;
     :global(.leaflet-control-container) {
       transition: opacity 400ms ease-out;
     }
+
+    :global(img.leaflet-tile) {
+      mix-blend-mode: normal;
+    }
   }
 
   @keyframes map-placeholder-pulse {
