@@ -40,7 +40,15 @@ if (mapContainer) {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
     noWrap: true,
-  }).addTo(map);
+  });
+
+  tiles.on("tileloadstart", ({ tile }) => {
+    const size = tiles.getTileSize();
+    tile.style.width = `${size.x + 1}px`;
+    tile.style.height = `${size.y + 1}px`;
+  });
+
+  tiles.addTo(map);
 
   const markerIcon = L.divIcon({
     className: "map-marker",
@@ -79,6 +87,11 @@ if (mapContainer) {
     const wrapper = document.createElement("div");
     wrapper.className = "event-popup";
 
+    const liveBadge = document.createElement("p");
+    liveBadge.className = "live-badge";
+    liveBadge.textContent = "Live now";
+    wrapper.appendChild(liveBadge);
+
     const title = document.createElement("h3");
     title.className = "heading";
     title.textContent = event.title;
@@ -102,16 +115,85 @@ if (mapContainer) {
     return wrapper;
   }
 
+  // ?simulate-live replays the whole Community Day timeline once in 60 seconds
+  // (?simulate-live=120 for two minutes).
+  const params = new URLSearchParams(window.location.search);
+  const replaySeconds = params.has("simulate-live") ? Number(params.get("simulate-live")) || 60 : 0;
+
+  const liveMarkers = [];
+
   for (const event of events) {
     if (typeof event.lat !== "number" || typeof event.lng !== "number" || Number.isNaN(event.lat) || Number.isNaN(event.lng)) {
       continue;
     }
 
     const marker = L.marker([event.lat, event.lng], { icon: markerIcon }).addTo(map);
-    marker.bindPopup(buildPopupContent(event));
+    const popupContent = buildPopupContent(event);
+    marker.bindPopup(popupContent);
     marker.on("popupopen", () => marker.getElement()?.classList.add("is-active"));
     marker.on("popupclose", () => marker.getElement()?.classList.remove("is-active"));
+
+    liveMarkers.push({
+      marker,
+      popupContent,
+      start: Date.parse(event.startsAt),
+      end: Date.parse(event.endsAt),
+      state: "upcoming",
+    });
   }
+
+  const isReplay = replaySeconds > 0 && liveMarkers.length > 0;
+  const timelineStart = Math.min(...liveMarkers.map(({ start }) => start));
+  const timelineEnd = Math.max(...liveMarkers.map(({ end }) => end));
+  const replayStartedAt = Date.now();
+
+  const replayClockFormatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "UTC",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+
+  let replayClock;
+  if (isReplay) {
+    const clockControl = L.control({ position: "topleft" });
+    clockControl.onAdd = () => {
+      replayClock = L.DomUtil.create("div", "simulated-clock");
+      return replayClock;
+    };
+    clockControl.addTo(map);
+  }
+
+  function currentTime() {
+    if (!isReplay) return Date.now();
+    const progress = Math.min(1, (Date.now() - replayStartedAt) / (replaySeconds * 1000));
+    return timelineStart + progress * (timelineEnd - timelineStart);
+  }
+
+  function updateLiveMarkers() {
+    const now = currentTime();
+    if (replayClock) replayClock.textContent = `Simulated: ${replayClockFormatter.format(now)}`;
+
+    for (const entry of liveMarkers) {
+      const state = now >= entry.end ? "ended" : now >= entry.start ? "live" : "upcoming";
+      if (state === entry.state) continue;
+      entry.state = state;
+
+      const markerElement = entry.marker.getElement();
+      markerElement?.classList.toggle("is-live", state === "live");
+      markerElement?.classList.toggle("is-ended", state === "ended");
+      entry.popupContent.classList.toggle("is-live", state === "live");
+    }
+
+    if (isReplay && now >= timelineEnd) clearInterval(liveTimer);
+  }
+
+  const liveTimer = setInterval(updateLiveMarkers, isReplay ? 100 : 30_000);
+  updateLiveMarkers();
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) updateLiveMarkers();
+  });
 
   // Zoom at which the world covers the container's longest side.
   function worldZoom() {

@@ -19,6 +19,8 @@ function toMapEvent(event) {
     id: event.id,
     title: address[0] ?? event.summary,
     starts: timeFormatter.format(new Date(event.start)),
+    startsAt: event.start,
+    endsAt: event.end || event.start,
     location: place.length > 0 ? place.join(", ") : null,
     url: event.url,
     lat: event.latitude,
