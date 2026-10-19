@@ -39,7 +39,7 @@ const sections: Section[] = documents.sections;
     </section>
     {
       sections.map((section) => (
-        <section class="documents">
+        <section class="documents" id={section.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}>
           <div class="container">
             <div class="grid">
               <div class="col-s-12 col-m-8">
