@@ -4,6 +4,9 @@
 
 const EVENTS_API_URL = "https://web-api.openhomefoundation.org/events/ohf-community-day";
 
+// Bump when prepping the next Community Day.
+const ACTIVE_YEAR = 2026;
+
 const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
   hour: "2-digit",
@@ -19,6 +22,8 @@ function toMapEvent(event) {
     id: event.id,
     title: address[0] ?? event.summary,
     starts: timeFormatter.format(new Date(event.start)),
+    startsAt: event.start,
+    endsAt: event.end || event.start,
     location: place.length > 0 ? place.join(", ") : null,
     url: event.url,
     lat: event.latitude,
@@ -31,10 +36,9 @@ export async function fetchMeetupEvents() {
   if (!response.ok) throw new Error(`${EVENTS_API_URL} responded ${response.status}`);
 
   const data = await response.json();
-  const now = Date.now();
 
   return data.events
-    .filter((event) => new Date(event.end || event.start).getTime() >= now)
+    .filter((event) => new Date(event.start).getUTCFullYear() === ACTIVE_YEAR)
     .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
     .map(toMapEvent);
 }

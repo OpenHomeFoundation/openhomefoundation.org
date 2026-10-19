@@ -177,6 +177,10 @@ const hasEvents = mapEvents.length > 0;
     :global(.leaflet-control-container) {
       transition: opacity 400ms ease-out;
     }
+
+    :global(img.leaflet-tile) {
+      mix-blend-mode: normal;
+    }
   }
 
   @keyframes map-placeholder-pulse {
@@ -220,6 +224,55 @@ const hasEvents = mapEvents.length > 0;
     z-index: 999 !important;
   }
 
+  :global(.map-marker.is-live) {
+    border-color: var(--accent-green);
+    transition-duration: 150ms, 600ms;
+  }
+
+  :global(.map-marker.is-ended:not(:hover, .is-active)) {
+    border-color: var(--grey-color);
+    transition-duration: 150ms, 600ms;
+  }
+
+  :global(.map-marker.is-live:not(.is-active)) {
+    z-index: 900 !important;
+  }
+
+  :global(.map-marker.is-live::after) {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background-color: var(--accent-green);
+    opacity: 0;
+    animation: live-marker-pulse 1.8s ease-out 600ms infinite;
+    pointer-events: none;
+  }
+
+  @keyframes live-marker-halo-in {
+    to {
+      opacity: 0.35;
+    }
+  }
+
+  @keyframes live-marker-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(3.5);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.map-marker.is-live::after) {
+      transform: scale(1.8);
+      animation: live-marker-halo-in 600ms ease-out forwards;
+    }
+  }
+
   :global(.leaflet-popup-content-wrapper) {
     max-width: 300px;
     background: rgba(255, 255, 255, 0.8) !important;
@@ -247,6 +300,52 @@ const hasEvents = mapEvents.length > 0;
     flex-direction: column;
     gap: 0.5rem;
     min-width: 200px;
+  }
+
+  :global(.event-popup .live-badge) {
+    display: none;
+    align-self: flex-start;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background-color: var(--accent-green);
+    color: var(--title-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  :global(.event-popup.is-live .live-badge) {
+    display: inline-flex;
+  }
+
+  :global(.event-popup .ended-badge) {
+    display: none;
+    align-self: flex-start;
+    margin: 0;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background-color: var(--grey-color);
+    color: var(--title-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  :global(.event-popup.is-ended .ended-badge) {
+    display: inline-flex;
+  }
+
+  :global(.event-popup .live-badge:before) {
+    width: 0.375rem;
+    height: 0.375rem;
+    content: '';
+    border-radius: 50%;
+    background-color: currentColor;
   }
 
   :global(.event-popup h3) {

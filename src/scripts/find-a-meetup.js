@@ -40,7 +40,15 @@ if (mapContainer) {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
     noWrap: true,
-  }).addTo(map);
+  });
+
+  tiles.on("tileloadstart", ({ tile }) => {
+    const size = tiles.getTileSize();
+    tile.style.width = `${size.x + 1}px`;
+    tile.style.height = `${size.y + 1}px`;
+  });
+
+  tiles.addTo(map);
 
   const markerIcon = L.divIcon({
     className: "map-marker",
@@ -79,6 +87,16 @@ if (mapContainer) {
     const wrapper = document.createElement("div");
     wrapper.className = "event-popup";
 
+    const liveBadge = document.createElement("p");
+    liveBadge.className = "live-badge";
+    liveBadge.textContent = "Live now";
+    wrapper.appendChild(liveBadge);
+
+    const endedBadge = document.createElement("p");
+    endedBadge.className = "ended-badge";
+    endedBadge.textContent = "Event ended";
+    wrapper.appendChild(endedBadge);
+
     const title = document.createElement("h3");
     title.className = "heading";
     title.textContent = event.title;
@@ -102,16 +120,50 @@ if (mapContainer) {
     return wrapper;
   }
 
+  const liveMarkers = [];
+
   for (const event of events) {
     if (typeof event.lat !== "number" || typeof event.lng !== "number" || Number.isNaN(event.lat) || Number.isNaN(event.lng)) {
       continue;
     }
 
     const marker = L.marker([event.lat, event.lng], { icon: markerIcon }).addTo(map);
-    marker.bindPopup(buildPopupContent(event));
+    const popupContent = buildPopupContent(event);
+    marker.bindPopup(popupContent);
     marker.on("popupopen", () => marker.getElement()?.classList.add("is-active"));
     marker.on("popupclose", () => marker.getElement()?.classList.remove("is-active"));
+
+    liveMarkers.push({
+      marker,
+      popupContent,
+      start: Date.parse(event.startsAt),
+      end: Date.parse(event.endsAt),
+      state: "upcoming",
+    });
   }
+
+  function updateLiveMarkers() {
+    const now = Date.now();
+
+    for (const entry of liveMarkers) {
+      const state = now >= entry.end ? "ended" : now >= entry.start ? "live" : "upcoming";
+      if (state === entry.state) continue;
+      entry.state = state;
+
+      const markerElement = entry.marker.getElement();
+      markerElement?.classList.toggle("is-live", state === "live");
+      markerElement?.classList.toggle("is-ended", state === "ended");
+      entry.popupContent.classList.toggle("is-live", state === "live");
+      entry.popupContent.classList.toggle("is-ended", state === "ended");
+      entry.popupContent.querySelector("a").textContent = state === "ended" ? "View the event" : "Join the event";
+    }
+  }
+
+  setInterval(updateLiveMarkers, 30_000);
+  updateLiveMarkers();
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) updateLiveMarkers();
+  });
 
   // Zoom at which the world covers the container's longest side.
   function worldZoom() {
