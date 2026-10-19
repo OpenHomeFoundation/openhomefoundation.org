@@ -92,6 +92,11 @@ if (mapContainer) {
     liveBadge.textContent = "Live now";
     wrapper.appendChild(liveBadge);
 
+    const endedBadge = document.createElement("p");
+    endedBadge.className = "ended-badge";
+    endedBadge.textContent = "Event ended";
+    wrapper.appendChild(endedBadge);
+
     const title = document.createElement("h3");
     title.className = "heading";
     title.textContent = event.title;
@@ -149,6 +154,8 @@ if (mapContainer) {
       markerElement?.classList.toggle("is-live", state === "live");
       markerElement?.classList.toggle("is-ended", state === "ended");
       entry.popupContent.classList.toggle("is-live", state === "live");
+      entry.popupContent.classList.toggle("is-ended", state === "ended");
+      entry.popupContent.querySelector("a").textContent = state === "ended" ? "View the event" : "Join the event";
     }
   }
 
