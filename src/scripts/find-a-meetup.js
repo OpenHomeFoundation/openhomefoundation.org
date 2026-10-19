@@ -115,11 +115,6 @@ if (mapContainer) {
     return wrapper;
   }
 
-  // ?simulate-live replays the whole Community Day timeline once in 60 seconds
-  // (?simulate-live=120 for two minutes).
-  const params = new URLSearchParams(window.location.search);
-  const replaySeconds = params.has("simulate-live") ? Number(params.get("simulate-live")) || 60 : 0;
-
   const liveMarkers = [];
 
   for (const event of events) {
@@ -142,38 +137,8 @@ if (mapContainer) {
     });
   }
 
-  const isReplay = replaySeconds > 0 && liveMarkers.length > 0;
-  const timelineStart = Math.min(...liveMarkers.map(({ start }) => start));
-  const timelineEnd = Math.max(...liveMarkers.map(({ end }) => end));
-  const replayStartedAt = Date.now();
-
-  const replayClockFormatter = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "UTC",
-    weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZoneName: "short",
-  });
-
-  let replayClock;
-  if (isReplay) {
-    const clockControl = L.control({ position: "topleft" });
-    clockControl.onAdd = () => {
-      replayClock = L.DomUtil.create("div", "simulated-clock");
-      return replayClock;
-    };
-    clockControl.addTo(map);
-  }
-
-  function currentTime() {
-    if (!isReplay) return Date.now();
-    const progress = Math.min(1, (Date.now() - replayStartedAt) / (replaySeconds * 1000));
-    return timelineStart + progress * (timelineEnd - timelineStart);
-  }
-
   function updateLiveMarkers() {
-    const now = currentTime();
-    if (replayClock) replayClock.textContent = `Simulated: ${replayClockFormatter.format(now)}`;
+    const now = Date.now();
 
     for (const entry of liveMarkers) {
       const state = now >= entry.end ? "ended" : now >= entry.start ? "live" : "upcoming";
@@ -185,11 +150,9 @@ if (mapContainer) {
       markerElement?.classList.toggle("is-ended", state === "ended");
       entry.popupContent.classList.toggle("is-live", state === "live");
     }
-
-    if (isReplay && now >= timelineEnd) clearInterval(liveTimer);
   }
 
-  const liveTimer = setInterval(updateLiveMarkers, isReplay ? 100 : 30_000);
+  setInterval(updateLiveMarkers, 30_000);
   updateLiveMarkers();
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) updateLiveMarkers();
