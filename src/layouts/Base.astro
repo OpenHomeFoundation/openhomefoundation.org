@@ -120,7 +120,7 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
       import "../scripts/code-copy.js";
       import "../scripts/animate-on-scroll.js";
     </script>
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />}
     <slot name="head" />
   </head>
   <body>
