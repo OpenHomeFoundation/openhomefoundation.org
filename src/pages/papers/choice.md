@@ -3,7 +3,7 @@ layout: ../../layouts/Paper.astro
 lead: "Position paper, October 2026"
 title: "Choice in the smart home"
 description: "Choice in the smart home means being empowered to decide what’s best for one’s home and life, including decisions about aesthetics and design, brands and devices, personal principles, technical control, and ways of interaction. It requires broad interoperability. And is strengthened by open standards, open source hardware and software, and local control."
-pdf: /assets/documents/choice-position-paper-19-oct-2026.pdf
+pdf: /assets/documents/choice-position-paper-29-oct-2026.pdf
 ---
 
 ## Introduction
