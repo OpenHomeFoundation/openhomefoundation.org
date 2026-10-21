@@ -11,8 +11,6 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
-  /** Site-relative canonical URL, e.g. "/blog/". */
-  canonicalUrl?: string;
   /** Crossposts: canonicalises to the source article. */
   externalUrl?: string;
   ogImage?: string;
@@ -21,24 +19,25 @@ interface Props {
   category?: string;
   /** Reading time in minutes; only blog posts pass this. */
   readingTime?: number;
+  /** schema.org structured data, rendered as JSON-LD. */
+  jsonLd?: object | object[];
 }
 
 const {
   title,
   description,
   noindex,
-  canonicalUrl,
   externalUrl,
   ogImage,
   ogType = "website",
   authorDisplay,
   category,
   readingTime,
+  jsonLd,
 } = Astro.props;
 
 const fullTitle = title ? `${title} – ${SITE_NAME}` : SITE_NAME;
-const socialTitle = title || SITE_NAME;
-const ogUrl = externalUrl || `${SITE_URL}${canonicalUrl || Astro.url.pathname}`;
+const pageUrl = externalUrl || `${SITE_URL}${Astro.url.pathname}`;
 const fullDescription = description || DEFAULT_DESCRIPTION;
 
 const og = ogImage || "/assets/images/opengraph.jpg";
@@ -54,19 +53,18 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
     <meta name="description" content={fullDescription} />
     <meta name="viewport" content="width=device-width" />
     {noindex && <meta name="robots" content="noindex" />}
-    {canonicalUrl && <link rel="canonical" href={`${SITE_URL}${canonicalUrl}`} />}
-    {externalUrl && <link rel="canonical" href={externalUrl} />}
+    {!noindex && <link rel="canonical" href={pageUrl} />}
     {/* Send the full crosspost URL (path included) as the referrer to the source, not just the origin. */}
     {externalUrl && <meta name="referrer" content="no-referrer-when-downgrade" />}
     <meta name="theme-color" content={THEME_COLOR} />
-    <meta property="og:title" content={socialTitle} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:url" content={ogUrl} />
+    <meta property="og:url" content={pageUrl} />
     <meta property="og:type" content={ogType} />
     <meta property="og:description" content={fullDescription} />
     <meta property="og:image" content={ogImageUrl} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={fullDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <link rel="me" href={MASTODON_PROFILE_URL} />
@@ -122,6 +120,7 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
       import "../scripts/code-copy.js";
       import "../scripts/animate-on-scroll.js";
     </script>
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd).replace(/</g, "\\u003c")} />}
     <slot name="head" />
   </head>
   <body>

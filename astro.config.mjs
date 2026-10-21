@@ -1,4 +1,5 @@
 // @ts-check
+import { readdirSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
 import { satteri } from "@astrojs/markdown-satteri";
@@ -9,6 +10,23 @@ import yaml from "@rollup/plugin-yaml";
 const scssMixinsPath = fileURLToPath(
   new URL("./src/styles/scss/mixins.scss", import.meta.url),
 );
+
+// Blog frontmatter for the sitemap: post dates become <lastmod>, and
+// crossposts (which canonicalise to another site) are left out.
+const blogDir = new URL("./src/content/blog/", import.meta.url);
+const blogPosts = readdirSync(blogDir)
+  .filter((file) => file.endsWith(".md"))
+  .map((file) => {
+    const frontmatter = readFileSync(new URL(file, blogDir), "utf8").split(/^---$/m)[1] ?? "";
+    return {
+      path: `/blog/${file.replace(/\.md$/, "")}/`,
+      date: frontmatter.match(/^date:\s*(\S+)/m)?.[1],
+      crosspost: /^external_url:/m.test(frontmatter),
+    };
+  });
+const crosspostPaths = new Set(blogPosts.filter((p) => p.crosspost).map((p) => p.path));
+const postDates = new Map(blogPosts.filter((p) => !p.crosspost && p.date).map((p) => [p.path, p.date]));
+const latestPostDate = [...postDates.values()].sort().at(-1);
 
 export default defineConfig({
   site: "https://www.openhomefoundation.org",
@@ -36,7 +54,13 @@ export default defineConfig({
         if (path.startsWith("/media-room/") && path !== "/media-room/")
           return false;
         if (path === "/device-database-data-use-statement/") return false;
+        if (crosspostPaths.has(path)) return false;
         return true;
+      },
+      serialize: (item) => {
+        const path = new URL(item.url).pathname;
+        const lastmod = path === "/blog/" ? latestPostDate : postDates.get(path);
+        return lastmod ? { ...item, lastmod: new Date(lastmod).toISOString() } : item;
       },
     }),
   ],

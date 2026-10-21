@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
+import { organization, website } from "../lib/structured-data";
 
 // Projects shown in the marquee. Rendered twice: swiper 11.2+ disables loop
 // mode unless there are more slides than fit in the viewport, and doubling
@@ -17,7 +18,10 @@ const marqueeProjects = [
 ];
 ---
 
-<Base>
+<Base
+  title="Privacy, choice, and sustainability for smart homes"
+  jsonLd={[organization(), website()]}
+>
 
 <div class="bg-gradient-home">
   <section id="intro">

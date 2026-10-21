@@ -9,25 +9,15 @@
 // Ported from community-day-2026-template/ (Figma file
 // tbgI56SGDnakPeMVtmuIaY, frame "event-detail-social").
 import { TEMPLATES } from "../../lib/asset-templates.js";
-import { renderAsset, parseParams } from "../../lib/render-asset.js";
 
 const tpl = TEMPLATES[0];
 const IMAGE_URL = "/community-day/asset-generator/image.png";
 const defaultSize = tpl.sizes.find((s) => s.value === tpl.defaultSize);
 
-// Pre-render the default state at build time so the preview shows instantly
-// instead of waiting on a live render on first load. Only this first image
-// is baked in — every edit after that still goes through the live endpoint.
-let initialImageSrc = IMAGE_URL;
-const parsedDefault = parseParams(tpl, new URLSearchParams());
-if (!parsedDefault.error) {
-  try {
-    const png = await renderAsset(tpl, parsedDefault.render);
-    initialImageSrc = `data:image/png;base64,${png.toString("base64")}`;
-  } catch (error) {
-    console.error("Failed to pre-render the default asset-generator preview", error);
-  }
-}
+// The default state is pre-rendered at build time (preview.webp.ts) so the
+// preview shows instantly; every edit after that goes through the live
+// endpoint.
+const PREVIEW_URL = "/community-day/asset-generator/preview.webp";
 ---
 
 <section class="asset-generator">
@@ -72,17 +62,12 @@ if (!parsedDefault.error) {
   <div class="panel preview">
     <h2>Preview</h2>
     {
-      /* loading="lazy" only matters if the build-time pre-render above
-        failed and initialImageSrc fell back to the live IMAGE_URL — this
-        component can be embedded inside a closed <dialog> (see
-        FindAMeetup.astro), which starts as display: none, and without it
-        that fallback would still fire a render request (and the Netlify
-        function behind it) on every page load whether or not the modal is
-        ever opened. It's a no-op against the normal data: URI src, which
-        never makes a network request in the first place. */
+      /* loading="lazy": this component can be embedded inside a closed
+        <dialog> (see FindAMeetup.astro), which starts as display: none, so
+        the preview is only fetched once the modal is actually opened. */
     }
     <img
-      src={initialImageSrc}
+      src={PREVIEW_URL}
       width={tpl.width}
       height={defaultSize.height}
       alt={`Preview of the ${tpl.name} graphic`}

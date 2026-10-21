@@ -30,6 +30,6 @@ interface Props {
 const { posts, page, totalPages } = Astro.props;
 ---
 
-<Base title="Blog" description="News and updates from the Open Home Foundation" canonicalUrl="/blog/">
+<Base title={`Blog – Page ${page} of ${totalPages}`} description={`News and updates from the Open Home Foundation, page ${page}.`}>
   <BlogListPage posts={posts} currentPage={page} totalPages={totalPages} />
 </Base>

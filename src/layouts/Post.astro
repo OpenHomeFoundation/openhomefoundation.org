@@ -10,6 +10,7 @@ import {
   type Post,
 } from "../lib/blog";
 import { IS_PRODUCTION, SITE_URL } from "../lib/site";
+import { blogPosting } from "../lib/structured-data";
 
 interface Props {
   post: Post;
@@ -34,6 +35,7 @@ const discourseEmbedUrl = `${SITE_URL}${postUrl(post)}`;
   authorDisplay={authorDisplay(post)}
   category={category}
   readingTime={minutes}
+  jsonLd={external_url ? undefined : blogPosting(post)}
 >
   <div class="bg-gradient-blog">
     <section id="news-header">
