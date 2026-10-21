@@ -4,9 +4,15 @@
 // Runs as a Netlify function via the Astro endpoint
 // src/pages/community-day/asset-generator/image.png.ts.
 //
-// Every asset (backdrop, logomarks, OHF lockup, Figtree) is bundled into the
+// Every asset (backdrop, logomarks, OHF lockup, fonts) is bundled into the
 // function as a data URI (Vite `?inline`), so a render makes no network
 // requests at all.
+//
+// Figtree only covers Latin, so Noto Sans SC is bundled as a fallback for
+// Chinese (and Japanese kana) organizer/location names. It's subset to keep
+// the function small: every GB2312 hanzi (Simplified) plus Big5's frequent
+// level-1 set (Traditional), CJK/fullwidth punctuation and kana — about
+// 8,800 ideographs. Rarer characters outside that set still render as boxes.
 
 import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
@@ -20,6 +26,8 @@ import logoMaUri from "../assets/asset-generator/logo-ma.svg?inline";
 import ohfLockupUri from "../assets/asset-generator/ohf-lockup.svg?inline";
 import figtree400Uri from "../assets/asset-generator/fonts/figtree-400.ttf?inline";
 import figtree700Uri from "../assets/asset-generator/fonts/figtree-700.ttf?inline";
+import notoSansSc400Uri from "../assets/asset-generator/fonts/noto-sans-sc-400.ttf?inline";
+import notoSansSc700Uri from "../assets/asset-generator/fonts/noto-sans-sc-700.ttf?inline";
 
 const PIXEL_RATIO = 2; // export at 2x → e.g. 2160×2160 for a 1080-wide frame
 
@@ -36,18 +44,23 @@ const dataUriToBuffer = (uri) => Buffer.from(uri.slice(uri.indexOf(",") + 1), "b
 
 const figtree400Buf = dataUriToBuffer(figtree400Uri);
 const figtree700Buf = dataUriToBuffer(figtree700Uri);
+const notoSansSc400Buf = dataUriToBuffer(notoSansSc400Uri);
+const notoSansSc700Buf = dataUriToBuffer(notoSansSc700Uri);
 
 const FONTS = [
   { name: "Figtree", weight: 400, style: "normal", data: figtree400Buf },
   { name: "Figtree", weight: 700, style: "normal", data: figtree700Buf },
+  { name: "Noto Sans SC", weight: 400, style: "normal", data: notoSansSc400Buf },
+  { name: "Noto Sans SC", weight: 700, style: "normal", data: notoSansSc700Buf },
 ];
 
 // Parsed once for text-wrapping estimates (see computeFitScale below) — a
 // separate, much lighter concern from the FONTS array above, which hands the
 // raw bytes to satori for actual glyph rendering.
+// Each weight lists its fonts in fallback order, as satori picks them.
 const FONT_METRICS = {
-  400: createFont(figtree400Buf),
-  700: createFont(figtree700Buf),
+  400: [createFont(figtree400Buf), createFont(notoSansSc400Buf)],
+  700: [createFont(figtree700Buf), createFont(notoSansSc700Buf)],
 };
 
 // --- satori element tree ---
@@ -82,29 +95,52 @@ function textStyle(font, color) {
 // itself isn't pixel-precise to the Figma source either (see the Figtree/
 // Biotif substitution note in asset-templates.js).
 function measureText(weight, text, fontSize, letterSpacing) {
-  const font = FONT_METRICS[weight] ?? FONT_METRICS[400];
-  const glyphs = font.glyphsForString(text);
-  const scale = fontSize / font.unitsPerEm;
-  const advance = glyphs.reduce((sum, g) => sum + g.advanceWidth * scale, 0);
-  const spacing = letterSpacing ? letterSpacing * Math.max(0, glyphs.length - 1) : 0;
+  const fonts = FONT_METRICS[weight] ?? FONT_METRICS[400];
+  let advance = 0;
+  let count = 0;
+  for (const ch of text) {
+    const cp = ch.codePointAt(0);
+    const font = fonts.find((f) => f.hasGlyphForCodePoint(cp)) ?? fonts[0];
+    advance += font.glyphForCodePoint(cp).advanceWidth * (fontSize / font.unitsPerEm);
+    count += 1;
+  }
+  const spacing = letterSpacing ? letterSpacing * Math.max(0, count - 1) : 0;
   return advance + spacing;
 }
 
+// Chinese/Japanese text has no spaces and can break between any two
+// ideographs, so each one is its own wrap unit; Latin words still only break
+// at spaces.
+const CJK_RANGES = "\\u2E80-\\u2FFF\\u3040-\\u30FF\\u3400-\\u4DBF\\u4E00-\\u9FFF\\uF900-\\uFAFF";
+const CJK = new RegExp(`[${CJK_RANGES}]`, "u");
+const WRAP_UNIT = new RegExp(`(\\s*)([${CJK_RANGES}]|[^\\s${CJK_RANGES}]+)`, "gu");
+
 function countWrappedLines(weight, text, fontSize, letterSpacing, maxWidth) {
-  const words = text.split(" ").filter(Boolean);
-  if (words.length === 0) return 1;
+  const units = [...text.matchAll(WRAP_UNIT)].map(([, space, unit]) => ({ space: space.length > 0, unit }));
+  if (units.length === 0) return 1;
   const spaceWidth = measureText(weight, " ", fontSize, letterSpacing);
   let lines = 1;
   let lineWidth = 0;
-  for (const word of words) {
-    const wordWidth = measureText(weight, word, fontSize, letterSpacing);
-    const next = lineWidth === 0 ? wordWidth : lineWidth + spaceWidth + wordWidth;
-    if (next > maxWidth && lineWidth > 0) {
+  let sinceBreak = 0; // width since the line's last break opportunity
+  let prev = "";
+  for (const { space, unit } of units) {
+    const unitWidth = measureText(weight, unit, fontSize, letterSpacing);
+    // A break may come at a space, before an ideograph, or after one when a
+    // word follows (not before trailing punctuation like the comma).
+    const canBreak = space || CJK.test(unit) || (CJK.test(prev) && /^[\p{L}\p{N}]/u.test(unit));
+    if (canBreak) sinceBreak = 0;
+    const gap = space && lineWidth > 0 ? spaceWidth : 0;
+    const next = lineWidth + gap + unitWidth;
+    if (next > maxWidth && lineWidth > sinceBreak) {
+      // Overflow: wrap at the last opportunity, carrying anything glued to
+      // this unit (e.g. the ideograph before a trailing comma) along with it.
       lines += 1;
-      lineWidth = wordWidth;
+      lineWidth = sinceBreak + unitWidth;
     } else {
       lineWidth = next;
     }
+    sinceBreak += (canBreak ? 0 : gap) + unitWidth;
+    prev = unit;
   }
   return lines;
 }
@@ -305,7 +341,7 @@ export async function renderAsset(tpl, { size, fields }) {
   const svg = await satori(
     el(
       "div",
-      { style: { width: tpl.width, height, display: "flex", position: "relative", fontFamily: "Figtree" } },
+      { style: { width: tpl.width, height, display: "flex", position: "relative", fontFamily: "Figtree, Noto Sans SC" } },
       children,
     ),
     { width: tpl.width, height, fonts: FONTS },
