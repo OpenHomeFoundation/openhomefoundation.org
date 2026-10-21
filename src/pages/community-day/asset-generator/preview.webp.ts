@@ -2,7 +2,7 @@
 // static file so the preview shows instantly without the live endpoint
 // (image.png.ts) or a multi-megabyte data: URI in the page's HTML.
 import type { APIRoute } from "astro";
-import sharp from "sharp";
+import sharpService from "astro/assets/services/sharp";
 import { TEMPLATES } from "../../../lib/asset-templates.js";
 import { parseParams, renderAsset } from "../../../lib/render-asset.js";
 
@@ -16,7 +16,17 @@ export const GET: APIRoute = async () => {
   if (parsed.error) throw new Error(`Default asset-generator params invalid: ${parsed.error}`);
 
   const png = await renderAsset(tpl, parsed.render);
-  const webp = await sharp(png).resize({ width: PREVIEW_WIDTH }).webp({ quality: 80 }).toBuffer();
+  // Astro's own sharp image service, so we don't depend on sharp directly.
+  // Called as-is because the Netlify adapter swaps the configured service
+  // (astro:assets) for its image CDN, which can't transform at build time.
+  const { data, format } = await sharpService.transform(
+    png,
+    { src: "preview.webp", width: PREVIEW_WIDTH, format: "webp", quality: 80 },
+    { service: { entrypoint: "astro/assets/services/sharp", config: {} } } as Parameters<
+      typeof sharpService.transform
+    >[2],
+  );
+  if (format !== "webp") throw new Error(`Asset-generator preview came out as ${format}, not webp`);
 
-  return new Response(new Uint8Array(webp), { headers: { "Content-Type": "image/webp" } });
+  return new Response(new Uint8Array(data), { headers: { "Content-Type": "image/webp" } });
 };
