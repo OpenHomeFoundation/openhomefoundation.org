@@ -21,6 +21,12 @@ menu.addEventListener("keyup", (e) => {
   }
 });
 
+menu.addEventListener("click", (e) => {
+  if (e.target.closest("a")) {
+    closeMenu();
+  }
+});
+
 document.addEventListener("click", (e) => {
   const isClickInsideElement =
     menu.contains(e.target) || button.contains(e.target);
