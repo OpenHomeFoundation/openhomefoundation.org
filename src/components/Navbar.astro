@@ -7,7 +7,7 @@ const path = Astro.url.pathname.endsWith("/") ? Astro.url.pathname : `${Astro.ur
 
 const whoWeAreActive = path === "/about/" || path === "/structure/" || path === "/supporters/";
 const whatWeDoActive = path === "/projects/";
-const resourcesActive = path === "/documents/" || path === "/papers/privacy/" || path === "/media-room/";
+const resourcesActive = path === "/documents/" || path.startsWith("/papers/") || path === "/media-room/";
 const blogActive = path.includes("/blog/");
 ---
 
@@ -36,8 +36,8 @@ const blogActive = path.includes("/blog/");
         <li class:list={["menu-item", "has-dropdown", { active: resourcesActive }]}>
           <a href="#" aria-haspopup="true">Resources<span class="dropdown-arrow" aria-hidden="true"></span></a>
           <ul class="dropdown">
-            <li class:list={{ active: path === "/papers/privacy/" }}>
-              <a href="/papers/privacy/">Privacy paper</a>
+            <li class:list={{ active: path.startsWith("/papers/") }}>
+              <a href="/documents/#position-papers">Papers</a>
             </li>
             <li class:list={{ active: path === "/documents/" }}><a href="/documents/">Documents</a></li>
             <li class:list={{ active: path === "/media-room/" }}><a href="/media-room/">Media room</a></li>
@@ -84,8 +84,8 @@ const blogActive = path.includes("/blog/");
         <details open={path === "/documents/"}>
           <summary>Resources<span class="dropdown-arrow" aria-hidden="true"></span></summary>
           <ul class="dropdown">
-            <li class:list={{ active: path === "/papers/privacy/" }}>
-              <a href="/papers/privacy/">Privacy paper</a>
+            <li class:list={{ active: path.startsWith("/papers/") }}>
+              <a href="/documents/#position-papers">Papers</a>
             </li>
             <li class:list={{ active: path === "/documents/" }}><a href="/documents/">Documents</a></li>
             <li class:list={{ active: path === "/media-room/" }}><a href="/media-room/">Media room</a></li>
