@@ -1,0 +1,46 @@
+# The link-in-bio page at /bio/, linked from our social profiles. The latest
+# blog posts are added automatically above these sections; everything else is
+# this list, top to bottom.
+tagline: Fighting for privacy, choice, and sustainability in the smart home.
+
+sections:
+  - title: Featured
+    links:
+      - label: Merch store
+        note: Every purchase supports our mission
+        url: https://store.openhomefoundation.org/
+        featured: true
+
+  - title: Our projects
+    links:
+      - label: Home Assistant
+        url: https://www.home-assistant.io/
+        logo: /assets/images/logo/home-assistant.svg
+      - label: ESPHome
+        url: https://esphome.io/
+        logo: /assets/images/logo/esphome.svg
+      - label: Music Assistant
+        url: https://www.music-assistant.io/
+        logo: /assets/images/logo/music-assistant.svg
+      - label: All projects and collabs
+        url: /projects/
+
+  - title: Support us
+    links:
+      - label: Subscribe to the newsletter
+        url: https://newsletter.openhomefoundation.org/#/portal/signup
+      - label: Ways to support our work
+        url: /structure/#support-our-work
+      - label: Our commercial partners
+        url: /supporters/
+
+socials:
+  - icon: github
+    label: GitHub
+    url: https://github.com/openhomefoundation
+  - icon: mastodon
+    label: Mastodon
+    url: https://fosstodon.org/@openhomefoundation
+  - icon: bluesky
+    label: Bluesky
+    url: https://bsky.app/profile/openhomefoundation.org

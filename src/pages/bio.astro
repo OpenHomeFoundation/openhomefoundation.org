@@ -1,0 +1,71 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import bio from "../data/bio.yml";
+import { cardImage, formatDate, getSortedPosts, postUrl } from "../lib/blog";
+
+const posts = (await getSortedPosts()).slice(0, 3);
+---
+
+<Base title="Links" description={bio.tagline} noindex bare>
+  <main id="bio">
+    <div class="bio">
+      <header class="bio-header">
+        <h1><img src="/assets/images/logo/open-home-foundation.svg" alt="Open Home Foundation" width="240" height="54" /></h1>
+        <p>{bio.tagline}</p>
+      </header>
+
+      <section>
+        <h2>Latest from the blog</h2>
+        <ul class="bio-posts">
+          {posts.map((post) => (
+            <li>
+              <a href={postUrl(post)} class="bio-link bio-card">
+                <img src={cardImage(post)} alt="" width="1200" height="630" />
+                <span>
+                  <strong>{post.data.title}</strong>
+                  <small>{formatDate(post.data.date)}</small>
+                </span>
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href="/blog/" class="bio-link">
+              <span><strong>All blog posts</strong></span>
+              <Icon name="arrow-small" />
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      {bio.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <ul>
+            {section.links.map((link) => (
+              <li>
+                <a href={link.url} class:list={["bio-link", { "bio-featured": link.featured, "bio-project": link.logo }]}>
+                  <span>
+                    {link.logo ? <img src={link.logo} alt={link.label} height="28" /> : <strong>{link.label}</strong>}
+                    {link.note && <small>{link.note}</small>}
+                  </span>
+                  <Icon name="arrow-small" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
+      <nav class="bio-socials" aria-label="Open Home Foundation elsewhere">
+        {bio.socials.map((social) => (
+          <a href={social.url} aria-label={social.label} rel="me noopener" class="button button-icon button-outline">
+            <Icon name={social.icon} />
+          </a>
+        ))}
+      </nav>
+
+      <p class="bio-footer"><a href="/">openhomefoundation.org</a></p>
+    </div>
+  </main>
+</Base>

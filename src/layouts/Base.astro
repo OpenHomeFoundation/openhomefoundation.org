@@ -11,6 +11,8 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Leaves out the site header and footer. */
+  bare?: boolean;
   /** Crossposts: canonicalises to the source article. */
   externalUrl?: string;
   ogImage?: string;
@@ -27,6 +29,7 @@ const {
   title,
   description,
   noindex,
+  bare,
   externalUrl,
   ogImage,
   ogType = "website",
@@ -115,7 +118,6 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
         previews, and production all exercise the script they serve. */}
     <script is:inline async src="/plausible.js?site=openhomefoundation.org"></script>
     <script>
-      import "../scripts/nav-menu.js";
       import "../scripts/copy-email.js";
       import "../scripts/code-copy.js";
       import "../scripts/animate-on-scroll.js";
@@ -124,8 +126,8 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
     <slot name="head" />
   </head>
   <body>
-    <header><Navbar /></header>
+    {!bare && <header><Navbar /></header>}
     <div class="content"><slot /></div>
-    <footer><Footer /></footer>
+    {!bare && <footer><Footer /></footer>}
   </body>
 </html>
