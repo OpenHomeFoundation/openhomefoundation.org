@@ -3,14 +3,14 @@ import Base from "./Base.astro";
 import Icon from "../components/Icon.astro";
 
 // Markdown layout: papers and media room resources set frontmatter fields
-// lead, title, description, pdf, paper, hero, and noindex.
+// lead, title, description, pdf, paper, hero, ogImage, and noindex.
 const { frontmatter } = Astro.props;
-const { lead, title, description, pdf, paper, hero, noindex } = frontmatter;
+const { lead, title, description, pdf, paper, hero, ogImage, noindex } = frontmatter;
 
 const blueHero = hero === "blue";
 ---
 
-<Base title={title} description={description} noindex={noindex}>
+<Base title={title} description={description} ogImage={ogImage} noindex={noindex}>
   <div class={blueHero ? "bg-gradient-agreement-header" : "bg-gradient-paper-header"}>
     <section id="paper-header" class:list={{ "hero-light": blueHero }}>
       <div class="container">
