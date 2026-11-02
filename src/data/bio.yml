@@ -1,15 +1,37 @@
-# The link-in-bio page at /bio/, linked from our social profiles. The latest
-# blog posts are added automatically above these sections; everything else is
-# this list, top to bottom.
+# The link-in-bio page at /bio/, linked from our social profiles. Everything
+# here is shown top to bottom.
 tagline: Fighting for privacy, choice, and sustainability in the smart home.
 
+# Latest: the things we're posting about on social, in the order we want them.
+# The newest blog posts are added after these automatically. Remove an item
+# when it's no longer news.
+latest:
+  - title: Community Day 2026
+    note: Find or host a meetup near you on Saturday, November 7
+    url: /community-day/
+    image: /assets/images/community-day/community-day-og.webp
+  - title: Choice in the smart home
+    note: Position paper, October 2026
+    url: /papers/choice/
+    image: https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org/papers/choice/
+  # feed: newsletter swaps in the latest edition at build time; the details
+  # here are only used if the newsletter can't be reached.
+  - feed: newsletter
+    title: Building the Open Home
+    note: Our newsletter
+    url: https://newsletter.openhomefoundation.org/
+    image: /assets/images/bio/newsletter.jpg
+  - title: Merch store
+    note: Every purchase supports our mission
+    url: https://store.openhomefoundation.org/
+    image: /assets/images/bio/store.webp
+
 sections:
-  - title: Featured
+  - title: New here?
     links:
-      - label: Merch store
-        note: Every purchase supports our mission
-        url: https://store.openhomefoundation.org/
-        featured: true
+      - label: What is the Open Home Foundation?
+        url: /
+        highlight: featured
 
   - title: Our projects
     links:

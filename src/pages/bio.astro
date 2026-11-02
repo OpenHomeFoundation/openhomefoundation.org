@@ -4,7 +4,48 @@ import Icon from "../components/Icon.astro";
 import bio from "../data/bio.yml";
 import { cardImage, formatDate, getSortedPosts, postUrl } from "../lib/blog";
 
-const posts = (await getSortedPosts()).slice(0, 3);
+// The newest edition from the newsletter's RSS feed. If the feed can't be
+// reached, the item keeps the details written in bio.yml.
+async function latestNewsletter(fallback: { note: string; image: string }) {
+  try {
+    const response = await fetch("https://newsletter.openhomefoundation.org/rss/", {
+      signal: AbortSignal.timeout(5000),
+    });
+    const item = (await response.text()).split("<item>")[1] ?? "";
+    const pick = (pattern: RegExp) => item.match(pattern)?.[1];
+    const title = pick(/<title><!\[CDATA\[(.*?)\]\]><\/title>/);
+    const url = pick(/<link>(.*?)<\/link>/);
+    const date = pick(/<pubDate>(.*?)<\/pubDate>/);
+    // Ghost serves a resized WebP copy of any upload; the original is a large PNG.
+    const image = pick(/<media:content url="(.*?)"/)?.replace("/content/images/", "/content/images/size/w1200/format/webp/");
+    if (!title || !url) throw new Error("no edition in the feed");
+    return {
+      title,
+      url,
+      note: date ? `Newsletter · ${formatDate(new Date(date))}` : fallback.note,
+      image: image ?? fallback.image,
+    };
+  } catch (error) {
+    console.warn(`bio: using the fallback newsletter link (${(error as Error).message})`);
+    return fallback;
+  }
+}
+
+bio.latest = await Promise.all(
+  bio.latest.map((item) => (item.feed === "newsletter" ? latestNewsletter(item) : item)),
+);
+
+const curated = new Set(bio.latest.map((item) => item.url));
+const posts = (await getSortedPosts())
+  .filter((post) => !post.data.external_url && !curated.has(postUrl(post)))
+  .slice(0, 2)
+  .map((post) => ({
+    title: post.data.title,
+    note: formatDate(post.data.date),
+    url: postUrl(post),
+    image: cardImage(post),
+  }));
+const latest = [...bio.latest, ...posts];
 ---
 
 <Base title="Links" description={bio.tagline} noindex bare>
@@ -16,25 +57,19 @@ const posts = (await getSortedPosts()).slice(0, 3);
       </header>
 
       <section>
-        <h2>Latest from the blog</h2>
+        <h2>Latest</h2>
         <ul class="bio-posts">
-          {posts.map((post) => (
+          {latest.map((item) => (
             <li>
-              <a href={postUrl(post)} class="bio-link bio-card">
-                <img src={cardImage(post)} alt="" width="1200" height="630" />
+              <a href={item.url} class="bio-link bio-card">
+                <img src={item.image} alt="" width="1200" height="630" />
                 <span>
-                  <strong>{post.data.title}</strong>
-                  <small>{formatDate(post.data.date)}</small>
+                  <strong>{item.title}</strong>
+                  <small>{item.note}</small>
                 </span>
               </a>
             </li>
           ))}
-          <li>
-            <a href="/blog/" class="bio-link">
-              <span><strong>All blog posts</strong></span>
-              <Icon name="arrow-small" />
-            </a>
-          </li>
         </ul>
       </section>
 
@@ -44,7 +79,7 @@ const posts = (await getSortedPosts()).slice(0, 3);
           <ul>
             {section.links.map((link) => (
               <li>
-                <a href={link.url} class:list={["bio-link", { "bio-featured": link.featured, "bio-project": link.logo }]}>
+                <a href={link.url} class:list={["bio-link", { "bio-project": link.logo }, link.highlight && `bio-${link.highlight}`]}>
                   <span>
                     {link.logo ? <img src={link.logo} alt={link.label} height="28" /> : <strong>{link.label}</strong>}
                     {link.note && <small>{link.note}</small>}

@@ -132,13 +132,14 @@
   opacity: 0.8;
 }
 
-/* The newest post spans the full width; the next two sit side by side. */
+/* The first card spans the full width and the rest sit side by side. A card
+   left on its own in the last row spans it too. */
 #bio .bio-posts {
   grid-template-columns: 1fr 1fr;
 }
 
 #bio .bio-posts li:first-child,
-#bio .bio-posts li:last-child {
+#bio .bio-posts li:nth-child(even):last-child {
   grid-column: 1 / -1;
 }
 
