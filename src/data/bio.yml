@@ -13,7 +13,7 @@ latest:
   - title: Choice in the smart home
     note: Position paper, October 2026
     url: /papers/choice/
-    image: https://assets.openhomefoundation.org/opengraph?url=https://www.openhomefoundation.org/papers/choice/
+    image: /assets/images/papers/choice-paper-og.webp
   # feed: newsletter swaps in the latest edition at build time; the details
   # here are only used if the newsletter can't be reached.
   - feed: newsletter
