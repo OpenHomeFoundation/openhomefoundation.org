@@ -132,23 +132,11 @@
   opacity: 0.8;
 }
 
-/* The first card spans the full width and the rest sit side by side. A card
-   left on its own in the last row spans it too. */
-#bio .bio-posts {
-  grid-template-columns: 1fr 1fr;
-}
-
-#bio .bio-posts li:first-child,
-#bio .bio-posts li:nth-child(even):last-child {
-  grid-column: 1 / -1;
-}
-
+/* Latest: the first item is a large card, the rest are rows with a thumbnail. */
 #bio .bio-card {
   flex-direction: column;
   align-items: stretch;
-  justify-content: flex-start;
   gap: 8px;
-  height: 100%;
   padding: 6px 6px 12px;
 }
 
@@ -165,11 +153,20 @@
 }
 
 #bio .bio-card strong {
-  font-size: 14px;
+  font-size: 18px;
 }
 
-#bio .bio-posts li:first-child strong {
-  font-size: 18px;
+#bio .bio-tile {
+  padding-left: 8px;
+}
+
+#bio .bio-tile > img {
+  flex: none;
+  width: 104px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  object-fit: cover;
 }
 
 #bio .bio-socials {

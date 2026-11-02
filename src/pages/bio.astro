@@ -58,15 +58,16 @@ const latest = [...bio.latest, ...posts];
 
       <section>
         <h2>Latest</h2>
-        <ul class="bio-posts">
-          {latest.map((item) => (
+        <ul>
+          {latest.map((item, index) => (
             <li>
-              <a href={item.url} class="bio-link bio-card">
-                <img src={item.image} alt="" width="1200" height="630" />
+              <a href={item.url} class:list={["bio-link", index === 0 ? "bio-card" : "bio-tile"]}>
+                <img src={item.image} alt="" width="1200" height="630" loading={index === 0 ? undefined : "lazy"} />
                 <span>
                   <strong>{item.title}</strong>
                   <small>{item.note}</small>
                 </span>
+                {index > 0 && <Icon name="arrow-small" />}
               </a>
             </li>
           ))}
