@@ -11,6 +11,8 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** Leaves out the site header and footer. */
+  bare?: boolean;
   /** Crossposts: canonicalises to the source article. */
   externalUrl?: string;
   ogImage?: string;
@@ -27,6 +29,7 @@ const {
   title,
   description,
   noindex,
+  bare,
   externalUrl,
   ogImage,
   ogType = "website",
@@ -83,6 +86,7 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
       </>
     )}
     <link rel="alternate" type="application/atom+xml" title="Open Home Foundation Blog" href="/blog/feed.xml" />
+    <link rel="preload" href="/assets/fonts/biotif-biotif-variable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -115,7 +119,6 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
         previews, and production all exercise the script they serve. */}
     <script is:inline async src="/plausible.js?site=openhomefoundation.org"></script>
     <script>
-      import "../scripts/nav-menu.js";
       import "../scripts/copy-email.js";
       import "../scripts/code-copy.js";
       import "../scripts/animate-on-scroll.js";
@@ -124,8 +127,8 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
     <slot name="head" />
   </head>
   <body>
-    <header><Navbar /></header>
+    {!bare && <header><Navbar /></header>}
     <div class="content"><slot /></div>
-    <footer><Footer /></footer>
+    {!bare && <footer><Footer /></footer>}
   </body>
 </html>

@@ -50,10 +50,12 @@ export default defineConfig({
       filter: (page) => {
         const path = new URL(page).pathname;
         // Media room sub-pages are press resources and carry noindex, as does
-        // the device database data use statement. Keep them out of the sitemap.
+        // the device database data use statement and the link-in-bio page.
+        // Keep them out of the sitemap.
         if (path.startsWith("/media-room/") && path !== "/media-room/")
           return false;
         if (path === "/device-database-data-use-statement/") return false;
+        if (path === "/bio/") return false;
         if (crosspostPaths.has(path)) return false;
         return true;
       },

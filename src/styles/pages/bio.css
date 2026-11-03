@@ -1,0 +1,194 @@
+/* Link-in-bio page */
+
+#bio {
+  min-height: 100vh;
+  padding: 32px 16px 48px;
+  background:
+    url("/assets/images/gradients/noise.png"),
+    url("/assets/images/gradients/gradient-agreement-header.jpg") var(--light-grey-color);
+  background-size: auto, cover;
+  background-position: center center;
+  background-repeat: repeat, no-repeat;
+}
+
+#bio .bio {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+#bio .bio-header {
+  margin-bottom: 28px;
+}
+
+#bio .bio-header img {
+  display: block;
+  width: 200px;
+  height: auto;
+}
+
+#bio .bio-header p {
+  margin-top: 12px;
+  color: var(--secondary-text-color);
+  font-size: 15px;
+  text-wrap: balance;
+}
+
+#bio section {
+  margin-top: 24px;
+}
+
+#bio h2 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+#bio ul {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+#bio .bio-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: background-color 180ms ease-in-out;
+}
+
+#bio .bio-link:hover,
+#bio .bio-link:focus-visible {
+  background: var(--white-color);
+}
+
+#bio .bio-link:focus-visible {
+  outline: 2px solid var(--primary-text-color);
+  outline-offset: 2px;
+}
+
+#bio .bio-link > span {
+  flex: 1;
+  min-width: 0;
+}
+
+#bio .bio-link strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+#bio .bio-link small {
+  display: block;
+  margin-top: 2px;
+  color: var(--secondary-text-color);
+  font-size: 13px;
+}
+
+#bio .bio-link > svg {
+  flex: none;
+}
+
+/* The project wordmarks are light, so their tiles are dark. */
+#bio .bio-project {
+  background: var(--dark-blue-color);
+  color: var(--light-grey-color);
+}
+
+#bio .bio-project:hover,
+#bio .bio-project:focus-visible {
+  background: #0d3a52;
+}
+
+#bio .bio-project img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 22px;
+}
+
+#bio .bio-featured {
+  background: var(--primary-color);
+}
+
+#bio .bio-featured:hover,
+#bio .bio-featured:focus-visible {
+  background: var(--dark-blue-color);
+  color: var(--light-grey-color);
+}
+
+#bio .bio-featured small,
+#bio .bio-featured:hover small,
+#bio .bio-featured:focus-visible small {
+  color: inherit;
+  opacity: 0.8;
+}
+
+/* Latest: the first item is a large card, the rest are rows with a thumbnail. */
+#bio .bio-card {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 6px 6px 12px;
+}
+
+#bio .bio-card > img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 630;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+#bio .bio-card > span {
+  padding: 0 6px;
+}
+
+#bio .bio-card strong {
+  font-size: 18px;
+}
+
+#bio .bio-tile {
+  padding-left: 8px;
+}
+
+#bio .bio-tile > img {
+  flex: none;
+  width: 104px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+#bio .bio-socials {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+#bio .bio-socials .button-icon {
+  width: 44px;
+  height: 44px;
+}
+
+#bio .bio-socials svg {
+  width: 18px;
+  height: 18px;
+}
+
+#bio .bio-footer {
+  margin-top: 24px;
+  color: var(--secondary-text-color);
+  font-size: 13px;
+  text-align: center;
+}
