@@ -156,6 +156,26 @@
   font-size: 18px;
 }
 
+#bio .bio-video {
+  position: relative;
+}
+
+#bio .bio-video img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1200 / 630;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+#bio .bio-video svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 #bio .bio-tile {
   padding-left: 8px;
 }

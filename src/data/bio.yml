@@ -1,31 +1,122 @@
-# The link-in-bio page at /bio/, linked from our social profiles. Everything
-# here is shown top to bottom.
+# The link-in-bio page at https://www.openhomefoundation.org/bio/, linked from
+# our social profiles. The page is this file, top to bottom. A mistake here
+# fails the build and names the item at fault, so nothing broken can reach the
+# live page.
+#
+# What fills the page by itself
+#   Blog posts and newsletter editions appear in the Latest list on their own
+#   when they're published, and drop off as newer ones arrive. They never need
+#   dates added here.
+#
+# What you add by hand: `starts` and `ends`
+#   Anything you add by hand (an item in Latest, or a link further down) uses
+#   the same two keys:
+#     - `starts`: when it appears. In the Latest list it's required, and it
+#       also sets the item's place (newest first) and the date shown on it,
+#       just like a blog post's publish date. A date in the past shows it
+#       right away; a future one makes it wait, then come in at the top of the
+#       list. On links it's optional: without it, a link shows as soon as the
+#       change is live.
+#     - `ends`: when it goes. Optional: without it, the item stays until you
+#       delete it.
+#   A YouTube video or livestream also has `airs`: when it goes out, which sets
+#   its place and date. Without `ends` it comes down at the end of the day
+#   after it airs.
+#
+#   Write dates and times like this. Times are UTC unless you add an offset:
+#     starts: 2026-11-15                  # from midnight UTC, Nov 15
+#     starts: 2026-11-15T17:30:00Z        # from 17:30 UTC
+#     starts: 2026-11-15T18:30:00+01:00   # the same moment, in CET
+#     ends: 2026-11-15                    # up through the whole of Nov 15 (UTC)
+#     ends: 2026-11-15T20:00:00Z          # down at 20:00 UTC
+#   An `ends` of exactly midnight UTC counts as that whole day, so it stays up
+#   24 hours longer. To go down at midnight UTC as Nov 15 begins, write
+#   ends: 2026-11-14 instead.
+#
+#   No other date keys work: `date`, `start`, `expires` and the like fail the
+#   build, and the error names the key to use instead.
+#
+#   You don't need to merge anything when `starts` or `ends` passes: the page
+#   checks the time with the website (not the visitor's own clock) and shows
+#   or hides items itself. Delete ended items whenever it suits you.
+#
+#   Scheduled items are in the page before they show, so anyone who reads the
+#   page's source can see them early, and their pictures are already online.
+#   Don't schedule anything that must stay secret until it starts: merge it at
+#   the time instead.
+#
+# Images
+#   Every item in Latest needs an `image:`, except YouTube items, which use the
+#   video's thumbnail by themselves. Use one already on the site, or add a new
+#   one:
+#     image: /assets/images/bio/2026-11-black-friday.webp
+#   For a new image, save it in public/assets/images/bio/ with the date in its
+#   name. Make it 1200 × 630 pixels, WebP or JPEG, under about 200 KB, and keep
+#   text and faces away from the edges: the cards crop to fit. One image is
+#   enough: the small cards get a resized copy automatically.
+#
+# The page is built by src/pages/bio.astro, with the rules in src/lib/bio-list.mjs
+# and src/lib/bio-schedule.mjs.
 tagline: Fighting for privacy, choice, and sustainability for smart homes.
 
-# Latest: the things we're posting about on social, in the order we want them.
-# The newest blog posts are added after these automatically. Remove an item
-# when it's no longer news.
 latest:
-  - title: Community Day 2026
-    note: Find or host a meetup near you on Saturday, November 7
-    url: /community-day/
-    image: /assets/images/community-day/community-day-og.webp
-  - title: Choice in the smart home
-    note: Position paper, October 2026
-    url: /papers/choice/
-    image: /assets/images/papers/choice-paper-og.webp
-  # feed: newsletter swaps in the latest edition at build time; the details
-  # here are only used if the newsletter can't be reached.
-  - feed: newsletter
-    title: Building the Open Home
-    note: Our newsletter
-    url: https://newsletter.openhomefoundation.org/
-    image: /assets/images/bio/newsletter.jpg
-  - title: Merch store
-    note: Every purchase supports our mission
-    url: https://store.openhomefoundation.org/
-    image: /assets/images/bio/store.webp
+  # The most items the list shows at once.
+  limit: 6
 
+  # The most items each feed can put in the list at once.
+  feeds:
+    blog:
+      limit: 2
+    # The details here are only used if the newsletter can't be reached.
+    newsletter:
+      limit: 1
+      title: Building the Open Home
+      note: Our newsletter
+      url: https://newsletter.openhomefoundation.org/
+      image: /assets/images/bio/newsletter.jpg
+
+  # The things we're posting about on social. Each needs a title, url, image
+  # and starts, and can have an ends. The line under the title shows the date
+  # (with `label: Event` in front of it, if you add one). Write a `note` to
+  # show that text instead. If an item links to the same place as a blog post
+  # or newsletter edition, your item shows instead of it while it's up.
+  items:
+    - title: Community Day 2026
+      note: Find or host a meetup near you on Saturday, November 7
+      url: /community-day/
+      image: /assets/images/community-day/community-day-og.webp
+      starts: 2026-11-03
+      ends: 2026-11-08
+    - title: Choice in the smart home
+      note: Position paper, October 2026
+      url: /papers/choice/
+      image: /assets/images/papers/choice-paper-og.webp
+      starts: 2026-10-22
+    - title: Merch store
+      note: Every purchase supports our mission
+      url: https://store.openhomefoundation.org/
+      image: /assets/images/bio/store.webp
+      starts: 2026-10-21
+    # A scheduled item: it comes in at the top when `starts` passes.
+    #  - title: Community Day is this Saturday
+    #    label: Event
+    #    url: /community-day/
+    #    image: /assets/images/community-day/community-day-og.webp
+    #    starts: 2026-11-20T09:00:00Z
+    #    ends: 2026-11-22
+    # A YouTube video or livestream shows as a large card and opens YouTube.
+    # Before it airs it reads "Starts November 15 · 18:00 UTC"; after, it shows
+    # the date it aired.
+    #  - type: youtube
+    #    video: https://www.youtube.com/watch?v=XyAL1to3Lm4   # or just the ID
+    #    title: State of the Open Home 2026
+    #    airs: 2026-11-15T18:00:00Z                           # or just a date
+    #    label: Livestream                                    # optional
+    #    starts: 2026-11-08                                   # optional: show it from a week before
+    #    ends: 2026-11-22                                     # optional: keep the replay up longer
+
+# Links that sit under the Latest list. Give one `starts` and `ends` to show it
+# only for a while.
 sections:
   - title: New here?
     links:
