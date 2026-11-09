@@ -1,10 +1,10 @@
 ---
 import Base from "../layouts/Base.astro";
 import Icon from "../components/Icon.astro";
-import bio from "../data/bio.yml";
-import { bioLatest } from "../lib/bio";
+import { bio, bioPage } from "../lib/bio";
+import { dataAttributes } from "../lib/bio-schedule.mjs";
 
-const latest = await bioLatest();
+const { latest, sections } = await bioPage();
 ---
 
 <Base title="Links" description={bio.tagline} noindex bare>
@@ -15,30 +15,49 @@ const latest = await bioLatest();
         <p>{bio.tagline}</p>
       </header>
 
-      <section>
+      <section hidden={latest.hidden}>
         <h2>Latest</h2>
-        <ul>
-          {latest.map((item, index) => (
-            <li>
-              <a href={item.url} class:list={["bio-link", index === 0 ? "bio-card" : "bio-tile"]}>
-                <img src={item.thumb?.path ?? item.image} alt="" width="1200" height="630" loading={index === 0 ? undefined : "lazy"} />
+        <ul data-schedule data-limit={latest.limit}>
+          {latest.entries.map((entry) => (
+            <li hidden={entry.hidden} {...dataAttributes(entry)}>
+              <a href={entry.url} class:list={["bio-link", entry.kind === "row" ? "bio-tile" : "bio-card"]}>
+                {entry.kind === "video" ? (
+                  <div class="bio-video">
+                    <img src={entry.image} alt="" width="1200" height="630" loading="lazy" />
+                    <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">
+                      <path
+                        d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.6 8.6 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.6 8.6 0 0 0 6 6c5.3 1.4 26.5 1.4 26.5 1.4s21.2 0 26.5-1.4a8.6 8.6 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3Z"
+                        fill="#f00"
+                      />
+                      <path d="M45 24 27 14v20Z" fill="#fff" />
+                    </svg>
+                  </div>
+                ) : (
+                  <img
+                    src={entry.thumb?.path ?? entry.image}
+                    alt=""
+                    width="1200"
+                    height="630"
+                    loading={entry.kind === "hero" && !entry.hidden ? undefined : "lazy"}
+                  />
+                )}
                 <span>
-                  <strong>{item.title}</strong>
-                  <small>{item.note}</small>
+                  <strong>{entry.title}</strong>
+                  <small>{entry.note}</small>
                 </span>
-                {index > 0 && <Icon name="arrow-small" />}
+                {entry.kind === "row" && <Icon name="arrow-small" />}
               </a>
             </li>
           ))}
         </ul>
       </section>
 
-      {bio.sections.map((section) => (
-        <section>
+      {sections.map((section) => (
+        <section hidden={section.hidden}>
           <h2>{section.title}</h2>
-          <ul>
-            {section.links.map((link) => (
-              <li>
+          <ul data-schedule>
+            {section.entries.map((link) => (
+              <li hidden={link.hidden} {...dataAttributes(link)}>
                 <a href={link.url} class:list={["bio-link", { "bio-project": link.logo }, link.highlight && `bio-${link.highlight}`]}>
                   <span>
                     {link.logo ? <img src={link.logo} alt={link.label} height="28" /> : <strong>{link.label}</strong>}
@@ -64,3 +83,7 @@ const latest = await bioLatest();
     </div>
   </main>
 </Base>
+
+<script>
+  import "../scripts/bio-schedule.js";
+</script>

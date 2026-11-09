@@ -11,6 +11,7 @@ npm install
 npm run dev      # start a dev server at http://localhost:4321
 npm run build    # build the production site into dist/
 npm run preview  # serve the built site locally
+npm test         # run the tests (the bio page's rules)
 ```
 
 ## Project layout
