@@ -12,11 +12,12 @@ if (numberEls.length > 0 && !prefersReducedMotion) {
     // e.g. "1,600+" -> target 1600, suffix "+" — kept so the animated value
     // matches the original formatting (thousands separator, "+") exactly
     // once it finishes.
-    const match = el.textContent.trim().match(/^([\d,]+)(.*)$/);
+    const match = el.textContent.trim().match(/^([\d,]+(?:\.(\d+))?)(.*)$/);
     if (!match) return;
 
-    const target = parseInt(match[1].replace(/,/g, ""), 10);
-    const suffix = match[2];
+    const target = parseFloat(match[1].replace(/,/g, ""));
+    const decimals = match[2] ? match[2].length : 0;
+    const suffix = match[3];
     if (Number.isNaN(target)) return;
 
     // Lock in the final rendered width before animating — counting up from
@@ -29,8 +30,12 @@ if (numberEls.length > 0 && !prefersReducedMotion) {
 
     function tick(now) {
       const progress = Math.min((now - start) / DURATION, 1);
-      const value = Math.round(progress * target);
-      el.textContent = value.toLocaleString("en-US") + suffix;
+      const value = progress * target;
+      el.textContent =
+        value.toLocaleString("en-US", {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        }) + suffix;
       if (progress < 1) requestAnimationFrame(tick);
     }
 
