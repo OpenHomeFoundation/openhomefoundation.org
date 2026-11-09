@@ -1,5 +1,6 @@
 ---
 import Section from "./Section.astro";
+import { STATS } from "./stats";
 ---
 
 <Section id="what-is-community-day">
@@ -15,22 +16,22 @@ import Section from "./Section.astro";
     </div>
     <div class="card-grid">
       <div class="animate--fade-up-in card card-grid__top-left card-grid__compact" style="--i: 0">
-        <p><span class="number">82</span><span>events in 2025</span></p>
+        <p><span class="number">{STATS.events}</span><span>events in 2026</span></p>
       </div>
       <div class="animate--fade-up-in card card-grid__middle-top card-grid__media">
-        <img src="/assets/images/community-day/1600+-registered-guests.webp" alt="A group of community members at a Community Day event" width="727" height="628" />
+        <img src="/assets/images/community-day/community-day-brisbane.webp" alt="A cheering group photo of community members at a Community Day event in Brisbane" width="727" height="628" />
       </div>
       <div class="animate--fade-up-in card card-grid__top-right card-grid__compact" style="--i: 1">
-        <p><span class="number">26</span><span>hours continuous meetups</span></p>
+        <p><span class="number">{STATS.hours}</span><span>hours continuous meetups</span></p>
       </div>
       <div class="animate--fade-up-in card card-grid__bottom-left card-grid__media">
-        <img src="/assets/images/community-day/82-events-in-2025.webp" alt="A presentation given at a Community Day event in 2025" width="727" height="628" />
+        <img src="/assets/images/community-day/community-day-valencia.webp" alt="A presentation on privacy, choice, and sustainability at a Community Day event in Valencia" width="727" height="628" />
       </div>
-      <div class="animate--fade-up-in card card-grid__right-middle card-grid__media">
-        <img src="/assets/images/community-day/26-hours-continuous-meetups.webp" alt="Cutting a slice of cake themed with the Home Assistant logo" width="727" height="308" />
+      <div class="animate--fade-up-in card card-grid__right-middle card-grid__compact" style="--i: 3">
+        <p><span class="number">{STATS.countries}</span><span>countries</span></p>
       </div>
       <div class="animate--fade-up-in card card-grid__bottom-span card-grid__compact card-grid__horizontal" style="--i: 2">
-        <p><span class="number">1,600+</span><span>registered guests</span></p>
+        <p><span class="number">{STATS.guests}</span><span>registered guests</span></p>
         <div class="event-avatars">
           <img loading="lazy" src="/assets/images/community-day/avatars/1.webp" alt="Community avatar" width="96" height="96" />
           <img loading="lazy" src="/assets/images/community-day/avatars/2.webp" alt="Community avatar" width="96" height="96" />

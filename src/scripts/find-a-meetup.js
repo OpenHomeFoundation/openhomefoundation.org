@@ -13,10 +13,7 @@ await import("leaflet-gesture-handling");
 
 const mapContainer = document.getElementById("find-a-meetup-map");
 const eventsDataEl = document.getElementById("find-a-meetup-events");
-const section = document.querySelector("[data-find-a-meetup]");
 const events = (await latestEvents) ?? (eventsDataEl ? JSON.parse(eventsDataEl.textContent) : []);
-
-section?.classList.toggle("has-events", events.length > 0);
 
 const CENTER_LAT = 15;
 
@@ -102,12 +99,9 @@ if (mapContainer) {
     title.textContent = event.title;
     wrapper.appendChild(title);
 
-    wrapper.appendChild(
-      createDetailList([
-        ["Starts", event.starts],
-        ["Location", event.location ?? "Register for details"],
-      ]),
-    );
+    const details = [["Starts", event.starts]];
+    if (event.location) details.push(["Location", event.location]);
+    wrapper.appendChild(createDetailList(details));
 
     const link = document.createElement("a");
     link.className = "button button--secondary button--has-icon button--find";

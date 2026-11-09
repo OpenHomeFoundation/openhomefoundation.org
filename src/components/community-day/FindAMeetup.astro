@@ -2,6 +2,7 @@
 import Section from "./Section.astro";
 import AssetGenerator from "./AssetGenerator.astro";
 import { fetchMeetupEvents } from "../../lib/community-day-events.js";
+import { STATS } from "./stats";
 
 // Build-time snapshot, for first paint and for anyone without JavaScript. The
 // page is prerendered, so this list is frozen at deploy time — the client
@@ -17,29 +18,15 @@ try {
 // Escape "<" so a stray "</script" inside any event text can't end the
 // script tag early.
 const mapEventsJson = JSON.stringify(mapEvents).replace(/</g, "\\u003c");
-
-// Picks which of each .has-events-content / .no-events-content pair is shown.
-// Both ship, because a deploy that built with an empty (or failed) feed still
-// has to be able to switch over once the client fetch finds meetups.
-const hasEvents = mapEvents.length > 0;
 ---
 
 <Section id="find-a-meetup">
-  <div class:list={["inner", { "has-events": hasEvents }]} data-find-a-meetup>
-    <div class="title-container title-container--row animate--fade-up-in">
-      <h2 class="h2 heading">
-        <span class="has-events-content">Find a meetup near you</span>
-        <span class="no-events-content">Host an event in your area</span>
-      </h2>
-      <a
-        href="https://luma.com/communityday2026"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="button button--secondary button--has-icon button--find"
-      >
-        <span class="has-events-content">Browse all meetups on Luma</span>
-        <span class="no-events-content">Host a meetup</span>
-      </a>
+  <div class="inner">
+    <div class="title-container title-container--map animate--fade-up-in">
+      <h2 class="h2 heading">This was Community Day 2026</h2>
+      <div class="content-container">
+        <p>{STATS.events} meetups. {STATS.countries} countries. One day. This community never stops surprising us! Thank you for making it all possible. 💚</p>
+      </div>
     </div>
 
     <div class="map-column animate--fade-up-in">
@@ -50,18 +37,9 @@ const hasEvents = mapEvents.length > 0;
 
     <div class="organise-a-meetup">
       <div class="title-container animate--fade-up-in">
-        <h2 class="h2 heading">
-          <span class="has-events-content">Don’t see your city yet?</span>
-          <span class="no-events-content">Need some support?</span>
-        </h2>
+        <h2 class="h2 heading">Let’s keep the ball rolling…</h2>
         <div class="content-container">
-          <div class="has-events-content">
-            <p>Take matters into your own hands!</p>
-            <p>
-              If you’d like to host a Community Day meetup in your city, we will support you with venue reimbursements, official merchandise, and a full Host Playbook. 
-            </p>
-          </div>
-          <p class="no-events-content">We have everything you need to host a successful meetup: take a look at what we offer below.</p>
+          <p>The fun doesn’t stop with Community Day – there are community meetups taking place all year round. If you’d like to host a local meetup for the Home Assistant, ESPHome, or Music Assistant community, we’re here to help make it happen!</p>
         </div>
       </div>
 
@@ -94,19 +72,13 @@ const hasEvents = mapEvents.length > 0;
 </Section>
 
 <style lang="scss">
-  // Both halves of each pair ship; .has-events on .inner picks one, and the
-  // client script flips it when a refresh changes whether there are meetups.
-  .inner:not(.has-events) .has-events-content,
-  .inner.has-events .no-events-content {
-    display: none;
-  }
-
   .inner {
     @include fluid(32px, 80px, $property: padding-top);
     @include fluid(32px, 80px, $property: padding-bottom);
 
     @include fluid(16px, 100px, $property: padding-right);
     @include fluid(16px, 100px, $property: padding-left);
+    @include fluid(32px, 80px, $property: margin-bottom);
 
     background: radial-gradient(154.99% 100% at 18.32% 5.15%, var(--secondary-OHF-Sustainability-Primary, rgba(214, 233, 109, 0.20)) 0%, var(--secondary-OHF-Sustainability-Accent, rgba(65, 208, 155, 0.20)) 100%);
     border-radius: 1.25rem;
@@ -129,22 +101,13 @@ const hasEvents = mapEvents.length > 0;
     }
   }
 
-  .title-container.title-container--row {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
+  .title-container.title-container--map {
+    @include fluid(24px, 40px, $property: margin-bottom);
     position: relative;
     z-index: 5;
 
-    @include bp(tablet) {
-      justify-content: space-between;
-    }
-
-    .button {
-      text-transform: none;
+    p {
+      text-wrap: balance;
     }
   }
 
