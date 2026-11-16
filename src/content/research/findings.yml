@@ -1,0 +1,63 @@
+# Findings with chart data. Optional per project.
+# `id` doubles as the anchor on the project page: /research/projects/<project>/#<id>
+# Source for all Community Survey 2024 figures: src/content/blog/home-assistant-survey-dataset.md
+
+- id: local-control
+  project: community-survey-2024
+  order: 1
+  headline: "Local control is the number one reason people choose Home Assistant"
+  heading: "Local control comes first"
+  text: "Among people who chose Home Assistant, local control, open source and powerful customization were the most selected reasons. Most said an interest in technology got them started, often prompted by a move or a renovation."
+  glance: { value: "89.3%", label: "chose Home Assistant for local control" }
+  chart:
+    type: bars
+    title: "Why people choose Home Assistant"
+    subtitle: "Top reasons selected by respondents who chose Home Assistant"
+    items:
+      - { label: "Local control", value: 89.3 }
+      - { label: "Open source", value: 84.0 }
+      - { label: "Powerful customization", value: 81.7 }
+  provenance: { responseType: "Multi-select" }
+
+- id: household-roles
+  project: community-survey-2024
+  order: 2
+  headline: "One person sets up the smart home. Everyone else lives with it."
+  text: "Most respondents share their home with a partner or family. Typically one person configures and maintains the system, while everyone else uses the connected devices directly — a pattern earlier research links to imbalances of control and privacy in the home."
+  glance: { value: "94.4%", label: "of the people who set up and maintain the home are men" }
+  chart:
+    type: numbers
+    items:
+      - { title: "Who sets up and maintains the smart home", value: "94.4%", label: "are men" }
+      - { title: "Their partners", value: "87.4%", label: "are women, and mostly use devices rather than Home Assistant itself" }
+  provenance: {}
+
+- id: first-platform
+  project: community-survey-2024
+  order: 3
+  headline: "Most people arrive at Home Assistant from another platform"
+  heading: "Most people arrive from somewhere else"
+  text: "Only around a third started their smart home with Home Assistant; the rest arrived from other platforms. Understanding that journey helps us see how our community grows."
+  glance: { value: "~⅔", label: "came to Home Assistant from another platform" }
+  chart:
+    type: split
+    title: "First smart home platform"
+    approximate: true
+    parts:
+      - { label: "Started with Home Assistant", value: 33, display: "~⅓" }
+      - { label: "Another platform first", value: 67, display: "~⅔" }
+  provenance: { responseType: "Single choice" }
+
+- id: setups
+  project: community-survey-2024
+  order: 4
+  headline: "The typical respondent runs a substantial setup"
+  chart:
+    type: stats
+    items:
+      - { value: "11–200", label: "devices in a typical setup" }
+      - { value: "75%", label: "live in a home they own" }
+      - { value: "Over half", label: "share their home with a cat or dog" }
+      - { value: "A quarter", label: "speak more than one language at home" }
+  glance: { value: "75%", label: "run their smart home in a home they own" }
+  provenance: {}

@@ -1,0 +1,328 @@
+# Published research by others that uses OHF projects.
+# Published and public research only; never guess a title, year or venue.
+# `added` = date the entry was added here (review trail; not shown in V1). List order: year desc, then title.
+# `peerReviewed`: true = "Peer-reviewed", false = "Preprint · not peer-reviewed", omit when unknown.
+# `collectedFrom`: curated (manual), submitted (GitHub issue form) or automated (future scheduled job).
+# Draft entries need their exact title, year and venue confirmed before publishing.
+
+# ── Ready ─────────────────────────────────────────────────────────────────
+
+- id: plegma-dataset
+  title: "The Plegma dataset: Domestic appliance-level and aggregate electricity demand with metadata from Greece"
+  year: 2024
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: dataset
+  authors: "Athanasoulias, S., Guasselli, F., Doulamis, N., et al."
+  venue: "Scientific Data (Nature)"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A public dataset of domestic electricity demand with metadata, collected with Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1038/s41597-024-03208-0" }
+
+- id: modular-iot-office
+  title: "Modular IoT Architecture for Monitoring and Control of Office Environments Based on Home Assistant"
+  year: 2025
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: paper
+  venue: "IoT (MDPI)"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "Paper", url: "https://www.mdpi.com/2624-831X/6/4/69" }
+
+- id: tatartts
+  title: "TatarTTS: An Open-Source Text-to-Speech Synthesis Dataset for the Tatar Language"
+  year: 2024
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: dataset
+  venue: "IEEE"
+  fields: [voice-language]
+  uses: [piper]
+  summary: "The first large-scale public dataset of its kind, promoting Tatar text-to-speech in academia and industry."
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463261" }
+
+- id: chatgpt-visually-impaired
+  title: "ChatGPT for Visually Impaired and Blind"
+  year: 2024
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: paper
+  venue: "IEEE"
+  fields: [accessibility, voice-language]
+  uses: [piper]
+  summary: "Uses Piper, our text-to-speech system."
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463430" }
+
+- id: akhmetzhanov-2022
+  title: "Integration of a Video Surveillance System Into a Smart Home Using the Home Assistant Platform"
+  year: 2022
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: paper
+  authors: "Akhmetzhanov, B., Gazizuly, O., Nurlan, Z., & Zhakiyev, N."
+  venue: "IEEE SIST 2022"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  links:
+    - { label: "DOI", url: "https://doi.org/10.1109/SIST54437.2022.9945718" }
+
+- id: suvar-2022
+  title: "Optimal Monitoring of Server Rooms with Home Assistant Platform"
+  year: 2022
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: paper
+  authors: "Șuvar et al."
+  venue: "MATEC Web of Conferences (SIMPRO 2022)"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A server room monitoring system at a corporate headquarters."
+  links:
+    - { label: "Paper", url: "https://www.matec-conferences.org/articles/matecconf/abs/2022/20/matecconf_simpro2022_00044/matecconf_simpro2022_00044.html" }
+    - { label: "PDF", url: "https://www.matec-conferences.org/articles/matecconf/pdf/2022/20/matecconf_simpro2022_00044.pdf" }
+
+- id: setz-2021
+  title: "A Comparison of Open-Source Home Automation Systems"
+  year: 2021
+  added: 2026-11-04
+  peerReviewed: true
+  collectedFrom: curated
+  type: paper
+  authors: "Setz et al."
+  venue: "IEEE"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/9652536" }
+
+# ── Draft: confirm exact title / year / venue first ──────────────────────
+
+- id: distributed-home-automation
+  title: "Distributed Home Automation with Home Assistant"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "ACM"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "DOI", url: "https://dl.acm.org/doi/full/10.1145/3703790.3703828" }
+  draft: true
+
+- id: comprehensive-smart-home
+  title: "Development and Implementation of a Comprehensive Smart Home Automation System Using Home Assistant and IoT Devices"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "IEEE"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10796669" }
+  draft: true
+
+- id: design-evaluation-smart-home
+  title: "Design and Evaluation of a Smart Home System with Home Assistant"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "IEEE"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/11358018" }
+  draft: true
+
+- id: schenkluhn-2023
+  title: "TODO: exact title (AR device detection and management with Home Assistant)"
+  year: 2023
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Schenkluhn et al."
+  venue: "ACM CHI Extended Abstracts"
+  fields: [hci]
+  uses: [home-assistant]
+  links:
+    - { label: "DOI", url: "https://doi.org/10.1145/3544549.3585745" }
+  draft: true
+
+- id: schenkluhn-2024
+  title: "TODO: exact title (AR device management with Home Assistant, CHI 2024)"
+  year: 2024
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Schenkluhn et al."
+  venue: "ACM CHI 2024"
+  fields: [hci]
+  uses: [home-assistant]
+  links:
+    - { label: "DOI", url: "https://doi.org/10.1145/3613904.3642862" }
+  draft: true
+
+- id: beruscha-2022
+  title: "TODO: exact title (e-textile interior surfaces in the smart home)"
+  year: 2022
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Beruscha et al."
+  venue: "ACM"
+  fields: [hci]
+  uses: [home-assistant]
+  links:
+    - { label: "ACM", url: "https://dl.acm.org/doi/abs/10.1145/3567445.3567455" }
+  draft: true
+
+- id: wang-2022
+  title: "TODO: exact title (empirical study of 330 integration bugs in Home Assistant)"
+  year: 2022
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Wang et al."
+  venue: "ACM"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "DOI", url: "https://doi.org/10.1145/3533767.3534365" }
+  draft: true
+
+- id: debauche-2020
+  title: "TODO: exact title (smart campus with Home Assistant and ESPHome)"
+  year: 2020
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Debauche et al."
+  venue: "IEEE"
+  fields: [systems-software]
+  uses: [home-assistant, esphome]
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/9199640" }
+  draft: true
+
+- id: gozuoglu-2024
+  title: "TODO: exact title (local home automation server to learn energy consumption behaviour)"
+  year: 2024
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Gozuoglu"
+  venue: "Sigma Journal of Engineering and Natural Sciences"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "PDF", url: "https://sigma.yildiz.edu.tr/storage/upload/pdfs/1698130370-en.pdf" }
+  draft: true
+
+- id: thermostat-grid-demand
+  title: "TODO: exact title (lowering grid demand by reducing thermostat temperatures)"
+  year: 2023
+  added: 2026-11-04
+  peerReviewed: false
+  collectedFrom: curated
+  type: preprint
+  venue: "arXiv"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "arXiv", url: "https://arxiv.org/abs/2303.07206" }
+  draft: true
+
+- id: cujilema-2023
+  title: "TODO: exact title (secure home automation with an ESP-NOW mesh network, MQTT and Home Assistant)"
+  year: 2023
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Cujilema et al."
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  links:
+    - { label: "ResearchGate", url: "https://www.researchgate.net/publication/373789150_Secure_home_automation_system_based_on_ESP-NOW_mesh_network_MQTT_and_Home_Assistant_platform" }
+  draft: true
+
+- id: mqtt-ha-openhab
+  title: "Implications of MQTT Connectivity Protocol for IoT based Device Automation using Home Assistant and OpenHAB"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "IEEE"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/8991259" }
+  draft: true
+
+- id: matec-residential-security
+  title: "TODO: exact title (residential security through the Home Assistant platform)"
+  year: 2022
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "MATEC Web of Conferences (SESAM 2022)"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "Paper", url: "https://www.matec-conferences.org/articles/matecconf/abs/2022/01/matecconf_sesam2022_00008/matecconf_sesam2022_00008.html" }
+  draft: true
+
+- id: seniors-thesis
+  title: "TODO: exact title (smart home automation to aid seniors)"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: thesis
+  venue: "Theseus"
+  fields: [health-care]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "Theseus", url: "https://www.theseus.fi/handle/10024/508275" }
+  draft: true
+
+- id: fall-detection-thesis
+  title: "TODO: exact title (proof-of-concept fall detection system based on low-cost IoT devices)"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: thesis
+  institution: "University of Padua"
+  fields: [health-care]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "Thesis", url: "https://thesis.unipd.it/handle/20.500.12608/60586" }
+  draft: true
+
+- id: icelandic-tts
+  title: "TODO: exact title (Icelandic text-to-speech voices powered by Piper)"
+  added: 2026-11-04
+  collectedFrom: curated
+  type: dataset
+  venue: "CLARIN-IS"
+  fields: [voice-language]
+  uses: [piper]
+  openAccess: true
+  links:
+    - { label: "CLARIN", url: "https://repository.clarin.is/repository/xmlui/handle/20.500.12537/287" }
+    - { label: "GitHub", url: "https://github.com/grammatek/simaromur" }
+  draft: true
