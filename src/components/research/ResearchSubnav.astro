@@ -1,0 +1,23 @@
+---
+interface Props {
+  label: string;
+  links: { href: string; label: string }[];
+}
+
+const { label, links } = Astro.props;
+---
+
+<nav class="research-subnav" aria-label="On this page">
+  <div class="container">
+    <ul>
+      <li><strong>{label}</strong></li>
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>

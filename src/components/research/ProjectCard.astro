@@ -1,0 +1,58 @@
+---
+import Icon from "../Icon.astro";
+import Badge from "./Badge.astro";
+import { STATUS_LABELS, projectUrl, type Project } from "../../lib/research";
+
+interface Props {
+  project: Project;
+  variant: "latest" | "grid" | "related";
+  relation?: string;
+}
+
+const { project, variant, relation } = Astro.props;
+const { title, summary, status, image } = project.data;
+const planned = status === "planned";
+const statusTone = status === "completed" || status === "published" ? "positive" : "default";
+const Tag = planned ? "div" : "a";
+---
+
+<Tag
+  href={planned ? undefined : projectUrl(project.id)}
+  class:list={["project-card", `project-card-${variant}`, { planned }]}
+>
+  {
+    variant !== "related" && (
+      <div class="project-card-image">
+        {image ? (
+          <img src={image} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <span class="project-card-placeholder" aria-hidden="true">
+            <Icon name="foundation" />
+          </span>
+        )}
+      </div>
+    )
+  }
+  <div class="project-card-content">
+    {
+      variant === "related" ? (
+        <p class="project-card-relation-label">{planned ? STATUS_LABELS.planned : relation}</p>
+      ) : (
+        <div class="project-card-badges">
+          {variant === "latest" && <Badge tone="dark">Latest project</Badge>}
+          <Badge tone={statusTone}>{STATUS_LABELS[status]}</Badge>
+        </div>
+      )
+    }
+    <h3 class="project-card-title">{title}</h3>
+    <p class="project-card-summary">{summary}</p>
+    {
+      variant === "latest" && (
+        <span class="project-card-cta">
+          Explore the project
+          <Icon name="arrow-forward-small" />
+        </span>
+      )
+    }
+  </div>
+</Tag>

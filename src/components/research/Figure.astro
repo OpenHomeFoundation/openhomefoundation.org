@@ -1,0 +1,129 @@
+---
+import type { Finding } from "../../lib/research";
+import ResearchLink from "./ResearchLink.astro";
+
+interface Props {
+  finding: Finding;
+  source: string;
+  link?: { label: string; url: string };
+}
+
+const { finding, source, link } = Astro.props;
+const { chart, provenance } = finding.data;
+
+const pct = (value: number) => `${value}%`;
+const shown = (item: { value: number; display?: string }) => item.display ?? pct(item.value);
+const approx = chart.type === "split" && chart.approximate ? "approximately " : "";
+
+const summary =
+  chart.type === "bars"
+    ? `${chart.title}: ${chart.items.map((i) => `${i.label} ${shown(i)}`).join(", ")}`
+    : chart.type === "split"
+      ? `${chart.title}: ${chart.parts.map((p) => `${p.label} ${approx}${shown(p)}`).join(", ")}`
+      : undefined;
+
+const provenanceParts = [provenance.question, provenance.responseType, source].filter(Boolean);
+---
+
+{
+  chart.type === "numbers" && (
+    <div class="figure-numbers">
+      {chart.items.map((item) => (
+        <figure class="figure figure-number">
+          <figcaption>{item.title}</figcaption>
+          <p class="figure-number-value">{item.value}</p>
+          <p class="figure-number-label">{item.label}</p>
+          <p class="figure-provenance">{provenanceParts.join(" · ")}</p>
+        </figure>
+      ))}
+    </div>
+  )
+}
+
+{
+  chart.type === "stats" && (
+    <figure class="figure-stats">
+      <ul>
+        {chart.items.map((item) => (
+          <li>
+            <span class="figure-stats-value">{item.value}</span>
+            <span class="figure-stats-label">{item.label}</span>
+          </li>
+        ))}
+      </ul>
+      <figcaption class="figure-provenance">{provenanceParts.join(" · ")}</figcaption>
+    </figure>
+  )
+}
+
+{
+  (chart.type === "bars" || chart.type === "split") && (
+    <figure class="figure">
+      <figcaption>
+        <span class="figure-title">{chart.title}</span>
+        {chart.subtitle && <span class="figure-subtitle">{chart.subtitle}</span>}
+      </figcaption>
+
+      {chart.type === "bars" && (
+        <div class="figure-bars" role="img" aria-label={summary}>
+          {chart.items.map((item, i) => (
+            <div class="figure-bar" aria-hidden="true" style={`--i: ${i}`}>
+              <span class="figure-bar-label">{item.label}</span>
+              <span class="figure-bar-track">
+                <span class="figure-bar-fill" style={`--w: ${item.value}%`} />
+              </span>
+              <span class="figure-bar-value">{shown(item)}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {chart.type === "split" && (
+        <div role="img" aria-label={summary}>
+          <div class="figure-split" aria-hidden="true">
+            {chart.parts.map((part, i) => (
+              <span class={`figure-split-part part-${i}`} style={`flex-grow: ${part.value}`} />
+            ))}
+          </div>
+          <ul class="figure-split-legend" aria-hidden="true">
+            {chart.parts.map((part, i) => (
+              <li>
+                <span class={`figure-split-key part-${i}`} />
+                {part.label} ({chart.approximate ? "approx. " : ""}
+                {shown(part)})
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div class="visually-hidden">
+        <table>
+          <caption>{chart.title}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Answer</th>
+              <th scope="col">Share of respondents</th>
+            </tr>
+          </thead>
+          <tbody>
+            {(chart.type === "bars" ? chart.items : chart.parts).map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                <td>
+                  {approx}
+                  {shown(row)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="figure-footer">
+        <p class="figure-provenance">{provenanceParts.join(" · ")}</p>
+        {link && <ResearchLink href={link.url}>{link.label}</ResearchLink>}
+      </div>
+    </figure>
+  )
+}

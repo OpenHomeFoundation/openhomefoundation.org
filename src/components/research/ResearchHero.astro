@@ -1,0 +1,60 @@
+---
+import Icon from "../Icon.astro";
+
+interface Props {
+  view: "ours" | "others";
+}
+
+const { view } = Astro.props;
+
+const views = [
+  {
+    key: "ours",
+    href: "/research/",
+    title: "Our research",
+    text: "How we work, our projects and everything we've published",
+  },
+  {
+    key: "others",
+    href: "/research/by-others/",
+    title: "Research by others",
+    text: "Studies and datasets that use Home Assistant and our other projects",
+  },
+];
+---
+
+<div class="bg-gradient-agreement-header">
+  <section class="research-hero">
+    <div class="container">
+      <div class="poly"><Icon name="poly/poly-thin" /></div>
+      <p class="research-eyebrow">Research</p>
+      <h1 class="mb-24">Understanding how people live with the smart home</h1>
+      <p class="research-lede mb-48">
+        We study how people live with smart home technology and publish everything we learn — findings, data and tools —
+        for anyone to use. And because our projects are open source, researchers around the world build their own
+        studies on them too.
+      </p>
+      <nav class="research-switch" aria-label="Research sections">
+        {
+          views.map((v) => (
+            <a
+              href={v.href}
+              class:list={["research-switch-card", { current: v.key === view }]}
+              aria-current={v.key === view ? "page" : undefined}
+            >
+              <span>
+                <span class="research-switch-title">{v.title}</span>
+                <span class="research-switch-text">{v.text}</span>
+              </span>
+              {v.key !== view && (
+                <span class="research-switch-icon" aria-hidden="true">
+                  <Icon name="arrow-small" />
+                </span>
+              )}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,113 @@
+---
+import Badge from "./Badge.astro";
+import ResearchLink from "./ResearchLink.astro";
+import {
+  FIELD_LABELS,
+  PROJECT_LABELS,
+  TYPE_LABELS,
+  formatMonthYear,
+  projectUrl,
+  publicationFilter,
+  reviewLabel,
+  reviewStatus,
+  type ByOthersEntry,
+  type Link,
+  type OutputType,
+} from "../../lib/research";
+
+type Ours = {
+  variant: "ours";
+  id: string;
+  type: OutputType;
+  title: string;
+  date: Date;
+  authors: string[];
+  venue?: string;
+  description?: string;
+  links: Link[];
+  project?: { slug: string; title: string };
+  compact?: boolean;
+};
+type Others = { variant: "others"; entry: ByOthersEntry };
+type Props = Ours | Others;
+
+const props = Astro.props;
+---
+
+{
+  props.variant === "ours" ? (
+    <li class:list={["publication-row", { compact: props.compact }]} data-filter={publicationFilter(props.type)}>
+      <div class="publication-meta">
+        <span class="publication-date">{formatMonthYear(props.date)}</span>
+        <span class="publication-type">{TYPE_LABELS[props.type][0]}</span>
+      </div>
+      <div class="publication-body">
+        <h3 class="publication-title">{props.title}</h3>
+        {props.compact && props.description && <p class="publication-details">{props.description}</p>}
+        {!props.compact && (
+          <p class="publication-details">
+            {[props.authors.join(", "), props.venue].filter(Boolean).join(" · ")}
+            {props.project && (
+              <>
+                {(props.authors.length > 0 || props.venue) && " · "}
+                <a href={projectUrl(props.project.slug)}>{props.project.title}</a>
+              </>
+            )}
+          </p>
+        )}
+      </div>
+      <div class="publication-actions">
+        {props.links.map((link) => (
+          <ResearchLink href={link.url}>{link.label}</ResearchLink>
+        ))}
+      </div>
+    </li>
+  ) : (
+    (() => {
+      const { data, id } = props.entry;
+      const review = reviewStatus(props.entry);
+      const search = [data.title, data.authors, data.venue, data.institution].filter(Boolean).join(" ");
+      return (
+        <li
+          class="publication-row others"
+          id={id}
+          data-year={data.year ?? 0}
+          data-title={data.title}
+          data-type={data.type}
+          data-field={data.fields.join(" ")}
+          data-uses={data.uses.join(" ")}
+          data-review={review ?? ""}
+          data-oa={data.openAccess ? "true" : "false"}
+          data-search={search.toLowerCase()}
+        >
+          <div class="publication-meta">
+            <span class="publication-date">{data.year ?? "Year TBC"}</span>
+          </div>
+          <div class="publication-body">
+            <div class="publication-badges">
+              {data.draft && <Badge tone="preprint">Draft</Badge>}
+              {review && (
+                <Badge tone={review === "preprint" ? "preprint" : "outline"}>{reviewLabel(props.entry)}</Badge>
+              )}
+              <Badge>{TYPE_LABELS[data.type as OutputType]?.[0] ?? data.type}</Badge>
+              {data.fields.map((f) => (
+                <Badge>{FIELD_LABELS[f]}</Badge>
+              ))}
+              {data.uses.map((u) => (
+                <Badge>{PROJECT_LABELS[u]}</Badge>
+              ))}
+              {data.openAccess && <Badge tone="positive">Open access</Badge>}
+            </div>
+            <h3 class="publication-title">{data.title}</h3>
+            <p class="publication-details">{[data.authors, data.venue].filter(Boolean).join(" · ")}</p>
+          </div>
+          <div class="publication-actions">
+            {data.links.map((link) => (
+              <ResearchLink href={link.url}>{link.label}</ResearchLink>
+            ))}
+          </div>
+        </li>
+      );
+    })()
+  )
+}
