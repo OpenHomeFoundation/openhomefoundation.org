@@ -4,6 +4,7 @@ export const RESEARCH_EMAIL = "research@openhomefoundation.org";
 
 export const RESEARCH_LINKS = {
   userResearchRepo: "https://github.com/OpenHomeFoundation/user-research",
+  userResearchWiki: "https://github.com/OpenHomeFoundation/user-research/wiki",
   uxDesignRepo: "https://github.com/OpenHomeFoundation/ux-design",
   userResearchDiscussions: "https://github.com/OpenHomeFoundation/user-research/discussions",
   uxDesignDiscussions: "https://github.com/OpenHomeFoundation/ux-design/discussions",
