@@ -1,0 +1,336 @@
+---
+import { render } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import Icon from "../../../components/Icon.astro";
+import Badge from "../../../components/research/Badge.astro";
+import CitationCard from "../../../components/research/CitationCard.astro";
+import Figure from "../../../components/research/Figure.astro";
+import ProjectCard from "../../../components/research/ProjectCard.astro";
+import PublicationRow from "../../../components/research/PublicationRow.astro";
+import ResearchLink from "../../../components/research/ResearchLink.astro";
+import {
+  STATUS_LABELS,
+  TYPE_LABELS,
+  authorName,
+  findingLink,
+  getGlanceStats,
+  getProjectFindings,
+  getProjectMaterials,
+  getProjectOutputs,
+  getProjects,
+  getRelated,
+  outputActions,
+  type Project,
+} from "../../../lib/research";
+import { dataset, scholarlyArticle } from "../../../lib/structured-data";
+
+export async function getStaticPaths() {
+  return (await getProjects()).map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const { title, summary, standfirst, status, period, team, facts, image, citation, method, statsLink } = project.data;
+const { Content } = await render(project);
+
+const outputs = await getProjectOutputs(project.id);
+const { primary, others: materials } = await getProjectMaterials(project);
+const findings = await getProjectFindings(project.id);
+const findingLinks = await Promise.all(findings.map((f) => findingLink(f)));
+const glance = await getGlanceStats(project.id);
+const related = await getRelated(project.id);
+const hasMethod = method && (method.facts.length > 0 || method.limitations);
+const hasOverview = Boolean(project.body?.trim());
+
+const contents = [
+  citation && { href: "#cite", label: "Cite this project" },
+  outputs.length && { href: "#outputs", label: "Output & findings" },
+  (primary || materials.length) && {
+    href: "#materials",
+    label: "Materials & tools",
+  },
+  hasOverview && { href: "#overview", label: "Overview" },
+  findings.length && { href: "#findings", label: "Key findings" },
+  hasMethod && { href: "#method", label: "Method & limitations" },
+  related.length && { href: "#related", label: "Related projects" },
+].filter((c): c is { href: string; label: string } => Boolean(c));
+
+const statusTone = status === "completed" || status === "published" ? "positive" : "default";
+const doi = primary?.doi;
+
+const jsonLd = [
+  ...(primary ? [dataset({ ...primary, url: primary.links[0]?.url })] : []),
+  ...outputs.filter((o) => o.type === "paper").map((o) => scholarlyArticle({ ...o, url: o.links[0]?.url })),
+];
+---
+
+<Base title={`${title} – Research`} description={summary} ogImage={image} jsonLd={jsonLd}>
+  <div class="bg-secondary">
+    <section class="project-hero">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="research-breadcrumb">
+          <ol>
+            <li><a href="/research/">Research</a></li>
+            <li><a href="/research/#our-projects">Our projects</a></li>
+            <li aria-current="page">{title}</li>
+          </ol>
+        </nav>
+        <div class="grid">
+          <div class="col-s-12 col-l-7">
+            <div class="project-hero-badges">
+              <Badge>Project</Badge>
+              <Badge tone={statusTone}>{STATUS_LABELS[status]}</Badge>
+              {period && <span class="project-period">{period}</span>}
+            </div>
+            <h1 class="mb-24">{title}</h1>
+            <p class="research-lede mb-32">{standfirst ?? summary}</p>
+            <div class="project-hero-actions">
+              {
+                primary && (
+                  <a href="#materials" class="button button-dark-blue">
+                    Get the data
+                  </a>
+                )
+              }
+              {
+                outputs.length > 0 && (
+                  <a href="#outputs" class="button button-outline">
+                    Output & findings
+                  </a>
+                )
+              }
+            </div>
+          </div>
+          <div class="col-s-12 col-l-5">
+            {
+              citation ? (
+                <CitationCard apa={citation.apa} bibtex={citation.bibtex} doi={doi} />
+              ) : (
+                <div class="project-hero-image">
+                  {image ? (
+                    <img src={image} alt="" />
+                  ) : (
+                    <span class="project-card-placeholder" aria-hidden="true">
+                      <Icon name="foundation" />
+                    </span>
+                  )}
+                </div>
+              )
+            }
+          </div>
+        </div>
+        <dl class="project-facts">
+          {
+            team.length > 0 && (
+              <div>
+                <dt>Team</dt>
+                <dd>{team.map(authorName).join(", ")}</dd>
+              </div>
+            )
+          }
+          {
+            facts.map((fact) => (
+              <div>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+  </div>
+
+  {
+    (outputs.length > 0 || primary || materials.length > 0) && (
+      <section class="research-section project-outputs">
+        <div class="container">
+          <div class="project-output-cards">
+            {outputs.length > 0 && (
+              <div class="project-output-card" id="outputs">
+                <p class="research-eyebrow">What we found and shared</p>
+                <h2>Output & findings</h2>
+                <p class="research-intro">Blog posts, papers, talks and posters from this project.</p>
+                <ul class="publication-list">
+                  {outputs.map((o) => (
+                    <PublicationRow variant="ours" compact {...o} links={outputActions(o)} />
+                  ))}
+                </ul>
+              </div>
+            )}
+            {(primary || materials.length > 0) && (
+              <div class="project-output-card" id="materials">
+                <p class="research-eyebrow">Reuse it in your own research</p>
+                <h2>Materials & tools</h2>
+                <p class="research-intro">Everything you need to reuse, reproduce or extend this research.</p>
+                {primary && (
+                  <div class="primary-dataset">
+                    <div class="project-hero-badges">
+                      <Badge tone="dark">Dataset</Badge>
+                      {primary.host && <Badge>{primary.host}</Badge>}
+                    </div>
+                    <h3>{primary.title}</h3>
+                    {primary.description && <p>{primary.description}</p>}
+                    {primary.links[0] && (
+                      <ResearchLink href={primary.links[0].url} class="button button-dark-blue">
+                        Get the dataset
+                      </ResearchLink>
+                    )}
+                  </div>
+                )}
+                <ul class="material-list">
+                  {materials.map((m) => (
+                    <li>
+                      <div>
+                        <h3>
+                          {m.links[0] ? (
+                            <ResearchLink href={m.links[0].url} arrow={false}>
+                              {m.title}
+                            </ResearchLink>
+                          ) : (
+                            m.title
+                          )}
+                        </h3>
+                        {m.description && <p>{m.description}</p>}
+                      </div>
+                      <Badge>{m.host ?? TYPE_LABELS[m.type][0]}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <div class="toc-bar" data-toc-bar hidden>
+    <div class="container">
+      <button type="button" class="toc-bar-toggle" aria-expanded="false" aria-controls="toc-bar-list">
+        <span class="toc-bar-label">On this page</span>
+        <span class="toc-bar-current" data-toc-current>{contents[0]?.label}</span>
+      </button>
+      <ul class="toc-bar-list" id="toc-bar-list" hidden>
+        {
+          contents.map((c) => (
+            <li>
+              <a href={c.href}>{c.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <section class="research-section project-body">
+    <div class="container">
+      <div class="grid">
+        <aside class="col-s-12 col-l-3">
+          <nav class="project-contents" aria-labelledby="contents-title" data-toc>
+            <p class="project-contents-title" id="contents-title">On this page</p>
+            <ul>
+              {
+                contents.map((c) => (
+                  <li>
+                    <a href={c.href}>{c.label}</a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
+        </aside>
+        <div class="col-s-12 col-l-9 project-main">
+          {
+            hasOverview && (
+              <section id="overview" class="project-prose">
+                <h2>Overview</h2>
+                <Content />
+              </section>
+            )
+          }
+
+          {
+            findings.length > 0 && (
+              <section id="findings">
+                <h2>Key findings</h2>
+                {glance.length > 0 && (
+                  <ul class="glance">
+                    {glance.map((g) => (
+                      <li>
+                        <a href={`#${g.id}`}>
+                          <span class="glance-value">{g.value}</span>
+                          <span class="glance-label">{g.label}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {findings.map((finding, i) => (
+                  <article class="finding" id={finding.id}>
+                    <h3>{finding.data.heading ?? finding.data.headline}</h3>
+                    {finding.data.text && <p>{finding.data.text}</p>}
+                    <Figure finding={finding} source={title} link={findingLinks[i]} />
+                  </article>
+                ))}
+                {statsLink && (
+                  <p class="finding-stats-link">
+                    <ResearchLink href={statsLink.url}>{statsLink.label}</ResearchLink>
+                  </p>
+                )}
+              </section>
+            )
+          }
+
+          {
+            hasMethod && (
+              <section id="method">
+                <h2>Method & limitations</h2>
+                {method.facts.length > 0 && (
+                  <dl class="method-facts">
+                    {method.facts.map((fact) => (
+                      <div>
+                        <dt>{fact.label}</dt>
+                        <dd>{fact.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+                {method.limitations && <p>{method.limitations}</p>}
+              </section>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section id="related" class="research-section bg-secondary">
+        <div class="container">
+          <div class="related-header">
+            <h2>Related projects</h2>
+            <ResearchLink href="/research/#our-projects">All our research</ResearchLink>
+          </div>
+          <div class="project-grid">
+            {related.map((r) => (
+              <ProjectCard project={r.project} variant="related" relation={r.label} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Base>
+
+<script>
+  import "../../../scripts/research-scrollspy.js";
+  import "../../../scripts/research-figures.js";
+</script>
