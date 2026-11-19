@@ -34,11 +34,6 @@ const TYPE_FILTER_LABELS: Record<string, string> = {
   paper: "Paper",
   dataset: "Dataset",
   thesis: "Thesis",
-  preprint: "Preprint",
-};
-const REVIEW_FILTER_LABELS: Record<string, string> = {
-  "peer-reviewed": "Peer-reviewed",
-  preprint: "Preprints",
 };
 
 const filterGroups = [
@@ -60,13 +55,7 @@ const filterGroups = [
     all: "All types",
     options: facets.types.map((v) => [v, TYPE_FILTER_LABELS[v]]),
   },
-  {
-    key: "review",
-    label: "Review",
-    all: "Any review status",
-    options: facets.reviews.map((v) => [v, REVIEW_FILTER_LABELS[v]]),
-  },
-].filter((g) => g.options.length > 1 || (g.key === "review" && g.options.length > 0));
+].filter((g) => g.options.length > 1);
 
 const why = [
   {
@@ -145,8 +134,9 @@ const subnav = [
             <p class="research-note-title">About this list</p>
             <p>
               This is independent research by others. Listing a study here doesn't mean we've reviewed or endorse it.
-              Some entries are preprints, shared before peer review; we label them so you can tell them apart. Missing
-              your published research? <a href="#submit">Add it</a>.
+              We only list peer-reviewed work and PhD theses. Missing your published research? <a href="#submit"
+                >Add it</a
+              >.
             </p>
           </aside>
 
@@ -255,16 +245,15 @@ const subnav = [
           <p class="research-eyebrow">Add your research</p>
           <h2 class="mb-24">Published research using our projects?</h2>
           <p class="mb-24">
-            If your officially published research (a peer-reviewed paper, thesis, dataset or preprint) used Home
+            If your published research (a peer-reviewed paper or dataset paper, or a PhD thesis) used Home
             Assistant or our other projects, submit it through our GitHub form and we'll review it for this list. We can
             only include published research, not personal projects or setups.
           </p>
           <p class="submit-include-title">What to include</p>
           <ul class="submit-include">
-            <li>Title and authors</li>
-            <li>Journal, conference or repository</li>
-            <li>Year</li>
-            <li>Link (DOI, publisher page or Google Scholar)</li>
+            <li>The DOI, or a link to the publisher's page</li>
+            <li>Which of our projects you studied or used</li>
+            <li>One line on how you used it</li>
           </ul>
         </div>
         <div class="submit-actions">

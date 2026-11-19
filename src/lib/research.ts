@@ -359,20 +359,6 @@ export function paginate<T>(entries: T[], pageSize: number): T[][] {
   return pages;
 }
 
-export type ReviewStatus = "peer-reviewed" | "preprint";
-
-export function reviewStatus(entry: ByOthersEntry): ReviewStatus | undefined {
-  const { peerReviewed } = entry.data;
-  if (peerReviewed === undefined) return undefined;
-  return peerReviewed ? "peer-reviewed" : "preprint";
-}
-
-export function reviewLabel(entry: ByOthersEntry): string | undefined {
-  const status = reviewStatus(entry);
-  if (!status) return undefined;
-  return status === "peer-reviewed" ? "Peer-reviewed" : "Preprint · not peer-reviewed";
-}
-
 /** Only the filter values that at least one entry actually has. */
 export function getFilterFacets(entries: ByOthersEntry[]) {
   const present = <K extends string>(order: K[], values: K[]) => order.filter((v) => values.includes(v));
@@ -386,12 +372,8 @@ export function getFilterFacets(entries: ByOthersEntry[]) {
       entries.flatMap((e) => e.data.uses),
     ),
     types: present(
-      ["paper", "dataset", "thesis", "preprint"] as ByOthersEntry["data"]["type"][],
+      ["paper", "dataset", "thesis"] as ByOthersEntry["data"]["type"][],
       entries.map((e) => e.data.type),
-    ),
-    reviews: present(
-      ["peer-reviewed", "preprint"] as ReviewStatus[],
-      entries.map(reviewStatus).filter((s): s is ReviewStatus => !!s),
     ),
   };
 }

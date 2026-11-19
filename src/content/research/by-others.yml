@@ -1,7 +1,7 @@
 # Published research by others that uses OHF projects.
 # Published and public research only; never guess a title, year or venue.
 # `added` = date the entry was added here (review trail; not shown in V1). List order: year desc, then title.
-# `peerReviewed`: true = "Peer-reviewed", false = "Preprint · not peer-reviewed", omit when unknown.
+# Screened against .claude/skills/research-by-others/inclusion-guidelines.md. `notes` records what each entry still needs.
 # `collectedFrom`: curated (manual), submitted (GitHub issue form) or automated (future scheduled job).
 # Draft entries need their exact title, year and venue confirmed before publishing.
 
@@ -11,7 +11,6 @@
   title: "The Plegma dataset: Domestic appliance-level and aggregate electricity demand with metadata from Greece"
   year: 2024
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: dataset
   authors: "Athanasoulias, S., Guasselli, F., Doulamis, N., et al."
@@ -22,12 +21,12 @@
   summary: "A public dataset of domestic electricity demand with metadata, collected with Home Assistant."
   links:
     - { label: "Paper", url: "https://doi.org/10.1038/s41597-024-03208-0" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Home Assistant; confirm in the full text that it was used to collect the data. Step 4: Scientific Data, check SJR quartile."
 
 - id: modular-iot-office
   title: "Modular IoT Architecture for Monitoring and Control of Office Environments Based on Home Assistant"
   year: 2025
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: paper
   venue: "IoT (MDPI)"
@@ -36,54 +35,54 @@
   openAccess: true
   links:
     - { label: "Paper", url: "https://www.mdpi.com/2624-831X/6/4/69" }
+  notes: "Screening 2026-11-19: Step 2 passes (Home Assistant is the core automation engine). Step 4: MDPI journal, check SJR quartile for IoT (ISSN 2624-831X)."
 
 - id: tatartts
   title: "TatarTTS: An Open-Source Text-to-Speech Synthesis Dataset for the Tatar Language"
   year: 2024
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: dataset
-  venue: "IEEE"
+  venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
   fields: [voice-language]
   uses: [piper]
   summary: "The first large-scale public dataset of its kind, promoting Tatar text-to-speech in academia and industry."
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463261" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
 
 - id: chatgpt-visually-impaired
   title: "ChatGPT for Visually Impaired and Blind"
   year: 2024
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: paper
-  venue: "IEEE"
+  venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
   fields: [accessibility, voice-language]
   uses: [piper]
   summary: "Uses Piper, our text-to-speech system."
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463430" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
 
 - id: akhmetzhanov-2022
   title: "Integration of a Video Surveillance System Into a Smart Home Using the Home Assistant Platform"
   year: 2022
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: paper
   authors: "Akhmetzhanov, B., Gazizuly, O., Nurlan, Z., & Zhakiyev, N."
-  venue: "IEEE SIST 2022"
+  venue: "2022 International Conference on Smart Information Systems and Technologies (SIST)"
   fields: [security-monitoring]
   uses: [home-assistant]
   links:
     - { label: "DOI", url: "https://doi.org/10.1109/SIST54437.2022.9945718" }
+  notes: "Screening 2026-11-19: Step 2 passes (built on Home Assistant). Step 4: check CORE rank for IEEE SIST."
 
 - id: suvar-2022
   title: "Optimal Monitoring of Server Rooms with Home Assistant Platform"
   year: 2022
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: paper
   authors: "Șuvar et al."
@@ -95,20 +94,21 @@
   links:
     - { label: "Paper", url: "https://www.matec-conferences.org/articles/matecconf/abs/2022/20/matecconf_simpro2022_00044/matecconf_simpro2022_00044.html" }
     - { label: "PDF", url: "https://www.matec-conferences.org/articles/matecconf/pdf/2022/20/matecconf_simpro2022_00044.pdf" }
+  notes: "Screening 2026-11-19: Step 2 passes (built on Home Assistant). Step 4: MATEC Web of Conferences proceedings; check CORE rank for SIMPRO 2022."
 
 - id: setz-2021
   title: "A Comparison of Open-Source Home Automation Systems"
   year: 2021
   added: 2026-11-04
-  peerReviewed: true
   collectedFrom: curated
   type: paper
   authors: "Setz et al."
-  venue: "IEEE"
+  venue: "IEEE Access"
   fields: [systems-software]
   uses: [home-assistant]
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/9652536" }
+  notes: "Screening 2026-11-19: Step 2: confirm Home Assistant is one of the four systems actually evaluated. Step 4: check SJR quartile for IEEE Access."
 
 # ── Draft: confirm exact title / year / venue first ──────────────────────
 
@@ -117,92 +117,102 @@
   added: 2026-11-04
   collectedFrom: curated
   type: paper
-  venue: "ACM"
+  venue: "International Conference on the Internet of Things (ACM IoT 2024)"
   fields: [systems-software]
   uses: [home-assistant]
+  year: 2024
   links:
     - { label: "DOI", url: "https://dl.acm.org/doi/full/10.1145/3703790.3703828" }
   draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (subject). Step 4: check CORE rank for the ACM International Conference on the Internet of Things."
 
 - id: comprehensive-smart-home
   title: "Development and Implementation of a Comprehensive Smart Home Automation System Using Home Assistant and IoT Devices"
   added: 2026-11-04
   collectedFrom: curated
   type: paper
-  venue: "IEEE"
+  venue: "2024 4th International Conference on Electrical, Computer, Communications and Mechatronics Engineering (ICECCME)"
   fields: [systems-software]
   uses: [home-assistant]
+  year: 2024
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10796669" }
   draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (infrastructure). Step 4: check CORE rank for ICECCME."
 
 - id: design-evaluation-smart-home
   title: "Design and Evaluation of a Smart Home System with Home Assistant"
   added: 2026-11-04
   collectedFrom: curated
   type: paper
-  venue: "IEEE"
+  venue: "2025 5th International Conference on Applied Automation and Industrial Diagnostics (ICAAID)"
   fields: [systems-software]
   uses: [home-assistant]
+  year: 2025
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/11358018" }
   draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (subject). Step 4: check CORE rank for ICAAID."
 
 - id: schenkluhn-2023
-  title: "TODO: exact title (AR device detection and management with Home Assistant)"
+  title: "Augmented Reality-based Indoor Positioning for Smart Home Automations"
   year: 2023
   added: 2026-11-04
   collectedFrom: curated
   type: paper
   authors: "Schenkluhn et al."
-  venue: "ACM CHI Extended Abstracts"
+  venue: "Extended Abstracts of the 2023 CHI Conference on Human Factors in Computing Systems"
   fields: [hci]
   uses: [home-assistant]
   links:
     - { label: "DOI", url: "https://doi.org/10.1145/3544549.3585745" }
   draft: true
+  notes: "Screening 2026-11-19: Step 4 passes (CHI, pre-approved). Step 2: abstract doesn't mention Home Assistant; confirm in the full text."
 
 - id: schenkluhn-2024
-  title: "TODO: exact title (AR device management with Home Assistant, CHI 2024)"
+  title: "Connecting Home: Human-Centric Setup Automation in the Augmented Smart Home"
   year: 2024
   added: 2026-11-04
   collectedFrom: curated
   type: paper
   authors: "Schenkluhn et al."
-  venue: "ACM CHI 2024"
+  venue: "Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems"
   fields: [hci]
   uses: [home-assistant]
   links:
     - { label: "DOI", url: "https://doi.org/10.1145/3613904.3642862" }
   draft: true
+  notes: "Screening 2026-11-19: Step 4 passes (CHI, pre-approved). Step 2: abstract doesn't mention Home Assistant; confirm in the full text."
 
 - id: beruscha-2022
-  title: "TODO: exact title (e-textile interior surfaces in the smart home)"
+  title: "Connecting Textiles: Exploring Textile Interior Surfaces for Power Supply, Communication and User Interaction in the IoT"
   year: 2022
   added: 2026-11-04
   collectedFrom: curated
   type: paper
   authors: "Beruscha et al."
-  venue: "ACM"
+  venue: "International Conference on the Internet of Things (ACM IoT 2022)"
   fields: [hci]
   uses: [home-assistant]
   links:
     - { label: "ACM", url: "https://dl.acm.org/doi/abs/10.1145/3567445.3567455" }
   draft: true
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Home Assistant; confirm in the full text. Step 4: check CORE rank for the ACM International Conference on the Internet of Things."
 
 - id: wang-2022
-  title: "TODO: exact title (empirical study of 330 integration bugs in Home Assistant)"
+  title: "Understanding device integration bugs in smart home system"
   year: 2022
   added: 2026-11-04
   collectedFrom: curated
   type: paper
   authors: "Wang et al."
-  venue: "ACM"
+  venue: "ACM SIGSOFT International Symposium on Software Testing and Analysis (ISSTA 2022)"
   fields: [systems-software]
   uses: [home-assistant]
   links:
     - { label: "DOI", url: "https://doi.org/10.1145/3533767.3534365" }
   draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (subject: 330 Home Assistant integration bugs). Step 4: check CORE rank for ISSTA."
 
 - id: debauche-2020
   title: "TODO: exact title (smart campus with Home Assistant and ESPHome)"
@@ -217,9 +227,10 @@
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/9199640" }
   draft: true
+  notes: "Screening 2026-11-19: Couldn't identify the exact record (IEEE Xplore blocks scripts). Confirm title, venue and DOI, then screen."
 
 - id: gozuoglu-2024
-  title: "TODO: exact title (local home automation server to learn energy consumption behaviour)"
+  title: "Modeling and implementation of demand-side energy management system"
   year: 2024
   added: 2026-11-04
   collectedFrom: curated
@@ -230,26 +241,12 @@
   uses: [home-assistant]
   openAccess: true
   links:
-    - { label: "PDF", url: "https://sigma.yildiz.edu.tr/storage/upload/pdfs/1698130370-en.pdf" }
+    - { label: "Paper", url: "https://doi.org/10.14744/sigma.2023.00106" }
   draft: true
-
-- id: thermostat-grid-demand
-  title: "TODO: exact title (lowering grid demand by reducing thermostat temperatures)"
-  year: 2023
-  added: 2026-11-04
-  peerReviewed: false
-  collectedFrom: curated
-  type: preprint
-  venue: "arXiv"
-  fields: [energy]
-  uses: [home-assistant]
-  openAccess: true
-  links:
-    - { label: "arXiv", url: "https://arxiv.org/abs/2303.07206" }
-  draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (Home Assistant runs the local server). Step 4: check SJR quartile for Sigma Journal of Engineering and Natural Sciences."
 
 - id: cujilema-2023
-  title: "TODO: exact title (secure home automation with an ESP-NOW mesh network, MQTT and Home Assistant)"
+  title: "Secure home automation system based on ESP-NOW mesh network, MQTT and Home Assistant platform"
   year: 2023
   added: 2026-11-04
   collectedFrom: curated
@@ -257,9 +254,11 @@
   authors: "Cujilema et al."
   fields: [security-monitoring]
   uses: [home-assistant]
+  venue: "IEEE Latin America Transactions"
   links:
-    - { label: "ResearchGate", url: "https://www.researchgate.net/publication/373789150_Secure_home_automation_system_based_on_ESP-NOW_mesh_network_MQTT_and_Home_Assistant_platform" }
+    - { label: "Paper", url: "https://doi.org/10.1109/TLA.2023.10244182" }
   draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (integrated with Home Assistant). Step 4: check SJR quartile for IEEE Latin America Transactions."
 
 - id: mqtt-ha-openhab
   title: "Implications of MQTT Connectivity Protocol for IoT based Device Automation using Home Assistant and OpenHAB"
@@ -272,9 +271,10 @@
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/8991259" }
   draft: true
+  notes: "Screening 2026-11-19: Couldn't identify the venue (IEEE Xplore blocks scripts). Confirm venue and DOI, then screen."
 
 - id: matec-residential-security
-  title: "TODO: exact title (residential security through the Home Assistant platform)"
+  title: "Residential security through the Home Assistant Platform"
   year: 2022
   added: 2026-11-04
   collectedFrom: curated
@@ -286,43 +286,4 @@
   links:
     - { label: "Paper", url: "https://www.matec-conferences.org/articles/matecconf/abs/2022/01/matecconf_sesam2022_00008/matecconf_sesam2022_00008.html" }
   draft: true
-
-- id: seniors-thesis
-  title: "TODO: exact title (smart home automation to aid seniors)"
-  added: 2026-11-04
-  collectedFrom: curated
-  type: thesis
-  venue: "Theseus"
-  fields: [health-care]
-  uses: [home-assistant]
-  openAccess: true
-  links:
-    - { label: "Theseus", url: "https://www.theseus.fi/handle/10024/508275" }
-  draft: true
-
-- id: fall-detection-thesis
-  title: "TODO: exact title (proof-of-concept fall detection system based on low-cost IoT devices)"
-  added: 2026-11-04
-  collectedFrom: curated
-  type: thesis
-  institution: "University of Padua"
-  fields: [health-care]
-  uses: [home-assistant]
-  openAccess: true
-  links:
-    - { label: "Thesis", url: "https://thesis.unipd.it/handle/20.500.12608/60586" }
-  draft: true
-
-- id: icelandic-tts
-  title: "TODO: exact title (Icelandic text-to-speech voices powered by Piper)"
-  added: 2026-11-04
-  collectedFrom: curated
-  type: dataset
-  venue: "CLARIN-IS"
-  fields: [voice-language]
-  uses: [piper]
-  openAccess: true
-  links:
-    - { label: "CLARIN", url: "https://repository.clarin.is/repository/xmlui/handle/20.500.12537/287" }
-    - { label: "GitHub", url: "https://github.com/grammatek/simaromur" }
-  draft: true
+  notes: "Screening 2026-11-19: Step 2 passes (built on Home Assistant). Step 4: MATEC Web of Conferences proceedings; check CORE rank for SESAM 2022."
