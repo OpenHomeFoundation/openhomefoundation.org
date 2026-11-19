@@ -29,7 +29,6 @@ export const PROJECT_LABELS: Record<OhfProject, string> = {
 };
 
 export const STATUS_LABELS: Record<Project["data"]["status"], string> = {
-  planned: "Coming soon",
   "in-progress": "In progress",
   completed: "Completed",
   published: "Published",
@@ -68,10 +67,6 @@ export const PUBLICATION_FILTERS = [
   { key: "blog-posts", label: "Blog posts", types: ["blog-post"] },
   { key: "talks-posters", label: "Talks & posters", types: ["talk", "poster"] },
 ] as const satisfies { key: string; label: string; types: OutputType[] }[];
-
-const SHOW_DRAFTS = !import.meta.env.PROD;
-
-const visible = <T extends { data: { draft?: boolean } }>(entry: T) => SHOW_DRAFTS || !entry.data.draft;
 
 const byDateDesc = (a: { date: Date }, b: { date: Date }) => b.date.getTime() - a.date.getTime();
 
@@ -138,15 +133,10 @@ function checkReferences(): Promise<void> {
   return referencesChecked;
 }
 
-async function getVisibleProjects(): Promise<Project[]> {
-  await checkReferences();
-  const projects = await getCollection("researchProjects", visible);
-  return projects.sort((a, b) => byDateDesc(a.data, b.data));
-}
-
-/** Projects with a page: no drafts (in production) and nothing planned. */
 export async function getProjects(): Promise<Project[]> {
-  return (await getVisibleProjects()).filter((p) => p.data.status !== "planned");
+  await checkReferences();
+  const projects = await getCollection("researchProjects");
+  return projects.sort((a, b) => byDateDesc(a.data, b.data));
 }
 
 export async function getLatestProject(): Promise<Project | undefined> {
@@ -157,8 +147,8 @@ export async function getOtherProjects(): Promise<Project[]> {
   return (await getProjects()).slice(1);
 }
 
-async function visibleProjectIds(): Promise<Set<string>> {
-  return new Set((await getVisibleProjects()).map((p) => p.id));
+async function projectIds(): Promise<Set<string>> {
+  return new Set((await getProjects()).map((p) => p.id));
 }
 
 export interface ResolvedOutput {
@@ -204,8 +194,8 @@ async function resolveOutput(output: Output): Promise<ResolvedOutput> {
 }
 
 async function getVisibleOutputs(): Promise<ResolvedOutput[]> {
-  const projectIds = await visibleProjectIds();
-  const outputs = await getCollection("researchOutputs", (o) => visible(o) && projectIds.has(o.data.project.id));
+  const ids = await projectIds();
+  const outputs = await getCollection("researchOutputs", (o) => ids.has(o.data.project.id));
   return (await Promise.all(outputs.map(resolveOutput))).sort(byDateDesc);
 }
 
@@ -286,7 +276,7 @@ export function publicationFilter(type: OutputType): string | undefined {
 
 export async function getProjectFindings(slug: string): Promise<Finding[]> {
   await checkReferences();
-  const findings = await getCollection("researchFindings", (f) => visible(f) && f.data.project.id === slug);
+  const findings = await getCollection("researchFindings", (f) => f.data.project.id === slug);
   return findings.sort((a, b) => a.data.order - b.data.order);
 }
 
@@ -297,7 +287,7 @@ export async function getGlanceStats(slug: string): Promise<{ id: string; value:
     .map((f) => ({ id: f.id, ...f.data.glance! }));
 }
 
-/** Drops links to project pages that don't exist (drafts, planned). */
+/** Drops links to project pages that don't exist. */
 export async function findingLink(finding: Finding): Promise<Link | undefined> {
   const link = finding.data.link;
   const match = link?.url.match(/^\/research\/projects\/([^/]+)\/?$/);
@@ -310,7 +300,6 @@ export interface RelatedProject {
   label: string;
 }
 
-/** Only projects with a page, so nothing planned. */
 export async function getRelated(slug: string): Promise<RelatedProject[]> {
   const projects = await getProjects();
   const byId = new Map(projects.map((p) => [p.id, p]));
@@ -339,7 +328,7 @@ export async function getRelated(slug: string): Promise<RelatedProject[]> {
 export type ByOthersSort = "newest" | "oldest" | "title";
 
 export async function getByOthers(sort: ByOthersSort = "newest"): Promise<ByOthersEntry[]> {
-  const entries = await getCollection("researchByOthers", visible);
+  const entries = await getCollection("researchByOthers");
   const title = (a: ByOthersEntry, b: ByOthersEntry) => a.data.title.localeCompare(b.data.title);
   const year = (e: ByOthersEntry) => e.data.year ?? 0;
   return entries.sort((a, b) => {

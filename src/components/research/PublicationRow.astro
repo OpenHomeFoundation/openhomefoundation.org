@@ -56,7 +56,9 @@ const props = Astro.props;
       </div>
       <div class="publication-actions">
         {props.links.map((link) => (
-          <ResearchLink href={link.url} broken={link.broken}>{link.label}</ResearchLink>
+          <ResearchLink href={link.url} broken={link.broken}>
+            {link.label}
+          </ResearchLink>
         ))}
       </div>
     </li>
@@ -81,7 +83,6 @@ const props = Astro.props;
           </div>
           <div class="publication-body">
             <div class="publication-badges">
-              {data.draft && <Badge tone="dashed">Draft</Badge>}
               <Badge>{TYPE_LABELS[data.type as OutputType]?.[0] ?? data.type}</Badge>
               {data.fields.map((f) => (
                 <Badge>{FIELD_LABELS[f]}</Badge>
@@ -96,7 +97,9 @@ const props = Astro.props;
           </div>
           <div class="publication-actions">
             {data.links.map((link) => (
-              <ResearchLink href={link.url} broken={link.broken}>{link.label}</ResearchLink>
+              <ResearchLink href={link.url} broken={link.broken}>
+                {link.label}
+              </ResearchLink>
             ))}
           </div>
         </li>

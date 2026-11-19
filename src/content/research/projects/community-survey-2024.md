@@ -14,22 +14,6 @@ primaryDataset: cs24-dataset
 statsLink:
   label: "Explore descriptive statistics for every question"
   url: "https://github.com/OpenHomeFoundation/user-research/blob/main/community-survey24/descriptive-statistics.md"
-# Not rendered in V1 ("What it changed" was removed on 9 Nov). Kept for a later version.
-impacts:
-  - badge: "Home Assistant"
-    title: "Redesigning \"areas\""
-    text: "Floors, home size and ownership informed design changes to how areas work."
-  - badge: "Hardware"
-    title: "Home Assistant Connect ZBT-2"
-    text: "Insights shared with Nabu Casa helped fit the device to the real living conditions of our community."
-  - badge: "Advocacy"
-    title: "Privacy position paper"
-    text: "Helped shape our privacy research and organizational positions."
-    link: { label: "Read the paper", url: "https://www.openhomefoundation.org/papers/privacy/" }
-  - badge: "UX design"
-    title: "Home Assistant for the whole household"
-    text: "Ongoing design work for everyone who lives in the home, not just the person who set it up."
-    link: { label: "Join the discussion", url: "https://github.com/OpenHomeFoundation/ux-design/discussions/40" }
 method:
   facts:
     - { label: "Fieldwork", value: "Dec 2024 – Feb 2025" }

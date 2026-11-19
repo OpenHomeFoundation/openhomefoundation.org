@@ -242,13 +242,3 @@
   description: "A design concept for showing the effect of energy decisions, with the research behind it."
   links:
     - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/ux-design/discussions/22" }
-
-- id: energy-paper
-  project: energy-management
-  kind: output
-  type: paper
-  title: "Energy management paper (title to confirm)"
-  date: 2026-11-30
-  venue: "ACM Digital Library"
-  draft: true
-  notes: "Not yet published; expected in the ACM library by end of November 2026. Add the real title, authors, DOI and link, then remove draft."

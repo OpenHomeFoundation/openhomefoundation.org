@@ -66,14 +66,6 @@
   font-size: 12px;
 }
 
-.research-badge-dashed {
-  background: transparent;
-  border: 1px dashed var(--primary-text-color);
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: 12px;
-}
-
 /* Hero and switch */
 
 .research-hero-contact {
@@ -578,11 +570,6 @@ a.project-card:focus-visible {
 
 .project-card-related .project-card-summary {
   margin-bottom: 0;
-}
-
-.project-card.planned {
-  border: 1px dashed var(--grey-color);
-  background: transparent;
 }
 
 .project-grid {

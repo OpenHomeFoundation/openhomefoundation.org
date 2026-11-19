@@ -31,7 +31,7 @@ const link = z.object({
 });
 const fact = z.object({ label: z.string(), value: z.string() });
 
-const PROJECT_STATUS = ["planned", "in-progress", "completed", "published", "collaboration"] as const;
+const PROJECT_STATUS = ["in-progress", "completed", "published", "collaboration"] as const;
 const RELATIONS = ["builds-on", "informed-by", "related"] as const;
 const OUTPUT_TYPES = [
   "paper",
@@ -75,17 +75,6 @@ const researchProjects = defineCollection({
     facts: z.array(fact).max(3).default([]),
     primaryDataset: reference("researchOutputs").optional(),
     statsLink: link.optional(),
-    // Not rendered in V1 ("What it changed" removed 9 Nov)
-    impacts: z
-      .array(
-        z.object({
-          badge: z.string(),
-          title: z.string(),
-          text: z.string(),
-          link: link.optional(),
-        }),
-      )
-      .default([]),
     method: z
       .object({
         facts: z.array(fact).max(4).default([]),
@@ -101,7 +90,6 @@ const researchProjects = defineCollection({
         }),
       )
       .default([]),
-    draft: z.boolean().default(false),
     notes: z.string().optional(), // internal only, never rendered
   }),
 });
@@ -122,7 +110,6 @@ const researchOutputs = defineCollection({
       host: z.string().optional(),
       doi: z.string().optional(),
       links: z.array(link).default([]),
-      draft: z.boolean().default(false),
       notes: z.string().optional(),
     })
     .refine((o) => o.blog || (o.title && o.date), {
@@ -188,7 +175,6 @@ const researchFindings = defineCollection({
       })
       .default({}),
     link: link.optional(),
-    draft: z.boolean().default(false),
     notes: z.string().optional(),
   }),
 });
@@ -211,11 +197,10 @@ const researchByOthers = defineCollection({
       openAccess: z.boolean().optional(),
       summary: z.string().optional(),
       links: z.array(link).min(1),
-      draft: z.boolean().default(false),
       notes: z.string().optional(),
     })
-    .refine((e) => e.draft || (e.year && e.venue), {
-      message: "Published entries need `year` and `venue`",
+    .refine((e) => e.year && e.venue, {
+      message: "Entries need `year` and `venue`",
     }),
 });
 

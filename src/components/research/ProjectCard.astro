@@ -11,15 +11,10 @@ interface Props {
 
 const { project, variant, relation } = Astro.props;
 const { title, summary, status, image } = project.data;
-const planned = status === "planned";
 const statusTone = status === "completed" || status === "published" ? "positive" : "default";
-const Tag = planned ? "div" : "a";
 ---
 
-<Tag
-  href={planned ? undefined : projectUrl(project.id)}
-  class:list={["project-card", `project-card-${variant}`, { planned }]}
->
+<a href={projectUrl(project.id)} class:list={["project-card", `project-card-${variant}`]}>
   {
     variant !== "related" && (
       <div class="project-card-image">
@@ -36,7 +31,7 @@ const Tag = planned ? "div" : "a";
   <div class="project-card-content">
     {
       variant === "related" ? (
-        <p class="project-card-relation-label">{planned ? STATUS_LABELS.planned : relation}</p>
+        <p class="project-card-relation-label">{relation}</p>
       ) : (
         <div class="project-card-badges">
           {variant === "latest" && <Badge tone="dark">Latest project</Badge>}
@@ -55,4 +50,4 @@ const Tag = planned ? "div" : "a";
       )
     }
   </div>
-</Tag>
+</a>
