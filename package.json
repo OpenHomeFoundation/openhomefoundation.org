@@ -8,7 +8,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node --test \"src/lib/*.test.mjs\""
+    "test": "node --test \"src/lib/*.test.mjs\"",
+    "research:candidates": "node scripts/research-candidates.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.4",
