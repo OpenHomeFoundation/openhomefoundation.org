@@ -8,6 +8,7 @@ import Figure from "../../../components/research/Figure.astro";
 import ProjectCard from "../../../components/research/ProjectCard.astro";
 import PublicationRow from "../../../components/research/PublicationRow.astro";
 import ResearchLink from "../../../components/research/ResearchLink.astro";
+import ResearchContact from "../../../components/research/ResearchContact.astro";
 import {
   STATUS_LABELS,
   TYPE_LABELS,
@@ -328,6 +329,8 @@ const jsonLd = [
       </section>
     )
   }
+
+  <ResearchContact />
 </Base>
 
 <script>

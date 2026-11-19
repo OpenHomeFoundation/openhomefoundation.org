@@ -76,6 +76,17 @@
 
 /* Hero and switch */
 
+.research-hero-contact {
+  font-size: 16px;
+  color: var(--secondary-text-color);
+}
+
+.research-hero-contact a {
+  font-weight: 500;
+  color: var(--primary-text-color);
+  overflow-wrap: anywhere;
+}
+
 .research-hero {
   position: relative;
   padding: 150px 0 64px;
@@ -1888,4 +1899,42 @@ a.project-card:focus-visible {
 .project-output-cards > *,
 .submit-card > * {
   min-width: 0;
+}
+
+/* Contact band at the end of research pages */
+
+.research-contact {
+  padding: 64px 0;
+}
+
+.research-contact-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid var(--light-grey-color);
+}
+
+.research-contact-card > div {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.research-contact-card h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.research-contact-card p {
+  color: var(--secondary-text-color);
+}
+
+@media (max-width: 767px) {
+  .research-contact-card {
+    padding: 24px;
+  }
 }

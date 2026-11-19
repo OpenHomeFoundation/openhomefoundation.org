@@ -1,5 +1,6 @@
 ---
 import Icon from "../Icon.astro";
+import { RESEARCH_EMAIL } from "../../lib/research-links";
 
 interface Props {
   view: "ours" | "others";
@@ -29,10 +30,13 @@ const views = [
       <div class="poly"><Icon name="poly/poly-thin" /></div>
       <p class="research-eyebrow">Research</p>
       <h1 class="mb-24">Understanding how people live with the smart home</h1>
-      <p class="research-lede mb-48">
+      <p class="research-lede mb-24">
         We study how people live with smart home technology and publish everything we learn — findings, data and tools —
         for anyone to use. And because our projects are open source, researchers around the world build their own
         studies on them too.
+      </p>
+      <p class="research-hero-contact mb-48">
+        Questions or ideas? Email <a href={`mailto:${RESEARCH_EMAIL}`}>{RESEARCH_EMAIL}</a>
       </p>
       <nav class="research-switch" aria-label="Research sections">
         {

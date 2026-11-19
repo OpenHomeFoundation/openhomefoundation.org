@@ -3,6 +3,7 @@ import Base from "../../layouts/Base.astro";
 import ResearchHero from "../../components/research/ResearchHero.astro";
 import ResearchSubnav from "../../components/research/ResearchSubnav.astro";
 import ResearchLink from "../../components/research/ResearchLink.astro";
+import ResearchContact from "../../components/research/ResearchContact.astro";
 import ProjectCard from "../../components/research/ProjectCard.astro";
 import PublicationRow from "../../components/research/PublicationRow.astro";
 import { PUBLICATION_FILTERS, getLatestProject, getOtherProjects, getPublicationsIndex } from "../../lib/research";
@@ -281,6 +282,8 @@ const subnav = [
       </section>
     )
   }
+
+  <ResearchContact />
 </Base>
 
 <script>
