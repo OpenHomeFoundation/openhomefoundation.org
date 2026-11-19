@@ -214,7 +214,11 @@ const subnav = [
             <div class="involve-footer">
               <p class="involve-footer-title">Contact the research team</p>
               <div class="involve-actions">
-                <a href={`mailto:${RESEARCH_EMAIL}`} class="button button-dark-blue research-email">{RESEARCH_EMAIL}</a>
+                <a
+                  href={`mailto:${RESEARCH_EMAIL}`}
+                  class="button button-dark-blue research-email copy-email"
+                  aria-label="Contact the research team - click to copy email address">{RESEARCH_EMAIL}</a
+                >
                 <ResearchLink href={RESEARCH_LINKS.userResearchRepo} class="button button-outline"
                   >User research on GitHub</ResearchLink
                 >
