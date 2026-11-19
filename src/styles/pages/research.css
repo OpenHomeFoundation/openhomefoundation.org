@@ -433,6 +433,12 @@
   margin-bottom: 12px;
 }
 
+.involve-footer-text {
+  color: var(--secondary-text-color);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
 .involve-actions {
   display: flex;
   flex-wrap: wrap;

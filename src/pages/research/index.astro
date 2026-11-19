@@ -106,8 +106,10 @@ const subnav = [
             <p class="research-eyebrow">Contribute data</p>
             <h3>Share your data, on your terms</h3>
             <p>
-              Opting in to share anonymous usage data from Home Assistant helps us and the community make better
-              decisions. You can change your mind at any time.
+              One way you can contribute to Home Assistant and the Open Home Foundation is by opting in to share
+              anonymous usage data. We use the combined statistics to understand our users better and improve our
+              projects to meet their needs. You can change your mind at any time. Curious what data is shared? You can
+              see it all publicly.
             </p>
           </div>
           {
@@ -176,11 +178,16 @@ const subnav = [
               </li>
             </ul>
             <div class="involve-footer">
-              <p class="involve-footer-title">Get notified when we're looking for participants</p>
+              <p class="involve-footer-title">Where we look for participants</p>
+              <p class="involve-footer-text">
+                We post calls for surveys, interviews and testing on the Home Assistant community forum, Discord and
+                Reddit.
+              </p>
               <div class="involve-actions">
-                <ResearchLink href={RESEARCH_LINKS.newsletter} class="button button-dark-blue"
-                  >Subscribe to the newsletter</ResearchLink
+                <ResearchLink href={RESEARCH_LINKS.communityForum} class="button button-dark-blue"
+                  >Community forum</ResearchLink
                 >
+                <ResearchLink href={RESEARCH_LINKS.discord} class="button button-outline">Discord</ResearchLink>
               </div>
             </div>
           </div>
