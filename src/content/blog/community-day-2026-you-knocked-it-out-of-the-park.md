@@ -1,6 +1,8 @@
 ---
 title: "Community Day 2026: You knocked it out of the park!"
 description: "A big thank you to every host, guest, and partner who made Community Day 2026 our biggest yet. Dive into the stats, stories, and a sneak peek at 2027!"
+card_image: /assets/images/blog/community-day-2026-you-knocked-it-out-of-the-park/card.webp
+og_image: /assets/images/blog/community-day-2026-you-knocked-it-out-of-the-park/card.webp
 hide_header_image: true
 comments: true
 date: 2026-11-19
