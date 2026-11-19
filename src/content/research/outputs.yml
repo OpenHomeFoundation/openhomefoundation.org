@@ -104,6 +104,52 @@
   links:
     - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/user-research/blob/main/community-survey24/README.md" }
 
+- id: cs24-zigbee
+  project: community-survey-2024
+  kind: output
+  type: report
+  title: "Zigbee in the Home Assistant community"
+  date: 2026-08-26
+  authors: [annika-schulz, idil-bostan]
+  venue: "GitHub"
+  description: "What the survey tells us about how people use Zigbee."
+  links:
+    - { label: "PDF", url: "https://github.com/OpenHomeFoundation/user-research/blob/main/community-survey24/CommunitySurvey24_Zigbee.pdf" }
+
+- id: cs24-research-hour
+  project: community-survey-2024
+  kind: output
+  type: talk
+  title: "Community Survey 2024: User Research Hour"
+  date: 2026-08-26
+  authors: [annika-schulz, idil-bostan]
+  venue: "Open Home Foundation User Research Hour"
+  description: "Slides presenting the survey results."
+  links:
+    - { label: "PDF", url: "https://github.com/OpenHomeFoundation/user-research/blob/main/community-survey24/CommunitySurvey_UserResearchHourOHF.pdf" }
+
+- id: cs24-questions-xlsx
+  project: community-survey-2024
+  kind: material
+  type: questions
+  title: "Survey questions (spreadsheet)"
+  date: 2026-08-26
+  host: "GitHub"
+  description: "The question list as a spreadsheet, with answer options."
+  links:
+    - { label: "XLSX", url: "https://github.com/OpenHomeFoundation/user-research/blob/main/community-survey24/24_survey_questions.xlsx" }
+
+- id: cs24-kanon-csv
+  project: community-survey-2024
+  kind: material
+  type: dataset
+  title: "Anonymized responses (k-anonymity reviewed)"
+  date: 2026-08-26
+  host: "GitHub"
+  description: "The anonymized response data as CSV, the same data published on Zenodo."
+  links:
+    - { label: "CSV", url: "https://github.com/OpenHomeFoundation/user-research/blob/main/community-survey24/community_survey_2024_anonymised_kanon.csv" }
+
 # ── Private smart home study (CHI 2026) ──────────────────────────────────
 
 - id: pshs-paper
@@ -115,7 +161,9 @@
   authors: [annika-schulz, paulus-schoutsen]
   venue: "ACM CHI 2026"
   description: "How privacy shapes the way people set up and maintain their smart homes."
+  doi: "10.1145/3772363.3798963"
   links:
+    - { label: "ACM Digital Library", url: "https://dl.acm.org/doi/full/10.1145/3772363.3798963" }
     - { label: "PDF", url: "https://github.com/OpenHomeFoundation/user-research/blob/main/Privacy%20Study/CHI26_shortpaper.pdf" }
 
 - id: pshs-poster
@@ -146,3 +194,61 @@
   description: "Background, method and details of the study."
   links:
     - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/user-research/wiki/Privacy-Study" }
+
+- id: pshs-discussion
+  project: private-smart-home-study
+  kind: output
+  type: discussion
+  title: "Insights into building a private smart home"
+  date: 2026-04-07
+  venue: "UX design discussions on GitHub"
+  description: "The findings, shared with designers to turn into ideas."
+  links:
+    - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/ux-design/discussions/26" }
+
+# ── Dashboard creator ────────────────────────────────────────────────────
+
+- id: dashboard-wiki
+  project: dashboard-creator
+  kind: material
+  type: wiki
+  title: "Dashboard creation research wiki"
+  date: 2026-06-30
+  host: "GitHub"
+  description: "Method, tasks and findings from the usability tests."
+  links:
+    - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/user-research/wiki/Dashboard-Creation" }
+
+# ── Energy management (Bauhaus-Universität Weimar) ───────────────────────
+
+- id: energy-comparative-graphs
+  project: energy-management
+  kind: output
+  type: discussion
+  title: "Energy management: comparative graphs and custom date picker"
+  date: 2026-04-02
+  venue: "UX design discussions on GitHub"
+  description: "A design concept for comparing energy use over time, with the research behind it."
+  links:
+    - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/ux-design/discussions/21" }
+
+- id: energy-impact-cards
+  project: energy-management
+  kind: output
+  type: discussion
+  title: "Energy management: impact cards"
+  date: 2026-04-02
+  venue: "UX design discussions on GitHub"
+  description: "A design concept for showing the effect of energy decisions, with the research behind it."
+  links:
+    - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/ux-design/discussions/22" }
+
+- id: energy-paper
+  project: energy-management
+  kind: output
+  type: paper
+  title: "Energy management paper (title to confirm)"
+  date: 2026-11-30
+  venue: "ACM Digital Library"
+  draft: true
+  notes: "Not yet published; expected in the ACM library by end of November 2026. Add the real title, authors, DOI and link, then remove draft."

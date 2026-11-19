@@ -47,6 +47,7 @@ const OUTPUT_TYPES = [
   "template",
   "wiki",
   "readme",
+  "discussion",
 ] as const;
 const FIELDS = [
   "energy",

@@ -57,6 +57,7 @@ export const TYPE_LABELS: Record<OutputType, [singular: string, plural: string]>
   template: ["Template", "Templates"],
   wiki: ["Research wiki", "Research wikis"],
   readme: ["README", "READMEs"],
+  discussion: ["Design discussion", "Design discussions"],
 };
 
 export const PUBLICATION_TYPES: OutputType[] = ["paper", "report", "thesis", "dataset", "blog-post", "talk", "poster"];
