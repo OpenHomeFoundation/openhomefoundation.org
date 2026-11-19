@@ -27,6 +27,7 @@ const blog = defineCollection({
 const link = z.object({
   label: z.string(),
   url: z.string().refine((url) => url.startsWith("/") || URL.canParse(url), "Use a full URL or a path starting with /"),
+  broken: z.boolean().optional(),
 });
 const fact = z.object({ label: z.string(), value: z.string() });
 

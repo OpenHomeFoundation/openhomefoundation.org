@@ -1944,3 +1944,17 @@ a.project-card:focus-visible {
     padding: 24px;
   }
 }
+
+/* Dev preview only: production builds drop broken links */
+
+.research-link-broken {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #fde2e1;
+  color: #8a1c14;
+  font-size: 13px;
+  font-weight: 600;
+}

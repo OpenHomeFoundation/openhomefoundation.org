@@ -6,19 +6,35 @@ interface Props {
   href: string;
   class?: string;
   arrow?: boolean;
+  broken?: boolean;
 }
 
-const { href, class: className, arrow = true } = Astro.props;
+const { href, class: className, arrow = true, broken = false } = Astro.props;
 const external = isExternal(href);
+const hide = broken && import.meta.env.PROD;
 ---
 
-<a
-  href={href}
-  class:list={["research-link", className]}
-  target={external ? "_blank" : undefined}
-  rel={external ? "noopener noreferrer" : undefined}
->
-  <slot />{arrow && <Icon name={external ? "arrow_outward" : "arrow-forward-small"} />}{
-    external && <span class="visually-hidden"> (opens in a new tab)</span>
-  }
-</a>
+{
+  broken && !hide && (
+    <span class="research-link-broken" title={`Broken link: ${href}`}>
+      <s>
+        <slot />
+      </s>{" "}
+      Broken link
+    </span>
+  )
+}
+{
+  !broken && (
+    <a
+      href={href}
+      class:list={["research-link", className]}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
+    >
+      <slot />
+      {arrow && <Icon name={external ? "arrow_outward" : "arrow-forward-small"} />}
+      {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+    </a>
+  )
+}

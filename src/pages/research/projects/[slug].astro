@@ -179,7 +179,11 @@ const jsonLd = [
                     <h3>{primary.title}</h3>
                     {primary.description && <p>{primary.description}</p>}
                     {primary.links[0] && (
-                      <ResearchLink href={primary.links[0].url} class="button button-dark-blue">
+                      <ResearchLink
+                        href={primary.links[0].url}
+                        broken={primary.links[0].broken}
+                        class="button button-dark-blue"
+                      >
                         Get the dataset
                       </ResearchLink>
                     )}
@@ -190,8 +194,8 @@ const jsonLd = [
                     <li>
                       <div>
                         <h3>
-                          {m.links[0] ? (
-                            <ResearchLink href={m.links[0].url} arrow={false}>
+                          {m.links[0] && !(m.links[0].broken && import.meta.env.PROD) ? (
+                            <ResearchLink href={m.links[0].url} broken={m.links[0].broken} arrow={false}>
                               {m.title}
                             </ResearchLink>
                           ) : (

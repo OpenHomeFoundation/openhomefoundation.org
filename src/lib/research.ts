@@ -9,7 +9,7 @@ export type OutputType = Output["data"]["type"];
 export type Field = ByOthersEntry["data"]["fields"][number];
 export type OhfProject = ByOthersEntry["data"]["uses"][number];
 type Relation = Project["data"]["related"][number]["relation"];
-export type Link = { label: string; url: string };
+export type Link = { label: string; url: string; broken?: boolean };
 
 export const FIELD_LABELS: Record<Field, string> = {
   energy: "Energy",
