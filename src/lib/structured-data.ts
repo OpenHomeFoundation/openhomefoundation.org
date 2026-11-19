@@ -115,3 +115,16 @@ export function scholarlyArticle(work: ResearchWork) {
     ...(work.venue ? { publication: { "@type": "PublicationEvent", name: work.venue } } : {}),
   };
 }
+
+export function breadcrumbList(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: absolute(item.url),
+    })),
+  };
+}

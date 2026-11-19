@@ -21,9 +21,10 @@ import {
   getProjects,
   getRelated,
   outputActions,
+  projectUrl,
   type Project,
 } from "../../../lib/research";
-import { dataset, scholarlyArticle } from "../../../lib/structured-data";
+import { breadcrumbList, dataset, scholarlyArticle } from "../../../lib/structured-data";
 
 export async function getStaticPaths() {
   return (await getProjects()).map((project) => ({
@@ -66,6 +67,10 @@ const statusTone = status === "completed" || status === "published" ? "positive"
 const doi = primary?.doi;
 
 const jsonLd = [
+  breadcrumbList([
+    { name: "Research", url: "/research/" },
+    { name: title, url: projectUrl(project.id) },
+  ]),
   ...(primary ? [dataset({ ...primary, url: primary.links[0]?.url })] : []),
   ...outputs.filter((o) => o.type === "paper").map((o) => scholarlyArticle({ ...o, url: o.links[0]?.url })),
 ];
