@@ -135,6 +135,10 @@
   color: var(--secondary-text-color);
 }
 
+#post .content p {
+  margin-bottom: 24px;
+}
+
 #post .content h2 {
   font-size: 32px;
   font-weight: 500;
