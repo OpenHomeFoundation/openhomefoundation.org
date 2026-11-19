@@ -1125,6 +1125,26 @@ a.project-card:focus-visible {
   padding: 0 8px;
 }
 
+@media (max-width: 767px) {
+  .project-hero {
+    padding-top: 88px;
+  }
+
+  .research-breadcrumb ol {
+    margin-bottom: 24px;
+  }
+
+  .research-breadcrumb li:first-child,
+  .research-breadcrumb li[aria-current] {
+    display: none;
+  }
+
+  .research-breadcrumb li + li::before {
+    content: "←";
+    padding: 0 6px 0 0;
+  }
+}
+
 .project-hero h1 {
   font-size: 56px;
   line-height: 1.1;
