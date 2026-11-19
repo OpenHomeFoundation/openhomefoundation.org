@@ -10,6 +10,14 @@ const targets = [...new Set(links.map((a) => a.getAttribute("href")))]
 
 const headerBottom = () => header?.getBoundingClientRect().bottom ?? 0;
 
+const navbarBar = header?.querySelector(".navbar-bar");
+if (navbarBar) {
+  const setNavbarHeight = () =>
+    document.documentElement.style.setProperty("--navbar-height", `${navbarBar.getBoundingClientRect().bottom}px`);
+  setNavbarHeight();
+  new ResizeObserver(setNavbarHeight).observe(navbarBar);
+}
+
 const toggle = bar?.querySelector(".toc-bar-toggle");
 const barList = bar?.querySelector(".toc-bar-list");
 const barCurrent = bar?.querySelector("[data-toc-current]");

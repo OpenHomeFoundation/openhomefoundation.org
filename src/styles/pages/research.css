@@ -220,6 +220,10 @@
 }
 
 @media (max-width: 869px) {
+  .research-subnav {
+    top: var(--navbar-height, 56px);
+  }
+
   .research-subnav .container {
     max-width: none;
     padding: 0;
@@ -1446,6 +1450,13 @@ a.project-card:focus-visible {
   transition:
     transform 0.2s,
     visibility 0.2s;
+}
+
+@media (max-width: 869px) {
+  .toc-bar {
+    top: var(--navbar-height, 56px);
+    max-height: calc(100vh - var(--navbar-height, 56px));
+  }
 }
 
 .toc-bar.visible {
