@@ -10,7 +10,14 @@ facts:
   - { label: "Partner", value: "Bauhaus-Universität Weimar" }
   - { label: "Method", value: "Survey, interviews and contextual inquiry" }
   - { label: "Participants", value: "84 surveyed, 12 interviewed" }
-notes: "Paper expected in the ACM Digital Library by end of November 2026 (see energy-paper in outputs.yml). Confirm team members and whether to credit the students by name."
+method:
+  facts:
+    - { label: "Survey", value: "84 participants" }
+    - { label: "Interviews", value: "12, with contextual inquiry" }
+    - { label: "Design concepts", value: "2" }
+    - { label: "Testing", value: "2 rounds of user testing per concept" }
+  limitations: "This was a one-semester student project. The make-up of the survey and interview samples isn't published, so we can't say how well they represent everyone who uses energy management in Home Assistant. The two concepts are design proposals shared for discussion."
+notes: "Paper expected in the ACM Digital Library by end of November 2026; add it to outputs.yml with a citation when it's out. Confirm team members and whether to credit the students by name."
 ---
 
 From October 2025 to March 2026, students from the Human–Computer Interaction
@@ -20,12 +27,11 @@ research, developed design concepts, tested them with users and improved them
 based on what they found.
 
 The research had two parts: a survey with 84 participants, and interviews and
-contextual inquiry (observing people in their own homes) with 12 participants.
-It found two main ways people use energy data. Some move from insight to
-action, using the data to decide when to do energy-intensive tasks such as
-charging a battery overnight. Others monitor for its own sake. For many,
-successful energy management means a practical balance between environmental
-impact and noticeably lower bills, without endless tweaking.
+contextual inquiry with 12 participants.
+The students then designed two concepts and tested each with users twice:
+comparative graphs with a custom date picker, which let people compare their
+energy use and costs between any two periods, and impact cards, which turn
+energy data into plain-language insights with suggested actions.
 
-The students shared two design concepts that came out of the work: comparative
-graphs with a custom date picker, and impact cards.
+Both concepts, with their prototypes and test results, are shared in our UX
+design discussions on GitHub.

@@ -281,7 +281,13 @@ const jsonLd = [
                   <article class="finding" id={finding.id}>
                     <h3>{finding.data.heading ?? finding.data.headline}</h3>
                     {finding.data.text && <p>{finding.data.text}</p>}
-                    <Figure finding={finding} source={title} link={findingLinks[i]} />
+                    {finding.data.quote && (
+                      <blockquote class="finding-quote">
+                        <p>“{finding.data.quote.text}”</p>
+                        <footer>{finding.data.quote.by}</footer>
+                      </blockquote>
+                    )}
+                    {finding.data.chart && <Figure finding={finding} source={title} link={findingLinks[i]} />}
                   </article>
                 ))}
                 {statsLink && (

@@ -1613,6 +1613,23 @@ a.project-card:focus-visible {
   font-weight: 500;
 }
 
+.finding-quote {
+  margin: 0 0 24px;
+  padding: 4px 0 4px 20px;
+  border-left: 3px solid var(--light-grey-color);
+}
+
+.finding-quote p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.finding-quote footer {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+}
+
 /* Figures */
 
 .figure {

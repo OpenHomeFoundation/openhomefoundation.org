@@ -9,7 +9,8 @@ interface Props {
 }
 
 const { finding, source, link } = Astro.props;
-const { chart, provenance } = finding.data;
+const { provenance } = finding.data;
+const chart = finding.data.chart!;
 
 const pct = (value: number) => `${value}%`;
 const shown = (item: { value: number; display?: string }) => item.display ?? pct(item.value);

@@ -179,7 +179,8 @@ const researchFindings = defineCollection({
     heading: z.string().optional(),
     text: z.string().optional(),
     glance: z.object({ value: z.string(), label: z.string() }).optional(),
-    chart: z.discriminatedUnion("type", [chartBars, chartSplit, chartNumbers, chartStats]),
+    chart: z.discriminatedUnion("type", [chartBars, chartSplit, chartNumbers, chartStats]).optional(),
+    quote: z.object({ text: z.string(), by: z.string() }).optional(),
     provenance: z
       .object({
         question: z.string().optional(),
