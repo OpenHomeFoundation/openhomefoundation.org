@@ -1,28 +1,54 @@
 ---
 import Icon from "./Icon.astro";
-import { cardImage, formatDate, postUrl, readingTime, truncate, type Post } from "../lib/blog";
+import { AUTHORS, authorAvatar, cardImage, formatDate, postUrl, readingTime, truncate, type Post } from "../lib/blog";
 
 interface Props {
   post: Post;
   /** The media room's news cards don't show the crosspost badge. */
   badge?: boolean;
+  /** Wide image-left layout for the newest post at the top of the blog archive. */
+  featured?: boolean;
 }
 
-const { post, badge = true } = Astro.props;
+const { post, badge = true, featured = false } = Astro.props;
 const { title, description, external_url, external_source } = post.data;
+const Heading = featured ? "h2" : "h3";
+const authors = featured
+  ? (post.data.author ?? []).map((slug) => ({ name: AUTHORS[slug]?.name ?? slug, avatar: authorAvatar(slug) }))
+  : [];
 ---
 
-<a href={postUrl(post)} class="blog-card">
+<a href={postUrl(post)} class:list={["blog-card", { "blog-card-featured": featured }]}>
   <div class="blog-card-image">
     <span class="blog-card-placeholder" aria-hidden="true">
       <Icon name="foundation" />
     </span>
-    <img src={cardImage(post)} alt={title} width="1200" height="630" loading="lazy" decoding="async" />
+    <img
+      src={cardImage(post)}
+      alt={title}
+      width="1200"
+      height="630"
+      loading={featured ? "eager" : "lazy"}
+      fetchpriority={featured ? "high" : undefined}
+      decoding="async"
+    />
   </div>
   <div class="blog-card-content">
     {badge && external_url && <span class="blog-card-badge">Shared from {external_source}</span>}
     <p class="blog-card-date">{formatDate(post.data.date)}{!external_url && ` · ${readingTime(post)} minute read`}</p>
-    <h3 class="blog-card-title">{title}</h3>
-    {description && <p class="blog-card-description">{truncate(description, 160)}</p>}
+    <Heading class="blog-card-title">{title}</Heading>
+    {description && <p class="blog-card-description">{truncate(description, featured ? 280 : 160)}</p>}
+    {
+      authors.length > 0 && (
+        <p class="blog-card-authors">
+          {authors.map((author) => (
+            <span class="blog-card-author">
+              {author.avatar && <img src={author.avatar} alt="" width="28" height="28" />}
+              {author.name}
+            </span>
+          ))}
+        </p>
+      )
+    }
   </div>
 </a>
