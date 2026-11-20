@@ -18,6 +18,15 @@ if (navbarBar) {
   new ResizeObserver(setNavbarHeight).observe(navbarBar);
 }
 
+const subToggle = subnav?.querySelector(".research-subnav-toggle");
+const subCurrent = subnav?.querySelector("[data-subnav-current]");
+
+const setSubnavOpen = (open) => {
+  if (!subToggle) return;
+  subToggle.setAttribute("aria-expanded", String(open));
+  subnav.classList.toggle("is-open", open);
+};
+
 const toggle = bar?.querySelector(".toc-bar-toggle");
 const barList = bar?.querySelector(".toc-bar-list");
 const barCurrent = bar?.querySelector("[data-toc-current]");
@@ -45,6 +54,7 @@ const update = () => {
 
   links.forEach((a) => {
     const active = current && a.getAttribute("href") === current.href;
+    if (active && subnav?.contains(a) && subCurrent) subCurrent.textContent = a.textContent;
     if (active && !a.hasAttribute("aria-current") && subnav?.contains(a)) {
       const list = a.closest("ul");
       list.scrollTo({ left: a.offsetLeft - list.clientWidth / 2 + a.offsetWidth / 2, behavior: "smooth" });
@@ -63,6 +73,20 @@ const update = () => {
     if (label) barCurrent.textContent = label.textContent;
   }
 };
+
+if (subToggle) {
+  subnav.classList.add("is-collapsible");
+  subToggle.addEventListener("click", () => setSubnavOpen(subToggle.getAttribute("aria-expanded") !== "true"));
+  subnav.querySelector("ul").addEventListener("click", (e) => {
+    if (e.target.closest("a")) setSubnavOpen(false);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && subToggle.getAttribute("aria-expanded") === "true") {
+      setSubnavOpen(false);
+      subToggle.focus();
+    }
+  });
+}
 
 if (bar) {
   bar.hidden = false;

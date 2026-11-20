@@ -219,6 +219,10 @@
   font-weight: 500;
 }
 
+.research-subnav .research-subnav-toggle {
+  display: none;
+}
+
 @media (max-width: 869px) {
   .research-subnav {
     top: var(--navbar-height, 56px);
@@ -229,8 +233,53 @@
     padding: 0;
   }
 
+  .research-subnav ul {
+    border-top: 0;
+  }
+
   .research-subnav li:first-child {
     display: none;
+  }
+
+  .research-subnav.is-collapsible .container {
+    pointer-events: auto;
+    padding: 0 16px;
+    background: rgba(237, 236, 237, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 8px rgba(9, 41, 59, 0.08);
+  }
+
+  .research-subnav.is-collapsible .research-subnav-toggle {
+    display: flex;
+  }
+
+  .research-subnav.is-collapsible ul {
+    display: none;
+    min-height: 0;
+    padding: 0 0 8px;
+    background: none;
+    backdrop-filter: none;
+    overflow: visible;
+    white-space: normal;
+  }
+
+  .research-subnav.is-collapsible.is-open ul {
+    display: block;
+  }
+
+  .research-subnav.is-collapsible a {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-top: 1px solid rgba(9, 41, 59, 0.12);
+    border-radius: 0;
+    font-size: 15px;
+    color: var(--primary-text-color);
+  }
+
+  .research-subnav.is-collapsible a[aria-current] {
+    background: none;
+    font-weight: 600;
   }
 }
 
@@ -295,6 +344,7 @@
 .approach-links a {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   padding: 10px 18px;
   border: 1px solid rgba(237, 236, 237, 0.4);
   border-radius: 40px;
@@ -452,6 +502,7 @@
 .project-hero .button {
   flex-wrap: nowrap;
   align-items: center;
+  column-gap: 6px;
 }
 
 a .icon-arrow,
@@ -1443,7 +1494,6 @@ a.project-card:focus-visible {
   overflow-y: auto;
   background: rgba(237, 236, 237, 0.95);
   backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(9, 41, 59, 0.08);
   box-shadow: 0 4px 8px rgba(9, 41, 59, 0.08);
   transform: translateY(-120%);
   visibility: hidden;
@@ -1541,6 +1591,17 @@ a.project-card:focus-visible {
 
 .toc-bar-list a[aria-current] {
   font-weight: 600;
+}
+
+.toc-bar-list a[aria-current]::after,
+.research-subnav.is-collapsible a[aria-current]::after {
+  content: "";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E")
+    no-repeat center / contain;
 }
 
 .toc-bar-list a[aria-current]::after {
