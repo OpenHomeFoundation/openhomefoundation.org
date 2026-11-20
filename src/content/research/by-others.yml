@@ -1,0 +1,108 @@
+# Published research by others that uses OHF projects.
+# Published and public research only; never guess a title, year or venue.
+# `added` = date the entry was added here (review trail; not shown in V1). List order: year desc, then title.
+# Screened against .claude/skills/research-by-others/inclusion-guidelines.md. `notes` records what each entry still needs.
+# `collectedFrom`: curated (manual), submitted (GitHub issue form) or automated (future scheduled job).
+
+- id: plegma-dataset
+  title: "The Plegma dataset: Domestic appliance-level and aggregate electricity demand with metadata from Greece"
+  year: 2024
+  added: 2026-11-04
+  collectedFrom: curated
+  type: dataset
+  authors: "Athanasoulias, S., Guasselli, F., Doulamis, N., et al."
+  venue: "Scientific Data (Nature)"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A public dataset of domestic electricity demand with metadata, collected with Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1038/s41597-024-03208-0" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Home Assistant; confirm in the full text that it was used to collect the data. Step 4: Scientific Data, check SJR quartile."
+
+- id: modular-iot-office
+  title: "Modular IoT Architecture for Monitoring and Control of Office Environments Based on Home Assistant"
+  year: 2025
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "IoT (MDPI)"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "Paper", url: "https://www.mdpi.com/2624-831X/6/4/69" }
+  notes: "Screening 2026-11-19: Step 2 passes (Home Assistant is the core automation engine). Step 4: MDPI journal, check SJR quartile for IoT (ISSN 2624-831X)."
+
+- id: tatartts
+  title: "TatarTTS: An Open-Source Text-to-Speech Synthesis Dataset for the Tatar Language"
+  year: 2024
+  added: 2026-11-04
+  collectedFrom: curated
+  type: dataset
+  venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
+  fields: [voice-language]
+  uses: [piper]
+  summary: "The first large-scale public dataset of its kind, promoting Tatar text-to-speech in academia and industry."
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463261" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
+
+- id: chatgpt-visually-impaired
+  title: "ChatGPT for Visually Impaired and Blind"
+  year: 2024
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
+  fields: [accessibility, voice-language]
+  uses: [piper]
+  summary: "Uses Piper, our text-to-speech system."
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463430" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
+
+- id: akhmetzhanov-2022
+  title: "Integration of a Video Surveillance System Into a Smart Home Using the Home Assistant Platform"
+  year: 2022
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Akhmetzhanov, B., Gazizuly, O., Nurlan, Z., & Zhakiyev, N."
+  venue: "2022 International Conference on Smart Information Systems and Technologies (SIST)"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  links:
+    - { label: "DOI", url: "https://doi.org/10.1109/SIST54437.2022.9945718" }
+  notes: "Screening 2026-11-19: Step 2 passes (built on Home Assistant). Step 4: check CORE rank for IEEE SIST."
+
+- id: suvar-2022
+  title: "Optimal Monitoring of Server Rooms with Home Assistant Platform"
+  year: 2022
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Șuvar et al."
+  venue: "MATEC Web of Conferences (SIMPRO 2022)"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A server room monitoring system at a corporate headquarters."
+  links:
+    - { label: "Paper", url: "https://www.matec-conferences.org/articles/matecconf/abs/2022/20/matecconf_simpro2022_00044/matecconf_simpro2022_00044.html" }
+    - { label: "PDF", url: "https://www.matec-conferences.org/articles/matecconf/pdf/2022/20/matecconf_simpro2022_00044.pdf" }
+  notes: "Screening 2026-11-19: Step 2 passes (built on Home Assistant). Step 4: MATEC Web of Conferences proceedings; check CORE rank for SIMPRO 2022."
+
+- id: setz-2021
+  title: "A Comparison of Open-Source Home Automation Systems"
+  year: 2021
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  authors: "Setz et al."
+  venue: "IEEE Access"
+  fields: [systems-software]
+  uses: [home-assistant]
+  links:
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/document/9652536" }
+  notes: "Screening 2026-11-19: Step 2: confirm Home Assistant is one of the four systems actually evaluated. Step 4: check SJR quartile for IEEE Access."

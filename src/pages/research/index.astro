@@ -1,0 +1,301 @@
+---
+import Base from "../../layouts/Base.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+import ResearchSubnav from "../../components/research/ResearchSubnav.astro";
+import ResearchLink from "../../components/research/ResearchLink.astro";
+import ResearchContact from "../../components/research/ResearchContact.astro";
+import ProjectCard from "../../components/research/ProjectCard.astro";
+import PublicationRow from "../../components/research/PublicationRow.astro";
+import { PUBLICATION_FILTERS, getLatestProject, getOtherProjects, getPublicationsIndex } from "../../lib/research";
+import { RESEARCH_EMAIL, RESEARCH_LINKS } from "../../lib/research-links";
+
+const latest = await getLatestProject();
+const others = await getOtherProjects();
+const publications = await getPublicationsIndex();
+const filtersPresent = PUBLICATION_FILTERS.filter((f) =>
+  publications.some((g) => g.items.some((i) => (f.types as readonly string[]).includes(i.type))),
+);
+
+const principles = [
+  {
+    title: "Open by default",
+    tagline: "Anyone can check, cite and build on our work",
+    text: "We publish findings, questions, methods and data under open licenses, following the FAIR principles: findable, accessible, interoperable and reusable. Datasets get a permanent DOI on Zenodo.",
+  },
+  {
+    title: "Privacy first",
+    tagline: "No one can be identified from what we share",
+    text: "We remove identifying details, run a k-anonymity review on every dataset, and when in doubt we cut the data. Every decision is recorded.",
+  },
+  {
+    title: "Your data, your choice",
+    tagline: "Sharing data is opt-in, never assumed",
+    text: "Data only reaches us when people choose to share it, and choosing to share is one of the most valuable ways to contribute. It helps us understand how our projects are really used.",
+  },
+  {
+    title: "Honest about limits",
+    tagline: "Every study names what it can't tell us",
+    text: "We say plainly who we did and didn't reach, so results are read in context, and the gaps become starting points for future research.",
+  },
+  {
+    title: "Research that feeds back",
+    tagline: "What we learn shapes what we build",
+    text: "Findings go straight into design discussions on GitHub and into the projects themselves, from Home Assistant features to hardware.",
+  },
+];
+
+const subnav = [
+  { href: "#approach", label: "Our approach" },
+  { href: "#get-involved", label: "Get involved" },
+  ...(latest ? [{ href: "#our-projects", label: "Projects" }] : []),
+  ...(publications.length ? [{ href: "#publications", label: "Publications" }] : []),
+];
+---
+
+<Base
+  title="Research"
+  description="The Open Home Foundation studies how people live with smart home technology and publishes its findings, data and tools openly. See our approach, projects and publications."
+>
+  <ResearchHero view="ours" />
+  <ResearchSubnav label="Our research" links={subnav} />
+
+  <div class="research-band">
+    <section id="approach" class="research-section">
+      <div class="container">
+        <div class="grid approach-header">
+          <div class="col-s-12 col-l-5">
+            <p class="research-eyebrow">Our approach</p>
+            <h2>How we do research</h2>
+          </div>
+          <div class="col-s-12 col-l-7">
+            <p class="research-intro mb-24">
+              The same principles we fight for in the smart home — privacy, choice and sustainability — shape how we
+              study it, and how we treat the data people share with us.
+            </p>
+            <ul class="approach-links">
+              <li>
+                <ResearchLink href="/user-research-agreement/">User research agreement</ResearchLink>
+              </li>
+              <li>
+                <ResearchLink href="/blog/home-assistant-survey-dataset/">Why we publish our data</ResearchLink>
+              </li>
+              <li>
+                <ResearchLink href={RESEARCH_LINKS.userResearchRepo}>Our research on GitHub</ResearchLink>
+              </li>
+              <li>
+                <ResearchLink href={RESEARCH_LINKS.userResearchWiki}>Research wiki</ResearchLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <ul class="principles">
+          {
+            principles.map((p) => (
+              <li class="principle grid">
+                <div class="col-s-12 col-l-5">
+                  <h3>{p.title}</h3>
+                  <p class="principle-tagline">{p.tagline}</p>
+                </div>
+                <p class="col-s-12 col-l-7">{p.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="data-callout">
+          <div>
+            <p class="research-eyebrow">Contribute data</p>
+            <h3>Share your data, on your terms</h3>
+            <p>
+              One way you can contribute to Home Assistant and the Open Home Foundation is by opting in to share
+              anonymous usage data. We use the combined statistics to understand our users better and improve our
+              projects to meet their needs. You can change your mind at any time. Curious what data is shared? You can
+              see it all publicly.
+            </p>
+          </div>
+          {
+            RESEARCH_LINKS.dataContribution.length > 0 && (
+              <div class="data-callout-actions">
+                {RESEARCH_LINKS.dataContribution.map((link) => (
+                  <ResearchLink href={link.url} class="button button-outline-light">
+                    {link.label}
+                  </ResearchLink>
+                ))}
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="get-involved" class="research-section">
+      <div class="container">
+        <p class="research-eyebrow">Get involved</p>
+        <h2 class="mb-16">Take part, or work with us</h2>
+        <p class="research-intro mb-48">
+          You don't need to write code to contribute. There are ways in whether you use Home Assistant or research it.
+        </p>
+        <div class="involve-cards">
+          <div class="involve-card">
+            <p class="research-eyebrow">For the community</p>
+            <h3>Take part in our research</h3>
+            <ul class="involve-ways">
+              <li>
+                <h4>Surveys, interviews and user testing</h4>
+                <p>
+                  From time to time we run community surveys, and invite people to talk to us or try out new ideas. Read
+                  how we handle your data in the <a href="/user-research-agreement/">user research agreement</a>.
+                </p>
+              </li>
+              {
+                RESEARCH_LINKS.dataContribution[0] && (
+                  <li>
+                    <h4>Opt in to share data</h4>
+                    <p>
+                      Share anonymous usage data from your Home Assistant.{" "}
+                      <ResearchLink href={RESEARCH_LINKS.dataContribution[0].url}>Find out how</ResearchLink>
+                    </p>
+                  </li>
+                )
+              }
+              <li>
+                <h4>Contribute without code</h4>
+                <p>
+                  Report bugs, help translate, add devices to the device database, or join the discussions on <a
+                    href={RESEARCH_LINKS.userResearchDiscussions}
+                    target="_blank"
+                    rel="noopener noreferrer">user research</a
+                  > and <a href={RESEARCH_LINKS.uxDesignDiscussions} target="_blank" rel="noopener noreferrer"
+                    >UX design</a
+                  >.
+                  {
+                    RESEARCH_LINKS.contributorsSite && (
+                      <ResearchLink href={RESEARCH_LINKS.contributorsSite}>All the ways to contribute</ResearchLink>
+                    )
+                  }
+                </p>
+              </li>
+            </ul>
+            <div class="involve-footer">
+              <p class="involve-footer-title">Where we look for participants</p>
+              <p class="involve-footer-text">
+                We post calls for surveys, interviews and testing on the Home Assistant community forum, Discord and
+                Reddit.
+              </p>
+              <div class="involve-actions">
+                <ResearchLink href={RESEARCH_LINKS.communityForum} class="button button-dark-blue"
+                  >Community forum</ResearchLink
+                >
+                <ResearchLink href={RESEARCH_LINKS.discord} class="button button-outline">Discord</ResearchLink>
+              </div>
+            </div>
+          </div>
+
+          <div class="involve-card">
+            <p class="research-eyebrow">For researchers and educators</p>
+            <h3>Work with us</h3>
+            <ul class="involve-ways">
+              <li>
+                <h4>Reuse our data and materials</h4>
+                <p>
+                  Datasets, survey questions and analysis scripts are free to use. Please cite them, and let us know
+                  what you make. Study details and methods are in our{" "}
+                  <ResearchLink href={RESEARCH_LINKS.userResearchWiki}>research wiki</ResearchLink>.
+                </p>
+              </li>
+              <li>
+                <h4>Share your published research</h4>
+                <p>
+                  Used Home Assistant or our other projects in a published study? <a href="/research/by-others/#submit"
+                    >Add it to Research by others</a
+                  >.
+                </p>
+              </li>
+            </ul>
+            <div class="involve-footer">
+              <p class="involve-footer-title">Contact the research team</p>
+              <div class="involve-actions">
+                <a
+                  href={`mailto:${RESEARCH_EMAIL}`}
+                  class="button button-dark-blue research-email copy-email"
+                  aria-label="Contact the research team - click to copy email address">{RESEARCH_EMAIL}</a
+                >
+                <ResearchLink href={RESEARCH_LINKS.userResearchRepo} class="button button-outline"
+                  >User research on GitHub</ResearchLink
+                >
+                <ResearchLink href={RESEARCH_LINKS.uxDesignRepo} class="button button-outline"
+                  >UX design on GitHub</ResearchLink
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {
+    latest && (
+      <section id="our-projects" class="research-section">
+        <div class="container">
+          <p class="research-eyebrow">Our projects</p>
+          <h2 class="mb-16">Research we've done</h2>
+          <p class="research-intro mb-48">
+            Each project brings together everything it produced: findings, papers and posts, plus the data and tools
+            other researchers can reuse.
+          </p>
+          <ProjectCard project={latest} variant="latest" />
+          {others.length > 0 && (
+            <div class="project-grid">
+              {others.map((project) => (
+                <ProjectCard project={project} variant="grid" />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    publications.length > 0 && (
+      <section id="publications" class="research-section bg-secondary">
+        <div class="container">
+          <p class="research-eyebrow">Publications</p>
+          <h2 class="mb-16">Everything we've published</h2>
+          <p class="research-intro mb-32">
+            Papers, datasets, blog posts and talks from all our projects, newest first.
+          </p>
+          <div class="research-chips" data-publication-filters hidden role="group" aria-label="Filter by type">
+            <button type="button" class="research-chip" data-filter="all" aria-pressed="true">
+              All
+            </button>
+            {filtersPresent.map((f) => (
+              <button type="button" class="research-chip" data-filter={f.key} aria-pressed="false">
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <div data-publication-list>
+            {publications.map((group) => (
+              <div class="publication-year-group">
+                <h3 class="publication-year-heading">{group.year}</h3>
+                <ul class="publication-list">
+                  {group.items.map((item) => (
+                    <PublicationRow variant="ours" {...item} />
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <ResearchContact />
+</Base>
+
+<script>
+  import "../../scripts/research-filters.js";
+  import "../../scripts/research-scrollspy.js";
+</script>

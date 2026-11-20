@@ -1,0 +1,275 @@
+---
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import ResearchHero from "../../components/research/ResearchHero.astro";
+import ResearchSubnav from "../../components/research/ResearchSubnav.astro";
+import ResearchLink from "../../components/research/ResearchLink.astro";
+import PublicationRow from "../../components/research/PublicationRow.astro";
+import DatasetCard from "../../components/research/DatasetCard.astro";
+import {
+  FIELD_LABELS,
+  PROJECT_LABELS,
+  getByOthers,
+  getByOthersDatasets,
+  getFilterFacets,
+  getProjectMaterials,
+  getProjects,
+} from "../../lib/research";
+import { RESEARCH_EMAIL, RESEARCH_LINKS } from "../../lib/research-links";
+
+const PAGE_SIZE = 10;
+
+const entries = await getByOthers();
+const facets = getFilterFacets(entries);
+const datasets = await getByOthersDatasets();
+
+const ourDatasets = [];
+for (const project of await getProjects()) {
+  const { primary } = await getProjectMaterials(project);
+  if (primary) ourDatasets.push({ project, dataset: primary });
+}
+ourDatasets.sort((a, b) => b.dataset.date.getTime() - a.dataset.date.getTime());
+
+const TYPE_FILTER_LABELS: Record<string, string> = {
+  paper: "Paper",
+  dataset: "Dataset",
+  thesis: "Thesis",
+};
+
+const filterGroups = [
+  {
+    key: "field",
+    label: "Field",
+    all: "All fields",
+    options: facets.fields.map((v) => [v, FIELD_LABELS[v]]),
+  },
+  {
+    key: "uses",
+    label: "Uses",
+    all: "Any project",
+    options: facets.uses.map((v) => [v, PROJECT_LABELS[v]]),
+  },
+  {
+    key: "type",
+    label: "Type",
+    all: "All types",
+    options: facets.types.map((v) => [v, TYPE_FILTER_LABELS[v]]),
+  },
+].filter((g) => g.options.length > 1);
+
+const why = [
+  {
+    icon: "privacy",
+    title: "Data stays with participants",
+    text: "Everything is stored locally in the home, so participants stay in control of who sees their data.",
+  },
+  {
+    icon: "choice",
+    title: "Connects almost any device",
+    text: "Sensors, heating, solar panels and more, through standards like Zigbee, Z-Wave and Matter, or your own custom hardware with ESPHome.",
+  },
+  {
+    icon: "inbox",
+    title: "Live and historical data",
+    text: "Stream every event in real time through the WebSocket API (a live connection), or analyze the full history in its database.",
+  },
+  {
+    icon: "sustainability",
+    title: "Free, open and extensible",
+    text: "Runs on almost any hardware, and every part — integrations, dashboards, even the voice assistant — can be adapted for your study.",
+  },
+];
+
+const subnav = [
+  { href: "#why", label: "Why researchers use it" },
+  ...(entries.length ? [{ href: "#publications", label: "Publications" }] : []),
+  ...(datasets.length || ourDatasets.length ? [{ href: "#datasets", label: "Open datasets" }] : []),
+  { href: "#submit", label: "Add your research" },
+];
+---
+
+<Base
+  title="Research by others"
+  description="Studies, theses and datasets from researchers around the world that use Home Assistant and other Open Home Foundation projects."
+>
+  <ResearchHero view="others" />
+  <ResearchSubnav label="Research by others" links={subnav} />
+
+  <section id="why" class="research-section">
+    <div class="container">
+      <p class="research-eyebrow">For researchers and educators</p>
+      <h2 class="mb-16">Why researchers choose Home Assistant</h2>
+      <p class="research-intro mb-48">
+        Whether you study energy, behavior, design or security, our projects give you a privacy-respecting lab that runs
+        in real homes.
+      </p>
+      <ul class="why-cards">
+        {
+          why.map((item) => (
+            <li class="why-card">
+              <span class="why-card-icon" aria-hidden="true">
+                <Icon name={item.icon} />
+              </span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    entries.length > 0 && (
+      <section id="publications" class="research-section bg-secondary">
+        <div class="container">
+          <p class="research-eyebrow">Publications</p>
+          <h2 class="mb-16">Research using our projects</h2>
+          <p class="research-intro mb-32">
+            Studies, theses and datasets from researchers around the world that use Home Assistant or our other
+            projects, newest first. We gather them from public sources, so the list keeps growing and is never complete.
+          </p>
+
+          <aside class="research-note mb-32" aria-label="About this list">
+            <p class="research-note-title">About this list</p>
+            <p>
+              This is independent research by others. Listing a study here doesn't mean we've reviewed or endorse it. We
+              only list peer-reviewed work and PhD theses. Missing your published research? <a href="#submit">Add it</a>
+              .
+            </p>
+          </aside>
+
+          <div class="list-controls" data-list-controls hidden>
+            <details class="list-filters" open>
+              <summary>Filters</summary>
+              <div class="list-filters-body">
+                <div class="list-search">
+                  <label class="visually-hidden" for="research-search">
+                    Search titles, authors, institutions
+                  </label>
+                  <input
+                    id="research-search"
+                    type="search"
+                    placeholder="Search titles, authors, institutions"
+                    data-search
+                  />
+                  <label class="list-checkbox">
+                    <input type="checkbox" data-open-access /> Open access only
+                  </label>
+                </div>
+                <div class="list-selects">
+                  {filterGroups.map((group) => (
+                    <label class="list-select">
+                      <span class="visually-hidden">{group.label}</span>
+                      <select data-group={group.key}>
+                        <option value="">{group.all}</option>
+                        {group.options.map(([value, label]) => (
+                          <option value={value}>{label}</option>
+                        ))}
+                      </select>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </details>
+            <div class="list-results">
+              <p aria-live="polite" data-count />
+              <label class="list-sort">
+                Sort
+                <select data-sort>
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                  <option value="title">Title A–Z</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <ul class="publication-list" data-others-list data-page-size={PAGE_SIZE}>
+            {entries.map((entry) => (
+              <PublicationRow variant="others" entry={entry} />
+            ))}
+          </ul>
+          <div class="list-empty" data-empty hidden>
+            <p>No research matches these filters.</p>
+            <button type="button" class="button button-outline" data-clear>
+              Clear filters
+            </button>
+          </div>
+          <nav class="list-pagination" aria-label="Publication pages" data-pagination hidden />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    (datasets.length > 0 || ourDatasets.length > 0) && (
+      <section id="datasets" class="research-section">
+        <div class="container">
+          <p class="research-eyebrow">Open datasets</p>
+          <h2 class="mb-16">Data you can use today</h2>
+          <p class="research-intro mb-48">
+            Datasets collected with Home Assistant or our other projects, published openly for any researcher to reuse.
+          </p>
+          <div class="dataset-grid">
+            {datasets.map(({ data }) => (
+              <DatasetCard
+                title={data.title}
+                text={data.summary}
+                href={data.links[0].url}
+                badge={FIELD_LABELS[data.fields[0]]}
+                meta={[data.uses.map((u) => PROJECT_LABELS[u]).join(", "), data.venue].filter(Boolean).join(" · ")}
+              />
+            ))}
+            {ourDatasets.map(({ project, dataset }) => (
+              <DatasetCard
+                ours
+                title={project.data.title}
+                text={dataset.description}
+                href={`/research/projects/${project.id}/`}
+                badge="Our dataset"
+                meta={["Open Home Foundation", dataset.host].filter(Boolean).join(" · ")}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section id="submit" class="research-section">
+    <div class="container">
+      <div class="submit-card">
+        <div>
+          <p class="research-eyebrow">Add your research</p>
+          <h2 class="mb-24">Published research using our projects?</h2>
+          <p class="mb-24">
+            If your published research (a peer-reviewed paper or dataset paper, or a PhD thesis) used Home Assistant or
+            our other projects, submit it through our GitHub form and we'll review it for this list. We can only include
+            published research, not personal projects or setups.
+          </p>
+          <p class="submit-include-title">What to include</p>
+          <ul class="submit-include">
+            <li>The DOI, or a link to the publisher's page</li>
+            <li>Which of our projects you studied or used</li>
+            <li>One line on how you used it</li>
+          </ul>
+        </div>
+        <div class="submit-actions">
+          <ResearchLink href={RESEARCH_LINKS.submitResearch} class="button">Submit published research</ResearchLink>
+          <a
+            href={`mailto:${RESEARCH_EMAIL}`}
+            class="button button-outline-light research-email copy-email"
+            aria-label="Contact the research team - click to copy email address">{RESEARCH_EMAIL}</a
+          >
+          <ResearchLink href="/research/#get-involved" class="submit-more">Other ways to work with us</ResearchLink>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import "../../scripts/research-filters.js";
+  import "../../scripts/research-scrollspy.js";
+</script>

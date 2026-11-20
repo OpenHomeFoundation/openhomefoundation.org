@@ -1,0 +1,32 @@
+---
+interface Props {
+  apa: string;
+  bibtex: string;
+  doi?: string;
+}
+
+const { apa, bibtex, doi } = Astro.props;
+---
+
+<div class="citation-card" id="cite" data-citation>
+  <div class="citation-card-header">
+    <h2>Cite this project</h2>
+    <div class="citation-toggle" role="group" aria-label="Citation format" hidden>
+      <button type="button" data-format="apa" aria-pressed="true">APA</button>
+      <button type="button" data-format="bibtex" aria-pressed="false">BibTeX</button>
+    </div>
+  </div>
+  <p class="citation-format-label" data-label="apa">APA</p>
+  <pre data-format="apa">{apa}</pre>
+  <p class="citation-format-label" data-label="bibtex">BibTeX</p>
+  <pre data-format="bibtex">{bibtex.trim()}</pre>
+  <div class="citation-card-footer">
+    {doi && <span>DOI {doi}</span>}
+    <button type="button" class="button button-outline citation-copy" hidden>Copy citation</button>
+    <span class="visually-hidden" role="status" data-copy-status></span>
+  </div>
+</div>
+
+<script>
+  import "../../scripts/citation-copy.js";
+</script>
