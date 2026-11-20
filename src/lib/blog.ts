@@ -114,6 +114,7 @@ export interface BlogListing {
   posts: Post[];
   page: number;
   totalPages: number;
+  featured?: Post;
 }
 
 export function slugify(text: string): string {
@@ -185,14 +186,18 @@ function matchesFacet(post: Post, facet: Facet): boolean {
   return FACET_VALUES[facet.kind](post).some((value) => value.slug === facet.slug);
 }
 
+/** The unfiltered archive features its newest post on page 1, ahead of a full page of cards. */
 function paginate(facet: Facet, posts: Post[]): BlogListing[] {
   const matching = posts.filter((post) => matchesFacet(post, facet));
-  const totalPages = Math.max(1, Math.ceil(matching.length / POSTS_PER_PAGE));
+  const featured = facet.kind === "all" ? matching[0] : undefined;
+  const offset = featured ? 1 : 0;
+  const totalPages = Math.max(1, Math.ceil((matching.length - offset) / POSTS_PER_PAGE));
   return Array.from({ length: totalPages }, (_, i) => ({
     facet,
-    posts: matching.slice(i * POSTS_PER_PAGE, (i + 1) * POSTS_PER_PAGE),
+    posts: matching.slice(offset + i * POSTS_PER_PAGE, offset + (i + 1) * POSTS_PER_PAGE),
     page: i + 1,
     totalPages,
+    featured: i === 0 ? featured : undefined,
   }));
 }
 

@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { listing, facets, title, description } = Astro.props;
-const { facet, posts, page: currentPage, totalPages } = listing;
+const { facet, posts, page: currentPage, totalPages, featured } = listing;
 const base = facet.href;
 const paginationNav = buildPaginationNav(currentPage, totalPages, base);
 ---
@@ -33,6 +33,7 @@ const paginationNav = buildPaginationNav(currentPage, totalPages, base);
   <section id="blog-list">
     <div class="container">
       <BlogFilterBar facets={facets} current={facet} />
+      {featured && <BlogCard post={featured} featured />}
       <div class="grid">
         {
           posts.map((post) => (
