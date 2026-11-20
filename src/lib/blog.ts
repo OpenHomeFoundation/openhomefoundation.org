@@ -87,8 +87,126 @@ export function truncate(text: string, length: number): string {
   return `${text.slice(0, length - 3)}...`;
 }
 
-export function blogPageHref(page: number): string {
-  return page === 1 ? "/blog/" : `/blog/posts/${page}/`;
+export function blogPageHref(page: number, base = "/blog/"): string {
+  return page === 1 ? base : `${base}posts/${page}/`;
+}
+
+export type FacetKind = "all" | "category" | "author" | "year";
+
+export interface Facet {
+  kind: FacetKind;
+  slug: string;
+  label: string;
+  count: number;
+  href: string;
+  avatar?: string;
+}
+
+export interface BlogFacets {
+  all: Facet;
+  categories: Facet[];
+  authors: Facet[];
+  years: Facet[];
+}
+
+export interface BlogListing {
+  facet: Facet;
+  posts: Post[];
+  page: number;
+  totalPages: number;
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function authorAvatar(slug: string): string | undefined {
+  const author = AUTHORS[slug];
+  if (author?.github) return `https://github.com/${author.github}.png?size=64`;
+  return author?.avatar;
+}
+
+function postCategory(post: Post) {
+  const label = post.data.category;
+  return label ? [{ slug: slugify(label), label }] : [];
+}
+
+function postAuthors(post: Post) {
+  return (post.data.author ?? []).map((slug) => ({ slug, label: AUTHORS[slug]?.name ?? slug }));
+}
+
+function postYear(post: Post) {
+  const year = String(post.data.date.getUTCFullYear());
+  return [{ slug: year, label: year }];
+}
+
+const FACET_VALUES = {
+  category: postCategory,
+  author: postAuthors,
+  year: postYear,
+} satisfies Record<Exclude<FacetKind, "all">, (post: Post) => { slug: string; label: string }[]>;
+
+function buildFacets(posts: Post[], kind: Exclude<FacetKind, "all">): Facet[] {
+  const counts = new Map<string, Facet>();
+  for (const post of posts) {
+    for (const { slug, label } of FACET_VALUES[kind](post)) {
+      const facet = counts.get(slug) ?? {
+        kind,
+        slug,
+        label,
+        count: 0,
+        href: `/blog/${kind}/${slug}/`,
+        avatar: kind === "author" ? authorAvatar(slug) : undefined,
+      };
+      facet.count++;
+      counts.set(slug, facet);
+    }
+  }
+  return [...counts.values()];
+}
+
+export function getFacets(posts: Post[]): BlogFacets {
+  const byCountThenLabel = (a: Facet, b: Facet) => b.count - a.count || a.label.localeCompare(b.label);
+  return {
+    all: { kind: "all", slug: "", label: "All posts", count: posts.length, href: "/blog/" },
+    categories: buildFacets(posts, "category").sort(byCountThenLabel),
+    authors: buildFacets(posts, "author").sort(byCountThenLabel),
+    years: buildFacets(posts, "year").sort((a, b) => Number(b.slug) - Number(a.slug)),
+  };
+}
+
+function matchesFacet(post: Post, facet: Facet): boolean {
+  if (facet.kind === "all") return true;
+  return FACET_VALUES[facet.kind](post).some((value) => value.slug === facet.slug);
+}
+
+function paginate(facet: Facet, posts: Post[]): BlogListing[] {
+  const matching = posts.filter((post) => matchesFacet(post, facet));
+  const totalPages = Math.max(1, Math.ceil(matching.length / POSTS_PER_PAGE));
+  return Array.from({ length: totalPages }, (_, i) => ({
+    facet,
+    posts: matching.slice(i * POSTS_PER_PAGE, (i + 1) * POSTS_PER_PAGE),
+    page: i + 1,
+    totalPages,
+  }));
+}
+
+/** Every blog listing page: the full archive plus each category, author and year, all paginated. */
+export async function getBlogListings() {
+  const posts = await getSortedPosts();
+  const facets = getFacets(posts);
+  const listings = [facets.all, ...facets.categories, ...facets.authors, ...facets.years].flatMap((facet) =>
+    paginate(facet, posts),
+  );
+  return listings.map((listing) => {
+    const path = blogPageHref(listing.page, listing.facet.href).replace(/^\/blog\/|\/$/g, "");
+    return { params: { listing: path || undefined }, props: { listing, facets } };
+  });
 }
 
 export type PaginationNavItem =
@@ -100,7 +218,7 @@ export type PaginationNavItem =
  * last two pages, and the pages immediately around the current one,
  * with ellipsis markers standing in for the "..." gaps between them.
  */
-export function buildPaginationNav(currentPage: number, totalPages: number): PaginationNavItem[] {
+export function buildPaginationNav(currentPage: number, totalPages: number, base = "/blog/"): PaginationNavItem[] {
   const pageNumbers = new Set(
     [1, 2, currentPage - 1, currentPage, currentPage + 1, totalPages - 1, totalPages].filter(
       (page) => page >= 1 && page <= totalPages,
@@ -116,7 +234,7 @@ export function buildPaginationNav(currentPage: number, totalPages: number): Pag
     }
     nav.push({
       number: page,
-      href: blogPageHref(page),
+      href: blogPageHref(page, base),
       current: page === currentPage,
     });
     previousPage = page;

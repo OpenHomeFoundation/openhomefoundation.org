@@ -1,16 +1,20 @@
 ---
 import BlogCard from "./BlogCard.astro";
+import BlogFilterBar from "./BlogFilterBar.astro";
 import Icon from "./Icon.astro";
-import { blogPageHref, buildPaginationNav, type Post } from "../lib/blog";
+import { blogPageHref, buildPaginationNav, type BlogFacets, type BlogListing } from "../lib/blog";
 
 interface Props {
-  posts: Post[];
-  currentPage: number;
-  totalPages: number;
+  listing: BlogListing;
+  facets: BlogFacets;
+  title: string;
+  description: string;
 }
 
-const { posts, currentPage, totalPages } = Astro.props;
-const paginationNav = buildPaginationNav(currentPage, totalPages);
+const { listing, facets, title, description } = Astro.props;
+const { facet, posts, page: currentPage, totalPages } = listing;
+const base = facet.href;
+const paginationNav = buildPaginationNav(currentPage, totalPages, base);
 ---
 
 <div class="bg-gradient-blog">
@@ -18,8 +22,8 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
     <div class="container">
       <div class="grid">
         <div class="column col-s-12 col-m-10 col-m-offset-2">
-          <h1 class="text-center mb-48">Blog</h1>
-          <p class="text-center">News and updates from the Open Home Foundation</p>
+          <h1 class="text-center mb-48">{title}</h1>
+          <p class="text-center">{description}</p>
         </div>
       </div>
     </div>
@@ -28,6 +32,7 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
 <div class="bg-primary">
   <section id="blog-list">
     <div class="container">
+      <BlogFilterBar facets={facets} current={facet} />
       <div class="grid">
         {
           posts.map((post) => (
@@ -42,7 +47,7 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
           <nav class="pagination" aria-label="Blog pagination">
             {currentPage > 1 ? (
               <a
-                href={blogPageHref(currentPage - 1)}
+                href={blogPageHref(currentPage - 1, base)}
                 class="pagination-arrow pagination-arrow-prev"
                 aria-label="Previous page"
               >
@@ -73,7 +78,7 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
             </ul>
 
             {currentPage < totalPages ? (
-              <a href={blogPageHref(currentPage + 1)} class="pagination-arrow pagination-arrow-next" aria-label="Next page">
+              <a href={blogPageHref(currentPage + 1, base)} class="pagination-arrow pagination-arrow-next" aria-label="Next page">
                 <Icon name="arrow" />
               </a>
             ) : (
