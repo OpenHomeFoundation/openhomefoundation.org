@@ -49,4 +49,4 @@ Funding flows in a single direction: from partners and donors to the foundation.
 - **Active users:** 2.7+ million households worldwide, with Home Assistant installations growing 28% year-over-year in 2025
 - **Operational scale:** 20k+ worldwide contributors
 - **Commercial partners:** Nabu Casa, Apollo Automation
-- **Board members:** Paulus Schoutsen (President), Pascal Vizeli (Treasurer), J. Nick Koston (Member), Trevor Schirmer (Rotating Partner Member)
+- **Board members:** Paulus Schoutsen (President), Pascal Vizeli (Treasurer), J. Nick Koston (Vice President), Trevor Schirmer (Rotating Partner Member)
