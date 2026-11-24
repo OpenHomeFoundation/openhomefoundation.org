@@ -1,0 +1,129 @@
+/* Support our work page */
+#support-our-work-page {
+  padding-top: 150px;
+  padding-bottom: 50px;
+}
+
+#support-our-work-page h1 {
+  font-family: Biotif;
+  font-size: 56px;
+  line-height: 1.1;
+  padding: 0 16px;
+  font-weight: 600;
+}
+
+#support-our-work-page p.subtitle {
+  color: var(--dark-grey-color);
+  font-size: 24px;
+  font-weight: 300;
+}
+
+#support-our-work-page p.subtitle a,
+#support-our-work-page .cloud-card p a {
+  color: inherit;
+}
+
+/* The rotating poly graphic is absolutely positioned; keep content above it. */
+#support-our-work-page .content,
+#support-our-work-page h2,
+#support-our-work-page .cloud-card,
+#support-our-work-page .product-card {
+  position: relative;
+  z-index: 1;
+}
+
+#support-our-work-page .cloud-card {
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid #e3e2e3;
+  background: #f7f7f7;
+  color: var(--dark-grey-color);
+}
+
+@media (min-width: 768px) {
+  #support-our-work-page .cloud-card {
+    padding: 48px;
+  }
+}
+
+#support-our-work-page .cloud-card h2 {
+  color: var(--dark-blue-color);
+}
+
+#support-our-work-page .cloud-card p {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+#support-our-work-page .cloud-card .button {
+  width: fit-content;
+}
+
+#support-our-work-page .product-grid {
+  row-gap: 24px;
+}
+
+#support-our-work-page .product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(237, 236, 237, 0.5);
+  background: rgba(237, 236, 237, 0.3);
+  text-decoration: none;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+#support-our-work-page .product-card:hover,
+#support-our-work-page .product-card:focus-visible {
+  background: rgba(237, 236, 237, 0.75);
+}
+
+#support-our-work-page .product-image {
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+}
+
+#support-our-work-page .product-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#support-our-work-page .product-body {
+  position: relative;
+  padding: 32px;
+  flex-grow: 1;
+}
+
+#support-our-work-page .product-body > svg {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  pointer-events: none;
+}
+
+#support-our-work-page .product-body > svg #arrow_outward_2,
+#support-our-work-page .product-body > svg rect {
+  fill: var(--dark-blue-color);
+}
+
+#support-our-work-page .product-card h3 {
+  font-family: Biotif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--dark-blue-color);
+  margin-bottom: 16px;
+  padding-right: 40px;
+}
+
+#support-our-work-page .product-card p {
+  font-family: Biotif;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--dark-grey-color);
+}
