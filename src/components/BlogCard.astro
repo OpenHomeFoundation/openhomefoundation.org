@@ -1,21 +1,22 @@
 ---
 import Icon from "./Icon.astro";
-import { AUTHORS, authorAvatar, cardImage, formatDate, postUrl, readingTime, truncate, type Post } from "../lib/blog";
+import { cardImage, formatDate, postAuthors, postUrl, readingTime, truncate, type Post } from "../lib/blog";
 
 interface Props {
   post: Post;
-  /** The media room's news cards don't show the crosspost badge. */
+  /** The media room's news cards don't say where a crosspost is shared from. */
   badge?: boolean;
-  /** Wide image-left layout for the newest post at the top of the blog archive. */
+  /** Wide card for the newest post at the top of the blog archive. */
   featured?: boolean;
+  headingLevel?: 2 | 3;
 }
 
-const { post, badge = true, featured = false } = Astro.props;
-const { title, description, external_url, external_source } = post.data;
-const Heading = featured ? "h2" : "h3";
-const authors = featured
-  ? (post.data.author ?? []).map((slug) => ({ name: AUTHORS[slug]?.name ?? slug, avatar: authorAvatar(slug) }))
-  : [];
+const { post, badge = true, featured = false, headingLevel = 2 } = Astro.props;
+const { title, description, category, date, external_url, external_source } = post.data;
+const Heading = `h${headingLevel}` as const;
+const authors = postAuthors(post);
+const source = external_url ? (badge ? `Shared from ${external_source}` : undefined) : `${readingTime(post)} minute read`;
+const fallbackImage = "/assets/images/opengraph.jpg";
 ---
 
 <a href={postUrl(post)} class:list={["blog-card", { "blog-card-featured": featured }]}>
@@ -25,30 +26,41 @@ const authors = featured
     </span>
     <img
       src={cardImage(post)}
-      alt={title}
+      alt=""
       width="1200"
       height="630"
       loading={featured ? "eager" : "lazy"}
       fetchpriority={featured ? "high" : undefined}
       decoding="async"
+      onload="this.parentNode.classList.add('loaded')"
+      onerror={`this.onerror=null;this.src='${fallbackImage}'`}
     />
   </div>
   <div class="blog-card-content">
-    {badge && external_url && <span class="blog-card-badge">Shared from {external_source}</span>}
-    <p class="blog-card-date">{formatDate(post.data.date)}{!external_url && ` · ${readingTime(post)} minute read`}</p>
+    <p class="blog-card-meta">
+      {category && <span class="blog-card-category">{category}</span>}
+      <time datetime={date.toISOString().slice(0, 10)}>{formatDate(date)}</time>
+    </p>
     <Heading class="blog-card-title">{title}</Heading>
-    {description && <p class="blog-card-description">{truncate(description, featured ? 280 : 160)}</p>}
-    {
-      authors.length > 0 && (
-        <p class="blog-card-authors">
-          {authors.map((author) => (
-            <span class="blog-card-author">
-              {author.avatar && <img src={author.avatar} alt="" width="28" height="28" />}
-              {author.name}
+    {description && <p class="blog-card-description">{truncate(description, featured ? 260 : 140)}</p>}
+    <div class="blog-card-footer">
+      {
+        authors.length > 0 && (
+          <span class="blog-card-authors">
+            <span class="blog-card-avatars">
+              {authors.map((author) =>
+                author.avatar ? (
+                  <img src={author.avatar} alt="" width="24" height="24" loading="lazy" />
+                ) : (
+                  <span class="avatar-placeholder" aria-hidden="true" />
+                ),
+              )}
             </span>
-          ))}
-        </p>
-      )
-    }
+            <span class="blog-card-author-names">{authors.map((author) => author.name).join(", ")}</span>
+          </span>
+        )
+      }
+      {source && <span class="blog-card-source">{source}</span>}
+    </div>
   </div>
 </a>
