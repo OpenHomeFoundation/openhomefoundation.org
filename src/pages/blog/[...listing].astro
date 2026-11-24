@@ -3,6 +3,7 @@ import type { InferGetStaticPropsType } from "astro";
 import Base from "../../layouts/Base.astro";
 import BlogListPage from "../../components/BlogListPage.astro";
 import { blogPageHref, getBlogListings } from "../../lib/blog";
+import { SITE_URL } from "../../lib/site";
 
 export function getStaticPaths() {
   return getBlogListings();
@@ -10,22 +11,23 @@ export function getStaticPaths() {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { listing, facets } = Astro.props;
-const { facet, page, totalPages } = listing;
+const { listing } = Astro.props;
+const { base, page, totalPages, title, description, noindex, breadcrumbs } = listing;
+const isBlogHome = base === "/blog/" && page === 1;
 
-const headings = {
-  all: { title: "Blog", description: "News and updates from the Open Home Foundation" },
-  category: { title: facet.label, description: `${facet.label} from the Open Home Foundation` },
-  author: { title: `Posts by ${facet.label}`, description: `Open Home Foundation blog posts by ${facet.label}` },
-  year: { title: `Posts from ${facet.label}`, description: `Open Home Foundation blog posts from ${facet.label}` },
-};
-const { title, description } = headings[facet.kind];
-const pageTitle = page > 1 ? `${title} – Page ${page} of ${totalPages}` : title;
-const pageDescription = page > 1 ? `${description}, page ${page}.` : `${description}.`;
+const breadcrumbList = isBlogHome
+  ? undefined
+  : {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [{ name: "Home", href: "/" }, ...breadcrumbs, { name: title, href: Astro.url.pathname }].map(
+        (crumb, i) => ({ "@type": "ListItem", position: i + 1, name: crumb.name, item: `${SITE_URL}${crumb.href}` }),
+      ),
+    };
 ---
 
-<Base title={pageTitle} description={pageDescription}>
-  {page > 1 && <link slot="head" rel="prev" href={blogPageHref(page - 1, facet.href)} />}
-  {page < totalPages && <link slot="head" rel="next" href={blogPageHref(page + 1, facet.href)} />}
-  <BlogListPage listing={listing} facets={facets} title={title} description={headings.all.description} />
+<Base title={title} description={description} noindex={noindex} follow={noindex} jsonLd={breadcrumbList}>
+  {page > 1 && <link slot="head" rel="prev" href={blogPageHref(page - 1, base)} />}
+  {page < totalPages && <link slot="head" rel="next" href={blogPageHref(page + 1, base)} />}
+  <BlogListPage listing={listing} showBreadcrumbs={!isBlogHome} />
 </Base>

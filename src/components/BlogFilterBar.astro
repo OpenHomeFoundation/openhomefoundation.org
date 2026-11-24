@@ -1,48 +1,46 @@
 ---
-import type { BlogFacets, Facet } from "../lib/blog";
+import type { BlogListing, DrawerItem } from "../lib/blog";
 
 interface Props {
-  facets: BlogFacets;
-  current: Facet;
+  listing: BlogListing;
 }
 
-const { facets, current } = Astro.props;
-
-const isCurrent = (facet: Facet) => facet.kind === current.kind && facet.slug === current.slug;
-const ariaCurrent = (facet: Facet) => (isCurrent(facet) ? "page" : undefined);
-
-const applied = current.kind === "author" || current.kind === "year" ? current : undefined;
-const appliedLabel = applied && `${applied.kind === "author" ? "Author" : "Year"}: ${applied.label}`;
-const activeCount = current.kind === "all" ? 0 : 1;
-
-const sections = [
-  { title: "Category", items: [facets.all, ...facets.categories] },
-  { title: "Author", items: facets.authors },
-  { title: "Year", items: facets.years },
-].filter((section) => section.items.length > 0);
+const { listing } = Astro.props;
+const { active, count, drawer } = listing;
+const ariaCurrent = (item: DrawerItem) => (item.current ? "page" : undefined);
 ---
 
 <div class="blog-toolbar">
-  <nav class="blog-chips" aria-label="Blog categories">
+  <div class="blog-active-filters">
     {
-      applied && (
-        <a class="blog-chip is-applied" href="/blog/" aria-label={`Remove filter ${appliedLabel}`}>
-          {appliedLabel}
-          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </a>
+      active.length === 0 ? (
+        <span class="blog-chip">
+          All posts <span class="count">{count}</span>
+        </span>
+      ) : (
+        <>
+          {active.map((filter) => (
+            <a class="blog-chip" href={filter.removeHref} aria-label={`Remove filter ${filter.prefix}: ${filter.label}`}>
+              <span>
+                <span class="prefix">{filter.prefix}:</span> {filter.label}
+              </span>
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+            </a>
+          ))}
+          <span class="blog-result-count">
+            {count} {count === 1 ? "post" : "posts"}
+          </span>
+          {active.length > 1 && (
+            <a class="blog-clear-filters" href="/blog/">
+              Clear filters
+            </a>
+          )}
+        </>
       )
     }
-    {
-      [facets.all, ...facets.categories].map((facet) => (
-        <a class="blog-chip" href={facet.href} aria-current={ariaCurrent(facet)}>
-          {facet.label}
-          <span class="count">{facet.count}</span>
-        </a>
-      ))
-    }
-  </nav>
+  </div>
   <div class="blog-actions">
     <button type="button" class="blog-filters-button" commandfor="blog-filters" command="show-modal">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -50,13 +48,6 @@ const sections = [
         ></path>
       </svg>
       Filters
-      {
-        activeCount > 0 && (
-          <span class="badge" aria-label={`${activeCount} active`}>
-            {activeCount}
-          </span>
-        )
-      }
     </button>
     <a class="blog-feed" href="/blog/feed.xml">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -83,27 +74,75 @@ const sections = [
     </button>
   </header>
   <div class="drawer-body">
-    {
-      sections.map((section) => (
-        <section>
-          <h3>{section.title}</h3>
-          <ul>
-            {section.items.map((facet) => (
-              <li>
-                <a href={facet.href} aria-current={ariaCurrent(facet)}>
-                  {facet.avatar && <img src={facet.avatar} alt="" width="24" height="24" loading="lazy" />}
-                  <span class="label">{facet.label}</span>
-                  <span class="count">{facet.count}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))
-    }
+    <section>
+      <h3>Category</h3>
+      <ul>
+        {
+          [drawer.allCategories, ...drawer.topCategories].map((item) => (
+            <li>
+              <a href={item.href} aria-current={ariaCurrent(item)}>
+                <span class="label">{item.label}</span>
+                <span class="count">{item.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        drawer.moreCategories.length > 0 && (
+          <details class="drawer-more" open={drawer.moreOpen}>
+            <summary>More categories</summary>
+            <ul>
+              {drawer.moreCategories.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={ariaCurrent(item)}>
+                    <span class="label">{item.label}</span>
+                    <span class="count">{item.count}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )
+      }
+    </section>
+    <section>
+      <h3>Year</h3>
+      <ul class="drawer-years">
+        {
+          [drawer.allYears, ...drawer.years].map((item) => (
+            <li>
+              <a href={item.href} aria-current={ariaCurrent(item)}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+    <section>
+      <h3>Author</h3>
+      <ul>
+        {
+          drawer.authors.map((item) => (
+            <li>
+              <a href={item.href} aria-current={ariaCurrent(item)}>
+                {item.avatar ? (
+                  <img src={item.avatar} alt="" width="24" height="24" loading="lazy" />
+                ) : (
+                  <span class="avatar-placeholder" aria-hidden="true" />
+                )}
+                <span class="label">{item.label}</span>
+                <span class="count">{item.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </div>
   <footer class="drawer-footer">
-    {activeCount > 0 ? <a href="/blog/">Clear filter</a> : <span></span>}
+    {active.length > 0 ? <a href="/blog/">Clear filters</a> : <span></span>}
     <button type="button" class="drawer-done" commandfor="blog-filters" command="close">Done</button>
   </footer>
 </dialog>
@@ -147,42 +186,56 @@ const sections = [
     margin-bottom: 40px;
   }
 
-  .blog-chips {
+  .blog-active-filters {
     display: flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
     min-width: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
   }
 
   .blog-chip {
     display: inline-flex;
-    flex-shrink: 0;
     align-items: center;
     gap: 8px;
+    max-width: 100%;
     padding: 8px 16px;
-    border: 1px solid var(--light-grey-color);
     border-radius: 999px;
-    color: var(--secondary-text-color);
+    background: var(--dark-blue-color);
+    color: var(--white-color);
     font-size: 14px;
     font-weight: 500;
     text-decoration: none;
-    white-space: nowrap;
-    transition:
-      border-color 0.15s ease,
-      color 0.15s ease;
+    transition: background-color 0.15s ease;
+  }
+
+  .blog-chip .prefix,
+  .blog-chip .count {
+    color: var(--grey-color);
   }
 
   .blog-chip .count {
     font-size: 12px;
-    opacity: 0.7;
   }
 
-  .blog-chip[aria-current="page"],
-  .blog-chip.is-applied {
-    border-color: var(--primary-color);
-    background: var(--primary-color);
-    color: var(--on-primary-color);
+  .blog-chip svg {
+    flex-shrink: 0;
+  }
+
+  a.blog-chip:focus-visible {
+    outline: 2px solid var(--dark-blue-color);
+    outline-offset: 2px;
+  }
+
+  .blog-result-count {
+    color: var(--secondary-text-color);
+    font-size: 14px;
+  }
+
+  .blog-clear-filters {
+    color: var(--primary-text-color);
+    font-size: 14px;
+    font-weight: 500;
   }
 
   .blog-actions {
@@ -210,26 +263,9 @@ const sections = [
     transition: border-color 0.15s ease;
   }
 
-  .badge {
-    display: inline-grid;
-    place-items: center;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 999px;
-    background: var(--primary-color);
-    color: var(--on-primary-color);
-    font-size: 12px;
-  }
-
   @media (hover: hover) {
-    .blog-chip:hover {
-      border-color: var(--primary-color);
-      color: var(--primary-text-color);
-    }
-
-    .blog-chip[aria-current="page"]:hover,
-    .blog-chip.is-applied:hover {
-      color: var(--on-primary-color);
+    a.blog-chip:hover {
+      background: var(--dark-grey-color);
     }
 
     .blog-filters-button:hover,
@@ -241,7 +277,8 @@ const sections = [
       background: var(--light-grey-color);
     }
 
-    .drawer-body a:hover {
+    .drawer-body a:not([aria-current="page"]):hover,
+    .drawer-more summary:hover {
       background: var(--light-grey-color);
     }
   }
@@ -442,11 +479,44 @@ const sections = [
     font-weight: 500;
   }
 
-  .drawer-body img {
+  .drawer-body img,
+  .drawer-body .avatar-placeholder {
     flex-shrink: 0;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     object-fit: cover;
     background: var(--light-grey-color);
+  }
+
+  .drawer-more summary {
+    padding: 10px 8px;
+    border-radius: 8px;
+    color: var(--primary-text-color);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .drawer-more ul {
+    margin-top: 4px;
+  }
+
+  .drawer-body .drawer-years {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-inline: 8px;
+  }
+
+  .drawer-years a {
+    padding: 4px 14px;
+    border: 1px solid var(--light-grey-color);
+    border-radius: 999px;
+  }
+
+  .drawer-years a[aria-current="page"] {
+    border-color: var(--primary-color);
   }
 
   .drawer-body .label {

@@ -2,28 +2,44 @@
 import BlogCard from "./BlogCard.astro";
 import BlogFilterBar from "./BlogFilterBar.astro";
 import Icon from "./Icon.astro";
-import { blogPageHref, buildPaginationNav, type BlogFacets, type BlogListing } from "../lib/blog";
+import { blogPageHref, buildPaginationNav, type BlogListing } from "../lib/blog";
 
 interface Props {
   listing: BlogListing;
-  facets: BlogFacets;
-  title: string;
-  description: string;
+  showBreadcrumbs: boolean;
 }
 
-const { listing, facets, title, description } = Astro.props;
-const { facet, posts, page: currentPage, totalPages, featured } = listing;
-const base = facet.href;
+const { listing, showBreadcrumbs } = Astro.props;
+const { base, heading, intro, breadcrumbs, posts, page: currentPage, totalPages, featured } = listing;
 const paginationNav = buildPaginationNav(currentPage, totalPages, base);
 ---
 
 <div class="bg-gradient-blog">
-  <section id="news-header">
+  <section id="news-header" class:list={["blog-listing-header", { "has-intro": intro }]}>
     <div class="container">
       <div class="grid">
         <div class="column col-s-12 col-m-10 col-m-offset-2">
-          <h1 class="text-center mb-48">{title}</h1>
-          <p class="text-center">{description}</p>
+          {
+            showBreadcrumbs && (
+              <nav class="blog-breadcrumbs" aria-label="Breadcrumb">
+                <ol>
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  {breadcrumbs.map((crumb) => (
+                    <li>
+                      <svg viewBox="0 0 8 10" width="8" height="10" aria-hidden="true">
+                        <path d="M0 0l8 5-8 5z" fill="currentColor" />
+                      </svg>
+                      <a href={crumb.href}>{crumb.name}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
+          <h1 class="text-center">{heading}</h1>
+          {intro && <p class="text-center">{intro}</p>}
         </div>
       </div>
     </div>
@@ -32,7 +48,7 @@ const paginationNav = buildPaginationNav(currentPage, totalPages, base);
 <div class="bg-primary">
   <section id="blog-list">
     <div class="container">
-      <BlogFilterBar facets={facets} current={facet} />
+      <BlogFilterBar listing={listing} />
       {featured && <BlogCard post={featured} featured />}
       <div class="grid">
         {

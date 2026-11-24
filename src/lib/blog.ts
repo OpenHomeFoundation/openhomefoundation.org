@@ -1,5 +1,6 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import authors from "../data/authors.yml";
+import blogCategories from "../data/blog-categories.yml";
 import { SITE_URL } from "./site";
 
 export type Post = CollectionEntry<"blog">;
@@ -91,10 +92,10 @@ export function blogPageHref(page: number, base = "/blog/"): string {
   return page === 1 ? base : `${base}posts/${page}/`;
 }
 
-export type FacetKind = "all" | "category" | "author" | "year";
+export type FilterKind = "category" | "year" | "author";
 
 export interface Facet {
-  kind: FacetKind;
+  kind: FilterKind;
   slug: string;
   label: string;
   count: number;
@@ -102,26 +103,65 @@ export interface Facet {
   avatar?: string;
 }
 
-export interface BlogFacets {
-  all: Facet;
-  categories: Facet[];
-  authors: Facet[];
-  years: Facet[];
+export type Filters = Partial<Record<FilterKind, Facet>>;
+
+export interface DrawerItem {
+  label: string;
+  count?: number;
+  href: string;
+  current: boolean;
+  avatar?: string;
+}
+
+export interface BlogDrawer {
+  allCategories: DrawerItem;
+  topCategories: DrawerItem[];
+  moreCategories: DrawerItem[];
+  moreOpen: boolean;
+  allYears: DrawerItem;
+  years: DrawerItem[];
+  authors: DrawerItem[];
+}
+
+export interface ActiveFilter {
+  kind: FilterKind;
+  prefix: string;
+  label: string;
+  removeHref: string;
+}
+
+export interface Breadcrumb {
+  name: string;
+  href: string;
 }
 
 export interface BlogListing {
-  facet: Facet;
+  base: string;
+  heading: string;
+  title: string;
+  description: string;
+  intro?: string;
+  count: number;
+  breadcrumbs: Breadcrumb[];
+  active: ActiveFilter[];
+  drawer: BlogDrawer;
+  noindex: boolean;
   posts: Post[];
+  featured?: Post;
   page: number;
   totalPages: number;
-  featured?: Post;
 }
+
+const TOP_CATEGORIES = 7;
+const BLOG_DESCRIPTION = "News and updates from the Open Home Foundation";
+const CATEGORY_INTROS: Record<string, { intro?: string }> = blogCategories ?? {};
+const FILTER_PREFIX: Record<FilterKind, string> = { category: "Category", year: "Year", author: "Author" };
 
 export function slugify(text: string): string {
   return text
     .toLowerCase()
     .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 }
@@ -132,86 +172,203 @@ export function authorAvatar(slug: string): string | undefined {
   return author?.avatar;
 }
 
-function postCategory(post: Post) {
-  const label = post.data.category;
-  return label ? [{ slug: slugify(label), label }] : [];
+export interface PostAuthor {
+  slug: string;
+  name: string;
+  avatar?: string;
 }
 
-function postAuthors(post: Post) {
-  return (post.data.author ?? []).map((slug) => ({ slug, label: AUTHORS[slug]?.name ?? slug }));
+export function postAuthors(post: Post): PostAuthor[] {
+  return (post.data.author ?? []).map((slug) => ({ slug, name: AUTHORS[slug]?.name ?? slug, avatar: authorAvatar(slug) }));
 }
 
-function postYear(post: Post) {
-  const year = String(post.data.date.getUTCFullYear());
-  return [{ slug: year, label: year }];
-}
+const FILTER_VALUES: Record<FilterKind, (post: Post) => { slug: string; label: string }[]> = {
+  category: (post) => (post.data.category ? [{ slug: slugify(post.data.category), label: post.data.category }] : []),
+  year: (post) => {
+    const year = String(post.data.date.getUTCFullYear());
+    return [{ slug: year, label: year }];
+  },
+  author: (post) => postAuthors(post).map(({ slug, name }) => ({ slug, label: name })),
+};
 
-const FACET_VALUES = {
-  category: postCategory,
-  author: postAuthors,
-  year: postYear,
-} satisfies Record<Exclude<FacetKind, "all">, (post: Post) => { slug: string; label: string }[]>;
+const FILTER_PATH: Record<FilterKind, string> = { category: "category", year: "year", author: "author" };
 
-function buildFacets(posts: Post[], kind: Exclude<FacetKind, "all">): Facet[] {
-  const counts = new Map<string, Facet>();
+function buildFacets(posts: Post[], kind: FilterKind): Facet[] {
+  const facets = new Map<string, Facet>();
   for (const post of posts) {
-    for (const { slug, label } of FACET_VALUES[kind](post)) {
-      const facet = counts.get(slug) ?? {
+    for (const { slug, label } of FILTER_VALUES[kind](post)) {
+      const facet = facets.get(slug) ?? {
         kind,
         slug,
         label,
         count: 0,
-        href: `/blog/${kind}/${slug}/`,
+        href: `/blog/${FILTER_PATH[kind]}/${slug}/`,
         avatar: kind === "author" ? authorAvatar(slug) : undefined,
       };
       facet.count++;
-      counts.set(slug, facet);
+      facets.set(slug, facet);
     }
   }
-  return [...counts.values()];
+  const facetList = [...facets.values()];
+  return kind === "year"
+    ? facetList.sort((a, b) => Number(b.slug) - Number(a.slug))
+    : facetList.sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
-export function getFacets(posts: Post[]): BlogFacets {
-  const byCountThenLabel = (a: Facet, b: Facet) => b.count - a.count || a.label.localeCompare(b.label);
+function matches(post: Post, filters: Filters): boolean {
+  return (Object.entries(filters) as [FilterKind, Facet | undefined][]).every(
+    ([kind, facet]) => !facet || FILTER_VALUES[kind](post).some((value) => value.slug === facet.slug),
+  );
+}
+
+/** The listing page for a set of filters. Authors never combine; category and year do. */
+export function filtersHref({ category, year, author }: Filters): string {
+  if (author) return author.href;
+  if (category && year) return `${category.href}${year.slug}/`;
+  return category?.href ?? year?.href ?? "/blog/";
+}
+
+function withoutFilter(filters: Filters, kind: FilterKind): Filters {
+  const { [kind]: _removed, ...rest } = filters;
+  return rest;
+}
+
+function heading({ category, year, author }: Filters): string {
+  if (category && year) return `${category.label} from ${year.label}`;
+  if (category) return category.label;
+  if (author) return `Posts by ${author.label}`;
+  if (year) return `Posts from ${year.label}`;
+  return "Blog";
+}
+
+function description({ category, year, author }: Filters): string {
+  const parts = [
+    category && `in ${category.label}`,
+    author && `by ${author.label}`,
+    year && `from ${year.label}`,
+  ].filter(Boolean);
+  return parts.length ? `Open Home Foundation blog posts ${parts.join(" ")}` : BLOG_DESCRIPTION;
+}
+
+function intro(filters: Filters): string | undefined {
+  const kinds = Object.keys(filters);
+  if (kinds.length === 0) return BLOG_DESCRIPTION;
+  if (kinds.length === 1 && filters.category) return CATEGORY_INTROS[filters.category.slug]?.intro;
+  return undefined;
+}
+
+function breadcrumbs({ category, year }: Filters): Breadcrumb[] {
+  const crumbs = [{ name: "Blog", href: "/blog/" }];
+  if (category && year) crumbs.push({ name: category.label, href: category.href });
+  return crumbs;
+}
+
+function activeFilters(filters: Filters): ActiveFilter[] {
+  return (["category", "year", "author"] as const).flatMap((kind) => {
+    const facet = filters[kind];
+    return facet
+      ? [{ kind, prefix: FILTER_PREFIX[kind], label: facet.label, removeHref: filtersHref(withoutFilter(filters, kind)) }]
+      : [];
+  });
+}
+
+function drawer(posts: Post[], authors: Facet[], filters: Filters): BlogDrawer {
+  const { category, year, author } = filters;
+  const inYear = year ? posts.filter((post) => matches(post, { year })) : posts;
+  const inCategory = category ? posts.filter((post) => matches(post, { category })) : posts;
+
+  const categories = buildFacets(inYear, "category").map((c) => ({
+    label: c.label,
+    count: c.count,
+    href: filtersHref({ category: c, year }),
+    current: category?.slug === c.slug,
+  }));
+  const more = categories.slice(TOP_CATEGORIES).sort((a, b) => a.label.localeCompare(b.label));
+
   return {
-    all: { kind: "all", slug: "", label: "All posts", count: posts.length, href: "/blog/" },
-    categories: buildFacets(posts, "category").sort(byCountThenLabel),
-    authors: buildFacets(posts, "author").sort(byCountThenLabel),
-    years: buildFacets(posts, "year").sort((a, b) => Number(b.slug) - Number(a.slug)),
+    allCategories: { label: "All posts", count: inYear.length, href: filtersHref({ year }), current: !category && !author },
+    topCategories: categories.slice(0, TOP_CATEGORIES),
+    moreCategories: more,
+    moreOpen: more.some((item) => item.current),
+    allYears: { label: "All", href: filtersHref({ category }), current: !year && !author },
+    years: buildFacets(inCategory, "year").map((y) => ({
+      label: y.label,
+      href: filtersHref({ category, year: y }),
+      current: year?.slug === y.slug,
+    })),
+    authors: authors.map((a) => ({
+      label: a.label,
+      count: a.count,
+      href: a.href,
+      current: author?.slug === a.slug,
+      avatar: a.avatar,
+    })),
   };
 }
 
-function matchesFacet(post: Post, facet: Facet): boolean {
-  if (facet.kind === "all") return true;
-  return FACET_VALUES[facet.kind](post).some((value) => value.slug === facet.slug);
-}
-
 /** The unfiltered archive features its newest post on page 1, ahead of a full page of cards. */
-function paginate(facet: Facet, posts: Post[]): BlogListing[] {
-  const matching = posts.filter((post) => matchesFacet(post, facet));
-  const featured = facet.kind === "all" ? matching[0] : undefined;
-  const offset = featured ? 1 : 0;
-  const totalPages = Math.max(1, Math.ceil((matching.length - offset) / POSTS_PER_PAGE));
-  return Array.from({ length: totalPages }, (_, i) => ({
-    facet,
-    posts: matching.slice(offset + i * POSTS_PER_PAGE, offset + (i + 1) * POSTS_PER_PAGE),
-    page: i + 1,
-    totalPages,
-    featured: i === 0 ? featured : undefined,
-  }));
+function paginate(posts: Post[], authors: Facet[], filters: Filters): BlogListing[] {
+  const matching = posts.filter((post) => matches(post, filters));
+  const unfiltered = Object.keys(filters).length === 0;
+  const featured = unfiltered ? matching[0] : undefined;
+  const rest = featured ? matching.slice(1) : matching;
+  const totalPages = Math.max(1, Math.ceil(rest.length / POSTS_PER_PAGE));
+  const shared = {
+    base: filtersHref(filters),
+    heading: heading(filters),
+    intro: intro(filters),
+    count: matching.length,
+    breadcrumbs: breadcrumbs(filters),
+    active: activeFilters(filters),
+    drawer: drawer(posts, authors, filters),
+    noindex: Boolean(filters.category && filters.year),
+  };
+  const meta = description(filters);
+
+  return Array.from({ length: totalPages }, (_, i) => {
+    const page = i + 1;
+    return {
+      ...shared,
+      title: page > 1 ? `${shared.heading}, page ${page} of ${totalPages}` : shared.heading,
+      description: page > 1 ? `${meta}, page ${page} of ${totalPages}.` : `${meta}.`,
+      posts: rest.slice(i * POSTS_PER_PAGE, page * POSTS_PER_PAGE),
+      featured: page === 1 ? featured : undefined,
+      page,
+      totalPages,
+    };
+  });
 }
 
-/** Every blog listing page: the full archive plus each category, author and year, all paginated. */
+/**
+ * Every blog listing page: the full archive, each category, author and year,
+ * and each category in every year it has posts, all paginated.
+ */
 export async function getBlogListings() {
   const posts = await getSortedPosts();
-  const facets = getFacets(posts);
-  const listings = [facets.all, ...facets.categories, ...facets.authors, ...facets.years].flatMap((facet) =>
-    paginate(facet, posts),
-  );
-  return listings.map((listing) => {
-    const path = blogPageHref(listing.page, listing.facet.href).replace(/^\/blog\/|\/$/g, "");
-    return { params: { listing: path || undefined }, props: { listing, facets } };
-  });
+  const categories = buildFacets(posts, "category");
+  const authors = buildFacets(posts, "author");
+  const years = buildFacets(posts, "year");
+  const yearsBySlug = new Map(years.map((year) => [year.slug, year]));
+
+  const combinations: Filters[] = [
+    {},
+    ...categories.map((category) => ({ category })),
+    ...authors.map((author) => ({ author })),
+    ...years.map((year) => ({ year })),
+    ...categories.flatMap((category) =>
+      buildFacets(
+        posts.filter((post) => matches(post, { category })),
+        "year",
+      ).map((year) => ({ category, year: yearsBySlug.get(year.slug) })),
+    ),
+  ];
+
+  return combinations
+    .flatMap((filters) => paginate(posts, authors, filters))
+    .map((listing) => {
+      const path = blogPageHref(listing.page, listing.base).replace(/^\/blog\/|\/$/g, "");
+      return { params: { listing: path || undefined }, props: { listing } };
+    });
 }
 
 export type PaginationNavItem =
