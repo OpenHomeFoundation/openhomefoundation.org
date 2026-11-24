@@ -1,25 +1,48 @@
 ---
 import BlogCard from "./BlogCard.astro";
+import BlogFilterBar from "./BlogFilterBar.astro";
 import Icon from "./Icon.astro";
-import { blogPageHref, buildPaginationNav, type Post } from "../lib/blog";
+import { blogPageHref, buildPaginationNav, type BlogListing } from "../lib/blog";
 
 interface Props {
-  posts: Post[];
-  currentPage: number;
-  totalPages: number;
+  listing: BlogListing;
+  showBreadcrumbs: boolean;
 }
 
-const { posts, currentPage, totalPages } = Astro.props;
-const paginationNav = buildPaginationNav(currentPage, totalPages);
+const { listing, showBreadcrumbs } = Astro.props;
+const { base, heading, intro, breadcrumbs, posts, page: currentPage, totalPages, featured } = listing;
+const paginationLists = [
+  { variant: "wide", items: buildPaginationNav(currentPage, totalPages, base) },
+  { variant: "compact", items: buildPaginationNav(currentPage, totalPages, base, true) },
+];
 ---
 
 <div class="bg-gradient-blog">
-  <section id="news-header">
+  <section id="news-header" class:list={["blog-listing-header", { "has-intro": intro }]}>
     <div class="container">
       <div class="grid">
         <div class="column col-s-12 col-m-10 col-m-offset-2">
-          <h1 class="text-center mb-48">Blog</h1>
-          <p class="text-center">News and updates from the Open Home Foundation</p>
+          {
+            showBreadcrumbs && (
+              <nav class="blog-breadcrumbs" aria-label="Breadcrumb">
+                <ol>
+                  <li>
+                    <a href="/">Home</a>
+                  </li>
+                  {breadcrumbs.map((crumb) => (
+                    <li>
+                      <svg viewBox="0 0 8 10" width="8" height="10" aria-hidden="true">
+                        <path d="M0 0l8 5-8 5z" fill="currentColor" />
+                      </svg>
+                      <a href={crumb.href}>{crumb.name}</a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
+          <h1 class="text-center">{heading}</h1>
+          {intro && <p class="text-center">{intro}</p>}
         </div>
       </div>
     </div>
@@ -28,6 +51,8 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
 <div class="bg-primary">
   <section id="blog-list">
     <div class="container">
+      <BlogFilterBar listing={listing} />
+      {featured && <BlogCard post={featured} featured />}
       <div class="grid">
         {
           posts.map((post) => (
@@ -42,7 +67,7 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
           <nav class="pagination" aria-label="Blog pagination">
             {currentPage > 1 ? (
               <a
-                href={blogPageHref(currentPage - 1)}
+                href={blogPageHref(currentPage - 1, base)}
                 class="pagination-arrow pagination-arrow-prev"
                 aria-label="Previous page"
               >
@@ -54,26 +79,30 @@ const paginationNav = buildPaginationNav(currentPage, totalPages);
               </span>
             )}
 
-            <ul class="pagination-list">
-              {paginationNav.map((item) => (
-                <li>
-                  {item.ellipsis ? (
-                    <span class="pagination-ellipsis">&hellip;</span>
-                  ) : (
-                    <a
-                      href={item.href}
-                      class:list={["pagination-number", { "is-current": item.current }]}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.number}
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {paginationLists.map(({ variant, items }) => (
+              <ul class={`pagination-list pagination-list-${variant}`}>
+                {items.map((item) => (
+                  <li>
+                    {item.ellipsis ? (
+                      <span class="pagination-ellipsis" aria-hidden="true">
+                        &hellip;
+                      </span>
+                    ) : (
+                      <a
+                        href={item.href}
+                        class:list={["pagination-number", { "is-current": item.current }]}
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        {item.number}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ))}
 
             {currentPage < totalPages ? (
-              <a href={blogPageHref(currentPage + 1)} class="pagination-arrow pagination-arrow-next" aria-label="Next page">
+              <a href={blogPageHref(currentPage + 1, base)} class="pagination-arrow pagination-arrow-next" aria-label="Next page">
                 <Icon name="arrow" />
               </a>
             ) : (

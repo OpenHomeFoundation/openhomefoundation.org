@@ -11,6 +11,8 @@ interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  /** With noindex: let crawlers follow the page's links ("noindex, follow"). */
+  follow?: boolean;
   /** Leaves out the site header and footer. */
   bare?: boolean;
   /** Crossposts: canonicalises to the source article. */
@@ -29,6 +31,7 @@ const {
   title,
   description,
   noindex,
+  follow,
   bare,
   externalUrl,
   ogImage,
@@ -55,7 +58,7 @@ const ogImageUrl = og.includes("://") ? og : `${SITE_URL}${og}`;
     <title>{fullTitle}</title>
     <meta name="description" content={fullDescription} />
     <meta name="viewport" content="width=device-width" />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex && <meta name="robots" content={follow ? "noindex, follow" : "noindex"} />}
     {!noindex && <link rel="canonical" href={pageUrl} />}
     {/* Send the full crosspost URL (path included) as the referrer to the source, not just the origin. */}
     {externalUrl && <meta name="referrer" content="no-referrer-when-downgrade" />}

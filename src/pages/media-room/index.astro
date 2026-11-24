@@ -152,7 +152,7 @@ const recentPosts = (await getSortedPosts()).slice(0, 3);
           {
             recentPosts.map((post) => (
               <div class="col-s-12 col-m-6 col-l-4">
-                <BlogCard post={post} badge={false} />
+                <BlogCard post={post} badge={false} headingLevel={3} />
               </div>
             ))
           }

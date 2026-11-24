@@ -49,14 +49,16 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;
-        // Media room sub-pages are press resources and carry noindex, as does
-        // the device database data use statement and the link-in-bio page.
+        // Media room sub-pages are press resources and carry noindex, as do
+        // the device database data use statement, the link-in-bio page and
+        // the blog's category-by-year listings.
         // Keep them out of the sitemap.
         if (path.startsWith("/media-room/") && path !== "/media-room/")
           return false;
         if (path === "/device-database-data-use-statement/") return false;
         if (path === "/bio/") return false;
         if (crosspostPaths.has(path)) return false;
+        if (/^\/blog\/category\/[^/]+\/\d{4}\//.test(path)) return false;
         return true;
       },
       serialize: (item) => {

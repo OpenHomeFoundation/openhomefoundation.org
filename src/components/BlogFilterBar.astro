@@ -1,0 +1,552 @@
+---
+import type { BlogListing, DrawerItem } from "../lib/blog";
+
+interface Props {
+  listing: BlogListing;
+}
+
+const { listing } = Astro.props;
+const { active, count, drawer } = listing;
+const ariaCurrent = (item: DrawerItem) => (item.current ? "page" : undefined);
+---
+
+<div class="blog-toolbar">
+  <div class="blog-active-filters">
+    {
+      active.length === 0 ? (
+        <span class="blog-chip">
+          All posts <span class="count">{count}</span>
+        </span>
+      ) : (
+        <>
+          {active.map((filter) => (
+            <a class="blog-chip" href={filter.removeHref} aria-label={`Remove filter ${filter.prefix}: ${filter.label}`}>
+              <span>
+                <span class="prefix">{filter.prefix}:</span> {filter.label}
+              </span>
+              <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+              </svg>
+            </a>
+          ))}
+          <span class="blog-result-count">
+            {count} {count === 1 ? "post" : "posts"}
+          </span>
+          {active.length > 1 && (
+            <a class="blog-clear-filters" href="/blog/">
+              Clear filters
+            </a>
+          )}
+        </>
+      )
+    }
+  </div>
+  <div class="blog-actions">
+    <button type="button" class="blog-filters-button" commandfor="blog-filters" command="show-modal">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="M4 6h16M7 12h10M10 18h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        ></path>
+      </svg>
+      Filters
+    </button>
+    <a class="blog-feed" href="/blog/feed.xml">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path
+          d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"></path>
+        <circle cx="5" cy="19" r="1.5" fill="currentColor"></circle>
+      </svg>
+      <span>RSS</span>
+    </a>
+  </div>
+</div>
+
+<dialog id="blog-filters" class="blog-filters-drawer" closedby="any" aria-labelledby="blog-filters-title">
+  <header class="drawer-header">
+    <h2 id="blog-filters-title">Filter posts</h2>
+    <button type="button" class="drawer-close" commandfor="blog-filters" command="close" aria-label="Close filters">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+    </button>
+  </header>
+  <div class="drawer-body">
+    <section>
+      <h3>Category</h3>
+      <ul>
+        {
+          [drawer.allCategories, ...drawer.topCategories].map((item) => (
+            <li>
+              <a href={item.href} aria-current={ariaCurrent(item)}>
+                <span class="label">{item.label}</span>
+                <span class="count">{item.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        drawer.moreCategories.length > 0 && (
+          <details class="drawer-more" open={drawer.moreOpen}>
+            <summary>More categories</summary>
+            <ul>
+              {drawer.moreCategories.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={ariaCurrent(item)}>
+                    <span class="label">{item.label}</span>
+                    <span class="count">{item.count}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )
+      }
+    </section>
+    <section>
+      <h3>Year</h3>
+      <ul class="drawer-years">
+        {
+          [drawer.allYears, ...drawer.years].map((item) => (
+            <li>
+              <a href={item.href} aria-current={ariaCurrent(item)}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+    <section>
+      <h3>Author</h3>
+      <ul>
+        {
+          drawer.authors.map((item) => (
+            <li>
+              <a href={item.href} aria-current={ariaCurrent(item)}>
+                {item.avatar ? (
+                  <img src={item.avatar} alt="" width="24" height="24" loading="lazy" />
+                ) : (
+                  <span class="avatar-placeholder" aria-hidden="true" />
+                )}
+                <span class="label">{item.label}</span>
+                <span class="count">{item.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+  <footer class="drawer-footer">
+    {active.length > 0 ? <a href="/blog/">Clear filters</a> : <span></span>}
+    <button type="button" class="drawer-done" commandfor="blog-filters" command="close">Done</button>
+  </footer>
+</dialog>
+
+<script>
+  if (!("commandForElement" in HTMLButtonElement.prototype)) {
+    document.addEventListener("click", (event) => {
+      const button = (event.target as Element | null)?.closest<HTMLButtonElement>("button[commandfor]");
+      if (!button) return;
+      const dialog = document.getElementById(button.getAttribute("commandfor") ?? "");
+      if (!(dialog instanceof HTMLDialogElement)) return;
+      const command = button.getAttribute("command");
+      if (command === "show-modal") dialog.showModal();
+      else if (command === "close") dialog.close();
+    });
+  }
+
+  if (!("closedBy" in HTMLDialogElement.prototype)) {
+    const dialog = document.getElementById("blog-filters") as HTMLDialogElement | null;
+    dialog?.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      const inside =
+        rect.top <= event.clientY &&
+        event.clientY <= rect.bottom &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.right;
+      if (!inside) dialog.close();
+    });
+  }
+</script>
+
+<style>
+  .blog-toolbar {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .blog-active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    min-width: 0;
+  }
+
+  .blog-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--dark-blue-color);
+    color: var(--white-color);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .blog-chip .prefix,
+  .blog-chip .count {
+    color: var(--grey-color);
+  }
+
+  .blog-chip .count {
+    font-size: 12px;
+  }
+
+  .blog-chip svg {
+    flex-shrink: 0;
+  }
+
+  a.blog-chip:focus-visible {
+    outline: 2px solid var(--dark-blue-color);
+    outline-offset: 2px;
+  }
+
+  .blog-result-count {
+    color: var(--secondary-text-color);
+    font-size: 14px;
+  }
+
+  .blog-clear-filters {
+    color: var(--primary-text-color);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .blog-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 8px;
+    margin-inline-start: auto;
+  }
+
+  .blog-filters-button,
+  .blog-feed {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--light-grey-color);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--primary-text-color);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+
+  @media (hover: hover) {
+    a.blog-chip:hover {
+      background: var(--dark-grey-color);
+    }
+
+    .blog-filters-button:hover,
+    .blog-feed:hover {
+      border-color: var(--primary-color);
+    }
+
+    .drawer-close:hover {
+      background: var(--light-grey-color);
+    }
+
+    .drawer-body a:not([aria-current="page"]):hover,
+    .drawer-more summary:hover {
+      background: var(--light-grey-color);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .blog-toolbar {
+      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+      align-items: stretch;
+    }
+
+    .blog-actions {
+      margin-inline-start: 0;
+    }
+
+    .blog-filters-button {
+      flex-grow: 1;
+      justify-content: center;
+    }
+
+    .blog-feed span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  :global(html:has(#blog-filters[open])) {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+  }
+
+  .blog-filters-drawer {
+    width: min(384px, 100vw);
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0 0 0 auto;
+    padding: 0;
+    border: 0;
+    background: var(--primary-background-color);
+    color: var(--primary-text-color);
+    overscroll-behavior: contain;
+    box-shadow: 0 8px 24px rgba(9, 41, 59, 0.12);
+    opacity: 0;
+    transition-property: opacity, transform, display, overlay;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+    transition-behavior: allow-discrete;
+  }
+
+  .blog-filters-drawer[open] {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  .blog-filters-drawer::backdrop {
+    background-color: rgb(9 41 59 / 0);
+    transition-property: background-color, display, overlay;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out;
+    transition-behavior: allow-discrete;
+  }
+
+  .blog-filters-drawer[open]::backdrop {
+    background-color: rgb(9 41 59 / 0.5);
+
+    @starting-style {
+      background-color: rgb(9 41 59 / 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .blog-filters-drawer {
+      transform: translateX(100%);
+    }
+
+    .blog-filters-drawer[open] {
+      transform: none;
+
+      @starting-style {
+        transform: translateX(100%);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-filters-drawer,
+    .blog-filters-drawer::backdrop {
+      transition-duration: 0.1s;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .blog-filters-drawer {
+      width: 100vw;
+      height: auto;
+      max-height: 85dvh;
+      margin: auto 0 0;
+      border-radius: 16px 16px 0 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .blog-filters-drawer {
+        transform: translateY(100%);
+      }
+
+      .blog-filters-drawer[open] {
+        transform: none;
+
+        @starting-style {
+          transform: translateY(100%);
+        }
+      }
+    }
+  }
+
+  .drawer-header,
+  .drawer-footer {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+  }
+
+  .drawer-header {
+    border-bottom: 1px solid var(--light-grey-color);
+  }
+
+  .drawer-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .drawer-close {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--primary-text-color);
+    cursor: pointer;
+  }
+
+  .drawer-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 8px 16px 24px;
+  }
+
+  .drawer-body section + section {
+    margin-top: 16px;
+  }
+
+  .drawer-body h3 {
+    margin: 16px 8px 8px;
+    color: var(--grey-color);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .drawer-body ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .drawer-body a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    color: var(--secondary-text-color);
+    font-size: 15px;
+    text-decoration: none;
+  }
+
+  .drawer-body a[aria-current="page"] {
+    background: var(--primary-color);
+    color: var(--on-primary-color);
+    font-weight: 500;
+  }
+
+  .drawer-body img,
+  .drawer-body .avatar-placeholder {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--light-grey-color);
+  }
+
+  .drawer-more summary {
+    padding: 10px 8px;
+    border-radius: 8px;
+    color: var(--primary-text-color);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .drawer-more ul {
+    margin-top: 4px;
+  }
+
+  .drawer-body .drawer-years {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-inline: 8px;
+  }
+
+  .drawer-years a {
+    padding: 4px 14px;
+    border: 1px solid var(--light-grey-color);
+    border-radius: 999px;
+  }
+
+  .drawer-years a[aria-current="page"] {
+    border-color: var(--primary-color);
+  }
+
+  .drawer-body .label {
+    flex-grow: 1;
+  }
+
+  .drawer-body .count {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  .drawer-footer {
+    border-top: 1px solid var(--light-grey-color);
+  }
+
+  .drawer-footer a {
+    color: var(--primary-text-color);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .drawer-done {
+    padding: 10px 24px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--primary-color);
+    color: var(--on-primary-color);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+</style>
