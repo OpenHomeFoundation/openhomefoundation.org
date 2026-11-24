@@ -376,17 +376,20 @@ export type PaginationNavItem =
   | { ellipsis?: false; number: number; href: string; current: boolean };
 
 /**
- * Builds a windowed page list for the pagination nav: first two pages,
- * last two pages, and the pages immediately around the current one,
- * with ellipsis markers standing in for the "..." gaps between them.
+ * The page numbers to link, with ellipsis markers for the gaps: the first
+ * and last two pages and those next to the current one, or, `compact` for
+ * phones, only the first, current and last pages.
  */
-export function buildPaginationNav(currentPage: number, totalPages: number, base = "/blog/"): PaginationNavItem[] {
-  const pageNumbers = new Set(
-    [1, 2, currentPage - 1, currentPage, currentPage + 1, totalPages - 1, totalPages].filter(
-      (page) => page >= 1 && page <= totalPages,
-    ),
-  );
-  const sortedPages = [...pageNumbers].sort((a, b) => a - b);
+export function buildPaginationNav(
+  currentPage: number,
+  totalPages: number,
+  base = "/blog/",
+  compact = false,
+): PaginationNavItem[] {
+  const candidates = compact
+    ? [1, currentPage, totalPages]
+    : [1, 2, currentPage - 1, currentPage, currentPage + 1, totalPages - 1, totalPages];
+  const sortedPages = [...new Set(candidates.filter((page) => page >= 1 && page <= totalPages))].sort((a, b) => a - b);
 
   const nav: PaginationNavItem[] = [];
   let previousPage: number | null = null;

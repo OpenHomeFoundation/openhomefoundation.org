@@ -11,7 +11,10 @@ interface Props {
 
 const { listing, showBreadcrumbs } = Astro.props;
 const { base, heading, intro, breadcrumbs, posts, page: currentPage, totalPages, featured } = listing;
-const paginationNav = buildPaginationNav(currentPage, totalPages, base);
+const paginationLists = [
+  { variant: "wide", items: buildPaginationNav(currentPage, totalPages, base) },
+  { variant: "compact", items: buildPaginationNav(currentPage, totalPages, base, true) },
+];
 ---
 
 <div class="bg-gradient-blog">
@@ -76,23 +79,27 @@ const paginationNav = buildPaginationNav(currentPage, totalPages, base);
               </span>
             )}
 
-            <ul class="pagination-list">
-              {paginationNav.map((item) => (
-                <li>
-                  {item.ellipsis ? (
-                    <span class="pagination-ellipsis">&hellip;</span>
-                  ) : (
-                    <a
-                      href={item.href}
-                      class:list={["pagination-number", { "is-current": item.current }]}
-                      aria-current={item.current ? "page" : undefined}
-                    >
-                      {item.number}
-                    </a>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {paginationLists.map(({ variant, items }) => (
+              <ul class={`pagination-list pagination-list-${variant}`}>
+                {items.map((item) => (
+                  <li>
+                    {item.ellipsis ? (
+                      <span class="pagination-ellipsis" aria-hidden="true">
+                        &hellip;
+                      </span>
+                    ) : (
+                      <a
+                        href={item.href}
+                        class:list={["pagination-number", { "is-current": item.current }]}
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        {item.number}
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ))}
 
             {currentPage < totalPages ? (
               <a href={blogPageHref(currentPage + 1, base)} class="pagination-arrow pagination-arrow-next" aria-label="Next page">

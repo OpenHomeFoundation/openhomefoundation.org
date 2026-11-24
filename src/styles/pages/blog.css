@@ -584,6 +584,20 @@
   padding: 0;
 }
 
+.pagination-list-compact {
+  display: none;
+}
+
+@media (max-width: 479px) {
+  .pagination-list-wide {
+    display: none;
+  }
+
+  .pagination-list-compact {
+    display: flex;
+  }
+}
+
 .pagination-number,
 .pagination-ellipsis {
   display: flex;
