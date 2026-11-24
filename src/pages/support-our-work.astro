@@ -1,0 +1,152 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+
+const homeAssistantHardware = [
+  {
+    name: "Home Assistant Connect AUX-2",
+    description:
+      "Bring your classic audio equipment into your smart home with advanced control and Power over Ethernet.",
+    href: "https://www.home-assistant.io/connect/aux-2/",
+    image: "/assets/images/support-our-work/connect-aux-2.webp",
+  },
+  {
+    name: "Home Assistant Green",
+    description:
+      "The easy-to-use, versatile, and trustworthy smart home hub for everyone.",
+    href: "https://www.home-assistant.io/green/",
+    image: "/assets/images/support-our-work/green.png",
+  },
+  {
+    name: "Home Assistant Connect ZBT-2",
+    description:
+      "The easiest way to start with Zigbee or Thread is now even better.",
+    href: "https://www.home-assistant.io/connect/zbt-2/",
+    image: "/assets/images/support-our-work/connect-zbt-2.jpg",
+  },
+  {
+    name: "Home Assistant Connect ZWA-2",
+    description: "The ultimate way to connect Z-Wave devices to Home Assistant.",
+    href: "https://www.home-assistant.io/connect/zwa-2/",
+    image: "/assets/images/support-our-work/connect-zwa-2.jpg",
+  },
+  {
+    name: "Home Assistant Voice Preview Edition",
+    description:
+      "Bring choice to voice - the best way to get started with voice.",
+    href: "https://www.home-assistant.io/voice-pe/",
+    image: "/assets/images/support-our-work/voice-pe.jpg",
+  },
+];
+
+const esphomeHardware = [
+  {
+    name: "ESPHome Starter Kit",
+    description:
+      "The ESPHome Starter Kit is the easiest path to building your own smart home devices, with no soldering or coding experience needed.",
+    href: "https://apolloautomation.com/products/esk-1-esphome-starter-kit",
+    image: "/assets/images/support-our-work/esphome-starter-kit.jpg",
+  },
+];
+
+const sections = [
+  { id: "home-assistant-hardware", title: "Home Assistant hardware", items: homeAssistantHardware },
+  { id: "esphome-hardware", title: "ESPHome hardware", items: esphomeHardware },
+];
+---
+
+<Base
+  title="Support our work"
+  description="Subscribe to Home Assistant Cloud or buy official Home Assistant and ESPHome hardware to help fund the people working on Open Home Foundation projects."
+>
+  <div class="bg-gradient-agreement-header">
+    <section id="support-our-work-page">
+      <div class="container">
+        <div class="poly"><Icon name="poly/poly-thin" /></div>
+        <div class="grid">
+          <div class="content col-s-12 col-m-8 col-m-offset-3">
+            <h1 class="text-center mb-24">Support our work</h1>
+            <p class="text-center mb-24 subtitle">
+              If you’re building your smart home, subscribing to <a
+                href="https://www.home-assistant.io/cloud/"
+                target="_blank"
+                rel="noopener noreferrer"><strong>Home Assistant Cloud</strong></a
+              > or buying official Home Assistant or ESPHome products from our <a
+                href="/supporters/"><strong>commercial partners</strong></a
+              > is a great start. This helps fund the partner fees that pay the
+              salaries of people working on <strong>Open Home Foundation</strong> projects and collaborations.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid mt-64">
+          <div class="col-s-12 col-m-10 col-m-offset-2">
+            <div class="cloud-card" id="home-assistant-cloud">
+              <h2 class="mb-24">Home Assistant Cloud</h2>
+              <p class="mb-24">
+                Home Assistant Cloud is an optional subscription service provided
+                by our partner <a
+                  href="https://www.nabucasa.com"
+                  target="_blank"
+                  rel="noopener noreferrer">Nabu Casa</a
+                >. It adds secure remote access to your Home Assistant from
+                anywhere, integrations with Google Assistant and Amazon Alexa,
+                and the text-to-speech and speech-to-text engines used by <a
+                  href="https://www.home-assistant.io/voice_control/"
+                  target="_blank"
+                  rel="noopener noreferrer">Assist</a
+                >. Subscriptions also help fund the development of Home Assistant
+                itself.
+              </p>
+              <p class="mb-24">
+                For full details on features, pricing, and setup instructions,
+                see the <a
+                  href="https://www.nabucasa.com"
+                  target="_blank"
+                  rel="noopener noreferrer">Nabu Casa website</a
+                >.
+              </p>
+              <a
+                href="https://www.nabucasa.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="button">Get Home Assistant Cloud</a
+              >
+            </div>
+          </div>
+        </div>
+
+        {
+          sections.map((section) => (
+            <>
+              <h2 id={section.id} class="text-center mt-64 mb-32 d-block">
+                {section.title}
+              </h2>
+              <div class="grid mb-64 product-grid">
+                {section.items.map((item) => (
+                  <div class="col-s-12 col-m-6 col-l-4">
+                    <a
+                      class="product-card"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={item.href}
+                    >
+                      <div class="product-image">
+                        <img src={item.image} alt="" loading="lazy" />
+                      </div>
+                      <div class="product-body">
+                        <Icon name="arrow_outward" />
+                        <h3>{item.name}</h3>
+                        <p>{item.description}</p>
+                      </div>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>
