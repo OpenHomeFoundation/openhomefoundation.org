@@ -50,16 +50,13 @@ const related = await getRelated(project.id);
 const hasMethod = method && (method.facts.length > 0 || method.limitations);
 const hasOverview = Boolean(project.body?.trim());
 
+const hasMaterials = Boolean(primary || materials.length);
+
 const contents = [
-  citation && { href: "#cite", label: "Cite this project" },
-  outputs.length && { href: "#outputs", label: "Output & findings" },
-  (primary || materials.length) && {
-    href: "#materials",
-    label: "Materials & tools",
-  },
-  hasOverview && { href: "#overview", label: "Overview" },
-  findings.length && { href: "#findings", label: "Key findings" },
-  hasMethod && { href: "#method", label: "Method & limitations" },
+  (hasOverview || findings.length) && { href: "#overview", label: "Overview" },
+  outputs.length && { href: "#outputs", label: "What we found and shared" },
+  hasMaterials && { href: "#materials", label: "Materials and tools" },
+  hasMethod && { href: "#method", label: "Method and limitations" },
   related.length && { href: "#related", label: "Related projects" },
 ].filter((c): c is { href: string; label: string } => Boolean(c));
 
@@ -98,37 +95,26 @@ const jsonLd = [
             <p class="research-lede mb-32">{standfirst ?? summary}</p>
             <div class="project-hero-actions">
               {
-                primary && (
-                  <a href="#materials" class="button button-dark-blue">
-                    Get the data
-                  </a>
-                )
-              }
-              {
-                outputs.length > 0 && (
-                  <a href="#outputs" class="button button-outline">
-                    Output & findings
-                  </a>
+                citation && (
+                  <button type="button" class="button button-outline" data-open-cite aria-haspopup="dialog">
+                    Cite this project
+                  </button>
                 )
               }
             </div>
           </div>
           <div class="col-s-12 col-l-5">
-            {
-              citation ? (
-                <CitationCard apa={citation.apa} bibtex={citation.bibtex} doi={doi} />
-              ) : (
-                <div class="project-hero-image">
-                  {image ? (
-                    <img src={image} alt="" />
-                  ) : (
-                    <span class="project-card-placeholder" aria-hidden="true">
-                      <Icon name="foundation" />
-                    </span>
-                  )}
-                </div>
-              )
-            }
+            <div class="project-hero-image">
+              {
+                image ? (
+                  <img src={image} alt="" />
+                ) : (
+                  <span class="project-card-placeholder" aria-hidden="true">
+                    <Icon name="foundation" />
+                  </span>
+                )
+              }
+            </div>
           </div>
         </div>
         <dl class="project-facts">
@@ -154,70 +140,10 @@ const jsonLd = [
   </div>
 
   {
-    (outputs.length > 0 || primary || materials.length > 0) && (
-      <section class="research-section project-outputs">
-        <div class="container">
-          <div class="project-output-cards">
-            {outputs.length > 0 && (
-              <div class="project-output-card" id="outputs">
-                <p class="research-eyebrow">What we found and shared</p>
-                <h2>Output & findings</h2>
-                <p class="research-intro">Blog posts, papers, talks and posters from this project.</p>
-                <ul class="publication-list">
-                  {outputs.map((o) => (
-                    <PublicationRow variant="ours" compact {...o} links={outputActions(o)} />
-                  ))}
-                </ul>
-              </div>
-            )}
-            {(primary || materials.length > 0) && (
-              <div class="project-output-card" id="materials">
-                <p class="research-eyebrow">Reuse it in your own research</p>
-                <h2>Materials & tools</h2>
-                <p class="research-intro">Everything you need to reuse, reproduce or extend this research.</p>
-                {primary && (
-                  <div class="primary-dataset">
-                    <div class="project-hero-badges">
-                      <Badge tone="dark">Dataset</Badge>
-                      {primary.host && <Badge>{primary.host}</Badge>}
-                    </div>
-                    <h3>{primary.title}</h3>
-                    {primary.description && <p>{primary.description}</p>}
-                    {primary.links[0] && (
-                      <ResearchLink
-                        href={primary.links[0].url}
-                        broken={primary.links[0].broken}
-                        class="button button-dark-blue"
-                      >
-                        Get the dataset
-                      </ResearchLink>
-                    )}
-                  </div>
-                )}
-                <ul class="material-list">
-                  {materials.map((m) => (
-                    <li>
-                      <div>
-                        <h3>
-                          {m.links[0] && !(m.links[0].broken && import.meta.env.PROD) ? (
-                            <ResearchLink href={m.links[0].url} broken={m.links[0].broken} arrow={false}>
-                              {m.title}
-                            </ResearchLink>
-                          ) : (
-                            m.title
-                          )}
-                        </h3>
-                        {m.description && <p>{m.description}</p>}
-                      </div>
-                      <Badge>{m.host ?? TYPE_LABELS[m.type][0]}</Badge>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+    citation && (
+      <dialog id="cite-dialog" class="citation-dialog" closedby="any" aria-labelledby="cite-title">
+        <CitationCard apa={citation.apa} bibtex={citation.bibtex} doi={doi} />
+      </dialog>
     )
   }
 
@@ -258,18 +184,14 @@ const jsonLd = [
         </aside>
         <div class="col-s-12 col-l-9 project-main">
           {
-            hasOverview && (
-              <section id="overview" class="project-prose">
+            (hasOverview || findings.length > 0) && (
+              <section id="overview">
                 <h2>Overview</h2>
-                <Content />
-              </section>
-            )
-          }
-
-          {
-            findings.length > 0 && (
-              <section id="findings">
-                <h2>Key findings</h2>
+                {hasOverview && (
+                  <div class="project-prose">
+                    <Content />
+                  </div>
+                )}
                 {glance.length > 0 && (
                   <ul class="glance">
                     {glance.map((g) => (
@@ -305,9 +227,71 @@ const jsonLd = [
           }
 
           {
+            outputs.length > 0 && (
+              <section id="outputs" class="project-output-card">
+                <h2>What we found and shared</h2>
+                <p class="research-intro">Blog posts, scientific papers, talks, and posters from this project.</p>
+                <ul class="publication-list">
+                  {outputs.map((o) => (
+                    <PublicationRow variant="ours" compact {...o} links={outputActions(o)} />
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
+            hasMaterials && (
+              <section id="materials" class="project-output-card">
+                <p class="research-eyebrow">Reuse it in your own research</p>
+                <h2>Materials and tools</h2>
+                <p class="research-intro">Everything you need to reuse, reproduce, or extend this research.</p>
+                {primary && (
+                  <div class="primary-dataset">
+                    <div class="project-hero-badges">
+                      <Badge tone="dark">Dataset</Badge>
+                      {primary.host && <Badge>{primary.host}</Badge>}
+                    </div>
+                    <h3>{primary.title}</h3>
+                    {primary.description && <p>{primary.description}</p>}
+                    {primary.links[0] && (
+                      <ResearchLink
+                        href={primary.links[0].url}
+                        broken={primary.links[0].broken}
+                        class="button button-dark-blue"
+                      >
+                        Get the dataset
+                      </ResearchLink>
+                    )}
+                  </div>
+                )}
+                <ul class="material-list">
+                  {materials.map((m) => (
+                    <li>
+                      <div>
+                        <h3>
+                          {m.links[0] && !(m.links[0].broken && import.meta.env.PROD) ? (
+                            <ResearchLink href={m.links[0].url} broken={m.links[0].broken} arrow={false}>
+                              {m.title}
+                            </ResearchLink>
+                          ) : (
+                            m.title
+                          )}
+                        </h3>
+                        {m.description && <p>{m.description}</p>}
+                      </div>
+                      <Badge>{m.host ?? TYPE_LABELS[m.type][0]}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )
+          }
+
+          {
             hasMethod && (
               <section id="method">
-                <h2>Method & limitations</h2>
+                <h2>Method and limitations</h2>
                 {method.facts.length > 0 && (
                   <dl class="method-facts">
                     {method.facts.map((fact) => (
@@ -351,4 +335,5 @@ const jsonLd = [
 <script>
   import "../../../scripts/research-scrollspy.js";
   import "../../../scripts/research-figures.js";
+  import "../../../scripts/citation-dialog.js";
 </script>

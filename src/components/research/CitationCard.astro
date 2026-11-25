@@ -10,11 +10,12 @@ const { apa, bibtex, doi } = Astro.props;
 
 <div class="citation-card" id="cite" data-citation>
   <div class="citation-card-header">
-    <h2>Cite this project</h2>
+    <h2 id="cite-title">Cite this project</h2>
     <div class="citation-toggle" role="group" aria-label="Citation format" hidden>
       <button type="button" data-format="apa" aria-pressed="true">APA</button>
       <button type="button" data-format="bibtex" aria-pressed="false">BibTeX</button>
     </div>
+    <button type="button" class="citation-close" data-close-cite aria-label="Close">×</button>
   </div>
   <p class="citation-format-label" data-label="apa">APA</p>
   <pre data-format="apa">{apa}</pre>

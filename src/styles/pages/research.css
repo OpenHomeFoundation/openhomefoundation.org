@@ -1312,6 +1312,48 @@ a.project-card:focus-visible {
   padding: 10px 20px;
 }
 
+.citation-close {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--light-grey-color);
+  color: var(--primary-text-color);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.citation-close:focus-visible {
+  outline: 2px solid var(--light-blue-color);
+  outline-offset: 2px;
+}
+
+.citation-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(640px, calc(100vw - 32px));
+  height: fit-content;
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+}
+
+.citation-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+.citation-dialog::backdrop {
+  background: rgba(9, 41, 59, 0.5);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
 .project-facts {
   display: grid;
   gap: 24px;
@@ -1341,22 +1383,6 @@ a.project-card:focus-visible {
   font-weight: 500;
 }
 
-.project-outputs {
-  padding-bottom: 32px;
-}
-
-.project-output-cards {
-  display: grid;
-  gap: 24px;
-  align-items: start;
-}
-
-@media (min-width: 992px) {
-  .project-output-cards {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
 .project-output-card {
   padding: 32px;
   border-radius: 16px;
@@ -1364,7 +1390,7 @@ a.project-card:focus-visible {
   scroll-margin-top: 120px;
 }
 
-.project-output-card h2 {
+.project-main .project-output-card h2 {
   font-size: 32px;
   margin-bottom: 8px;
 }
@@ -1417,6 +1443,12 @@ a.project-card:focus-visible {
   font-weight: 600;
   line-height: 1.35;
   margin-bottom: 2px;
+}
+
+.project-output-card .publication-list > li:last-child,
+.material-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .material-list p {
@@ -1622,9 +1654,15 @@ a.project-card:focus-visible {
   margin-bottom: 24px;
 }
 
-.project-main p {
+.project-main > section:not(.project-output-card) > p,
+.project-prose p,
+.finding > p {
   font-size: 18px;
   line-height: 1.6;
+}
+
+.project-prose {
+  margin-bottom: 48px;
 }
 
 .project-prose p + p {
@@ -1900,13 +1938,14 @@ a.project-card:focus-visible {
 
 .figure-stats-value {
   display: block;
-  font-size: 28px;
+  font-size: 40px;
   font-weight: 600;
+  line-height: 1.15;
 }
 
 .figure-stats-label {
   display: block;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--secondary-text-color);
 }
 
@@ -2000,7 +2039,6 @@ a.project-card:focus-visible {
 }
 
 .involve-cards > *,
-.project-output-cards > *,
 .submit-card > * {
   min-width: 0;
 }
