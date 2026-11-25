@@ -1,6 +1,6 @@
 ---
 title: "Community Survey 2024"
-summary: "Our first survey of the Home Assistant community: 8,616 people told us how they set up and live with their smart homes. The anonymized results, questions and analysis scripts are all openly available."
+summary: "Our first survey of the Home Assistant community: 8,616 people told us how they set up and live with their smart homes. The anonymized results, questions, and analysis scripts are all openly available."
 standfirst: "Who actually lives in a smart home? We asked the Home Assistant community, and 8,616 people answered. Here's what we learned, and everything you need to explore the data yourself."
 status: completed
 period: "2024–2026"
@@ -20,7 +20,7 @@ method:
     - { label: "Platform", value: "Online (Typeform)" }
     - { label: "Language", value: "English only" }
     - { label: "Removed for privacy", value: "About 12% of responses" }
-  limitations: "The survey ran long (over 40 minutes on average, against about 20 in testing) and was English-only, so respondents represent a committed core of Home Assistant users rather than everyone. Responses from people who dropped out aren't captured. We're addressing length and language in the next survey."
+  limitations: "The survey ran long (over 40 minutes on average, against about 20 minutes in testing) and was English-only, so respondents represent a committed core of Home Assistant users rather than everyone. Responses from people who dropped out aren't captured. We're addressing length and language in the next survey."
 citation:
   apa: "Schulz, A., & Bostan, I. (2026). Home Assistant Community Survey 2024 [Data set]. Open Home Foundation. https://doi.org/10.5281/zenodo.21825688"
   bibtex: |
@@ -38,8 +38,8 @@ related: []
 Our goal was simple: to make Home Assistant more inclusive and approachable by
 listening directly to the people who use it. The survey asked how people got
 started, how they set up their homes, who they live with, and what privacy,
-choice and sustainability mean to them.
+choice, and sustainability mean to them.
 
 After a strict anonymization process, we published the results as an open
 dataset on Zenodo, so anyone can check our conclusions or build on them, along
-with the full question list, methodology and analysis scripts.
+with the full question list, methodology, and analysis scripts.

@@ -5,7 +5,7 @@ standfirst: "Can someone who has never built a dashboard make one in Home Assist
 status: in-progress
 period: "2026"
 date: 2026-06-30
-team: [annika-schulz]
+team: [annika-schulz, laura-palombi]
 facts:
   - { label: "Participants", value: "8 first-time dashboard builders" }
   - { label: "Method", value: "Moderated usability tests" }
@@ -16,8 +16,8 @@ method:
     - { label: "Who", value: "Not the main Home Assistant admin at home" }
     - { label: "Format", value: "Screen sharing, thinking aloud" }
     - { label: "Pilots", value: "2, one kept in the results" }
-  limitations: "Eight participants, all in the EU, is enough to find the biggest problems but not to say exactly how common they are. The researcher stepped in with hints when people got stuck, so without help some participants might have given up. The two behaviour patterns we saw (explorers and achievers) are tendencies from a small group, not validated profiles."
-notes: "Doc says the study is still running; the wiki has findings synthesized in June 2026. Confirm status and whether to credit Laura (researcher)."
+  limitations: "Having eight participants, all in the EU, allowed us to find some of the biggest problems with the Dashboard Creator, but couldn't point to how commonly those issues occurred. In addition, the researcher stepped in with hints when people got stuck, so without help some participants might have given up. Lastly, the two behaviour patterns we saw (explorers and achievers) are tendencies from a small group, not validated profiles."
+notes: "Doc says the study is still running; the wiki has findings synthesized in June 2026. Confirm status."
 ---
 
 We ran moderated usability tests with eight people who use a

@@ -1,6 +1,6 @@
 # Outputs and materials of OHF research projects.
-# kind: output   -> "Output & findings" on the project page
-# kind: material -> "Materials & tools" on the project page
+# kind: output   -> "What we found and shared" on the project page
+# kind: material -> "Materials and tools" on the project page
 # Types paper/report/dataset/blog-post/talk/poster/thesis also appear in the hub's publications index.
 # For posts on this site, set `blog: <slug>` and omit title/date (pulled from the blog collection).
 
@@ -10,7 +10,7 @@
   project: community-survey-2024
   kind: material
   type: dataset
-  title: "Home Assistant Community Survey 2024: anonymized dataset"
+  title: "Home Assistant Community Survey 2024: Anonymized dataset"
   date: 2026-08-26
   authors: [annika-schulz, idil-bostan]
   venue: "Zenodo"
@@ -31,7 +31,7 @@
   project: community-survey-2024
   kind: output
   type: blog-post
-  title: "Understanding our community: the 2024 Home Assistant survey"
+  title: "Understanding our community: The 2024 Home Assistant survey"
   date: 2024-12-16
   venue: "Home Assistant blog"
   description: "Why we ran the survey and what we asked."
@@ -42,7 +42,7 @@
   project: community-survey-2024
   kind: output
   type: talk
-  title: "State of the Open Home 2025: first community survey results"
+  title: "State of the Open Home 2025: First community survey results"
   date: 2025-04-16
   venue: "State of the Open Home 2025 (livestream)"
   description: "The headline results, presented live."
@@ -170,7 +170,7 @@
   project: private-smart-home-study
   kind: output
   type: poster
-  title: "Building a Private Smart Home: CHI 2026 poster"
+  title: "Building a private smart home: CHI 2026 poster"
   date: 2026-04-13
   authors: [annika-schulz, paulus-schoutsen]
   venue: "ACM CHI 2026, Barcelona"
@@ -191,7 +191,7 @@
   title: "Privacy study research wiki"
   date: 2026-05-20
   host: "GitHub"
-  description: "Background, method and details of the study."
+  description: "Background, method, and details of the study."
   links:
     - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/user-research/wiki/Privacy-Study" }
 
@@ -215,7 +215,7 @@
   title: "Dashboard creation research wiki"
   date: 2026-06-30
   host: "GitHub"
-  description: "Method, tasks and findings from the usability tests."
+  description: "Method, tasks, and findings from the usability tests."
   links:
     - { label: "GitHub", url: "https://github.com/OpenHomeFoundation/user-research/wiki/Dashboard-Creation" }
 
@@ -225,7 +225,7 @@
   project: energy-management
   kind: output
   type: discussion
-  title: "Energy management: comparative graphs and custom date picker"
+  title: "Energy management: Comparative graphs and custom date picker"
   date: 2026-04-02
   venue: "UX design discussions on GitHub"
   description: "A design concept for comparing energy use over time, with the research behind it."
@@ -236,7 +236,7 @@
   project: energy-management
   kind: output
   type: discussion
-  title: "Energy management: impact cards"
+  title: "Energy management: Impact cards"
   date: 2026-04-02
   venue: "UX design discussions on GitHub"
   description: "A design concept for showing the effect of energy decisions, with the research behind it."

@@ -7,7 +7,7 @@
   order: 1
   headline: "Local control is the number one reason people choose Home Assistant"
   heading: "Local control comes first"
-  text: "Among people who chose Home Assistant, local control, open source and powerful customization were the most selected reasons. Most said an interest in technology got them started, often prompted by a move or a renovation."
+  text: "Among people who chose Home Assistant, local control, open source, and powerful customization were the most selected reasons. Most said an interest in technology got them started, often prompted by a move or a renovation."
   glance: { value: "89.3%", label: "chose Home Assistant for local control" }
   chart:
     type: bars
@@ -23,7 +23,7 @@
   project: community-survey-2024
   order: 2
   headline: "One person sets up the smart home. Everyone else lives with it."
-  text: "Most respondents share their home with a partner or family. Typically one person configures and maintains the system, while everyone else uses the connected devices directly — a pattern earlier research links to imbalances of control and privacy in the home."
+  text: "Most respondents share their home with a partner or family. Typically one person configures and maintains the system, while everyone else uses the connected devices directly – a pattern earlier research links to imbalances of control and privacy in the home."
   glance: { value: "94.4%", label: "of the people who set up and maintain the home are men" }
   chart:
     type: numbers
@@ -37,7 +37,7 @@
   order: 3
   headline: "Most people arrive at Home Assistant from another platform"
   heading: "Most people arrive from somewhere else"
-  text: "Only around a third started their smart home with Home Assistant; the rest arrived from other platforms. Understanding that journey helps us see how our community grows."
+  text: "Only around a third of participants started their smart home with Home Assistant; the rest arrived from other platforms. Understanding that journey helps us see how our community grows."
   glance: { value: "~⅔", label: "came to Home Assistant from another platform" }
   chart:
     type: split
@@ -69,7 +69,7 @@
   order: 1
   headline: "Privacy drives people to remove and replace parts of their smart home"
   heading: "Privacy drives change"
-  text: "Participants described privacy as a key reason for removing devices, replacing services or leaving whole ecosystems, often after losing trust in cloud accounts or fearing lock-in. What felt acceptable at first was reconsidered later, especially after life events such as a partner moving in or a child being born, or as political news made data practices feel more consequential."
+  text: "Participants described privacy as a key reason for removing devices, replacing services, or leaving whole ecosystems, often after losing trust in cloud accounts or fearing lock-in. What felt acceptable at first was reconsidered later, especially after life events such as a partner moving in or a child being born, or as political news made data practices feel more consequential."
   quote:
     text: "The fact that all my life is tied to one single account that I don't have control over [...] started eroding my trust in Google."
     by: "Participant 5"
@@ -79,7 +79,7 @@
   project: private-smart-home-study
   order: 2
   headline: "Privacy is a trade-off, not the goal"
-  text: "People start a smart home for automation, convenience or monitoring, and align it with privacy later. They rated their own setups as fairly private, but kept some cloud services for convenience and accepted 'good enough' rather than complete control. Privacy work felt effortful and unrewarding, and some worried about being seen as paranoid."
+  text: "People start a smart home for automation, convenience, or monitoring, and align it with privacy later. They rated their own setups as fairly private, but kept some cloud services for convenience and accepted 'good enough' rather than complete control. Privacy work felt effortful and unrewarding, and some worried about being seen as paranoid."
   glance: { value: "7.2 / 10", label: "average privacy participants gave their own smart home" }
   quote:
     text: "The only way to be 100% secure is to be disconnected."
@@ -94,7 +94,7 @@
   project: private-smart-home-study
   order: 3
   headline: "People know the strategies, but struggle to keep them up"
-  text: "Participants preferred local setups and open protocols such as Zigbee, avoided Wi-Fi devices where they could, distrusted suspiciously cheap devices, and put smart home devices on separate networks. But everyday needs led to shortcuts, and the advice they gave a friend was more systematic than their own homes. Starting again from scratch, often when moving house, was a way to regain control."
+  text: "Participants preferred local setups and open protocols such as Zigbee, avoided Wi-Fi devices where they could, distrusted suspiciously cheap devices, and put smart home devices on separate networks. But everyday needs led to shortcuts, and the advice they gave a friend was more systematic than how they managed their own homes. Starting again from scratch, often when moving house, was a way to regain control."
   quote:
     text: "I just need a red light bulb [...] I hooked it into the main network, and it instantly undoes all of the work of having a really private network, and then I forget about it."
     by: "Participant 4"
@@ -136,7 +136,7 @@
   project: dashboard-creator
   order: 2
   headline: "People look for their devices, not card types"
-  text: "Participants searched for 'lamp', 'AC' or 'ceiling light', but the default card picker is organized by card type. Once they found the option to pick by device (By Entity), they used it every time and praised it, which suggests a simple change of default."
+  text: "Participants searched for 'lamp', 'AC', or 'ceiling light', but the default card picker is organized by card type. Once they found the option to pick by device (By entity), they used it every time and praised it, which suggests a simple change of default."
   quote:
     text: "I'm going back to By Entity selection because that always seems to work."
     by: "Participant 2"
@@ -159,7 +159,7 @@
   project: energy-management
   order: 1
   headline: "People use energy data in two ways: to act, or just to watch"
-  heading: "Acting on data, or just watching it"
+  heading: "Some act on data, while others just monitor"
   text: "Some people use their energy data to decide what to do, such as charging a battery overnight when power is cheaper. Others monitor for its own sake. For those who act on it, successful energy management ranges from cutting costs to using energy as efficiently as possible."
   chart:
     type: stats
@@ -173,14 +173,14 @@
   project: energy-management
   order: 2
   headline: "People want lower bills without endless tweaking"
-  text: "Optimizers look for a practical balance between environmental impact and cost, using energy dashboards, heating control and tariff automations, and avoiding anything that feels unreliable. One of their biggest frustrations is not being able to see exactly how much they've saved, because factors like the weather get in the way."
+  text: "Optimizers look for a practical balance between environmental impact and cost, using energy dashboards, heating control, and tariff automations, and avoiding anything that feels unreliable. One of their biggest frustrations is not being able to see exactly how much they've saved, because factors like the weather get in the way."
   provenance: {}
 
 - id: energy-suggestions
   project: energy-management
   order: 3
-  headline: "Charts aren't enough: people want suggestions"
-  text: "In testing, people found comparisons of cost between two periods the most useful, and wanted plain explanations instead of interpreting charts themselves. That led to impact cards, which say what happened, why it matters and what to do next."
+  headline: "Charts aren't enough: People want suggestions"
+  text: "In testing, people found comparisons of cost between two periods the most useful, and wanted plain explanations instead of interpreting charts themselves. That led to impact cards, which say what happened, why it matters, and what to do next."
   quote:
     text: "System provides the information, but suggests nothing."
     by: "Feedback from user testing"

@@ -1,6 +1,6 @@
 ---
 title: "Building a private smart home"
-summary: "How privacy shapes the way people set up and maintain their smart homes. Our first peer-reviewed paper, presented at ACM CHI 2026."
+summary: "Our first peer-reviewed paper, presented at ACM CHI 2026, explores how privacy shapes the way people set up and maintain their smart homes."
 standfirst: "What do people do to keep their smart homes private, and what makes them uncomfortable enough to walk away from a technology? Our first peer-reviewed study, presented at ACM CHI 2026 in Barcelona."
 status: published
 period: "2024–2026"
@@ -48,6 +48,6 @@ advice compared with what they actually do.
 
 Privacy concerns in the smart home don't exist in a vacuum. People are
 responding to a broader landscape of data breaches, surveillance capitalism, AI
-trained on personal data and tracking. We presented the work as a poster at ACM
+trained on personal data, and tracking. We presented the work as a poster at ACM
 CHI 2026, the leading international conference on human–computer interaction
 (the study of how people use and experience technology).

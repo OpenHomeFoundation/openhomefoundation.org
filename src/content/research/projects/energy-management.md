@@ -1,6 +1,6 @@
 ---
 title: "Making sense of home energy data"
-summary: "With HCI master's students at Bauhaus-Universität Weimar, we studied how people use the energy data in Home Assistant, and designed and tested new ways to act on it."
+summary: "With human-computer interaction (HCI) master's students at Bauhaus-Universität Weimar, we studied how people use the energy data in Home Assistant, and designed and tested new ways to act on it."
 standfirst: "What do people actually do with their home energy data? Students from Bauhaus-Universität Weimar spent a semester finding out, then designed and tested new ways to turn that data into decisions."
 status: collaboration
 period: "Oct 2025 – Mar 2026"
@@ -8,7 +8,7 @@ date: 2026-04-02
 team: []
 facts:
   - { label: "Partner", value: "Bauhaus-Universität Weimar" }
-  - { label: "Method", value: "Survey, interviews and contextual inquiry" }
+  - { label: "Method", value: "Survey, interviews, and contextual inquiry" }
   - { label: "Participants", value: "84 surveyed, 12 interviewed" }
 method:
   facts:
