@@ -4,6 +4,40 @@
 # Screened against .claude/skills/research-by-others/inclusion-guidelines.md. `notes` records what each entry still needs.
 # `collectedFrom`: curated (manual), submitted (GitHub issue form) or automated (future scheduled job).
 
+- id: home-assistant-automation-configuration-challenges
+  title: "Programming of Automation Configuration in Smart Home Systems: Challenges and Opportunities"
+  year: 2026
+  added: 2026-11-24
+  collectedFrom: automated
+  type: paper
+  authors: "Anik, S. M. H., Gao, X., Zhong, H., et al."
+  venue: "ACM Transactions on Software Engineering and Methodology"
+  institution: "Virginia Tech"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "The authors read 190 Home Assistant Community forum threads about writing YAML automations and sorted the problems people hit into implementation, optimisation and debugging. Most were debugging problems, and existing analysis tools caught only a handful of them and fixed none."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3731450" }
+    - { label: "Free copy", url: "https://hdl.handle.net/10919/136951" }
+
+- id: smart-building-energy-management-diagnosis
+  title: "On-line diagnosis and optimization of Energy Management Systems for Smart Buildings"
+  year: 2025
+  added: 2026-11-24
+  collectedFrom: automated
+  type: thesis
+  authors: "Garcia Marrero, L. E."
+  venue: "theses.fr (ABES)"
+  institution: "CY Cergy Paris Université"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A doctoral thesis on smart building energy management that needs no training data to track appliance use and diagnoses solar panel faults from their current–voltage curves. Both methods run together on a Raspberry Pi 4 with Home Assistant, keeping all processing in the home."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.70675/d1b10ab7zb852z4f2czb462zecde768def81" }
+    - { label: "Free copy", url: "https://www.theses.fr/2025CYUN1413/document" }
+
 - id: plegma-dataset
   title: "The Plegma dataset: Domestic appliance-level and aggregate electricity demand with metadata from Greece"
   year: 2024

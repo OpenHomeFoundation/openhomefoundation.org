@@ -27,12 +27,16 @@ function twelveMonthsAgo(today) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+class BudgetExhausted extends Error {}
+
 async function get(url, attempt = 1) {
-  await sleep(1100);
+  await sleep(1100 * 2 ** (attempt - 1));
   const res = await fetch(url, { headers: { "User-Agent": "research-candidates-script" } });
+  if (res.ok) return res.json();
+  const body = await res.text();
+  if (res.status === 429 && body.includes("daily_budget")) throw new BudgetExhausted(body);
   if (res.status === 429 && attempt < 5) return get(url, attempt + 1);
-  if (!res.ok) throw new Error(`OpenAlex ${res.status}: ${await res.text()}`);
-  return res.json();
+  throw new Error(`OpenAlex ${res.status}: ${body}`);
 }
 
 async function fetchAll(query, since) {
@@ -66,32 +70,57 @@ const existing = existingKeys(await readFile("src/content/research/by-others.yml
 const byKey = new Map();
 let totalCost = 0;
 
+const queried = [];
+
+function buildRecords() {
+  let alreadyListed = 0;
+  const records = [];
+  for (const { work, products } of byKey.values()) {
+    if (isAlreadyListed(work, existing)) {
+      alreadyListed++;
+      continue;
+    }
+    records.push(toRecord(work, products, today));
+  }
+  const rank = (r) => (r.decision === "EXCLUDE" ? 2 : r.matched_in === "title/abstract" ? 0 : 1);
+  records.sort((a, b) => rank(a) - rank(b));
+  return { records, alreadyListed };
+}
+
+async function save() {
+  const { records } = buildRecords();
+  const notQueried = PRODUCTS.map((p) => p.tag).filter((tag) => !queried.includes(tag));
+  const file = { since, screened_on: today, complete: notQueried.length === 0, queried, not_queried: notQueried, records };
+  await mkdir(dirname(out), { recursive: true });
+  await writeFile(out, `${JSON.stringify(file, null, 2)}\n`);
+}
+
 for (const product of PRODUCTS) {
-  const { works, cost } = await fetchAll(product.query, since);
-  totalCost += cost;
-  console.log(`${product.tag}: ${works.length} results`);
-  for (const work of works) {
+  let result;
+  try {
+    result = await fetchAll(product.query, since);
+  } catch (error) {
+    if (!(error instanceof BudgetExhausted)) throw error;
+    await save();
+    console.error(`
+OpenAlex's daily budget is used up (429 daily_budget), stopped at ${product.tag}.
+Spent this run: $${totalCost.toFixed(3)}. Saved results for ${queried.length ? queried.join(", ") : "no products"} to ${out}.
+Wait for the budget to reset before running again.`);
+    process.exit(2);
+  }
+  totalCost += result.cost;
+  console.log(`${product.tag}: ${result.works.length} results`);
+  for (const work of result.works) {
     const key = workKey(work);
     const entry = byKey.get(key) ?? { work, products: new Set() };
     entry.products.add(product.tag);
     byKey.set(key, entry);
   }
+  queried.push(product.tag);
+  await save();
 }
 
-let alreadyListed = 0;
-const records = [];
-for (const { work, products } of byKey.values()) {
-  if (isAlreadyListed(work, existing)) {
-    alreadyListed++;
-    continue;
-  }
-  records.push(toRecord(work, products, today));
-}
-const rank = (r) => (r.decision === "EXCLUDE" ? 2 : r.matched_in === "title/abstract" ? 0 : 1);
-records.sort((a, b) => rank(a) - rank(b));
-
-await mkdir(dirname(out), { recursive: true });
-await writeFile(out, `${JSON.stringify({ since, screened_on: today, records }, null, 2)}\n`);
+const { records, alreadyListed } = buildRecords();
 
 const count = (d, m) => records.filter((r) => r.decision === d && (!m || r.matched_in === m)).length;
 console.log(`

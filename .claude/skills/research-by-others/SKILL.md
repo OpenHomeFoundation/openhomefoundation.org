@@ -21,7 +21,7 @@ npm run research:candidates -- --since 2026-01-01
 
 The script ([scripts/research-candidates.mjs](../../../scripts/research-candidates.mjs), logic in [src/lib/research-candidates.mjs](../../../src/lib/research-candidates.mjs)):
 
-- queries OpenAlex without an API key, using the Scope table's search terms (Step 1). It costs about $0.015 a run against a shared $0.10/day keyless budget. If it hits the daily budget, wait a day or pass a narrower `--since`.
+- queries OpenAlex without an API key, using the Scope table's search terms (Step 1). It costs about $0.015 a run against a shared $0.10/day keyless budget. If it hits the daily budget, it stops at once (exit code 2) and keeps what it has: the output file is saved after each product query, and its `complete` and `not_queried` fields say which products are missing. Wait a day, or pass a narrower `--since`.
 - removes duplicates, and anything already in `by-others.yml`.
 - applies the checks that need no judgement: retraction flag (X-RETRACTED), OHF or Nabu Casa affiliations (X-OHF, X-AFFILIATION), preprint/dataset/software types (X-PREPRINT, X-NOTPEER), and pre-approved venues (`quality_basis: "Pre-approved"`).
 - writes `research-candidates/<date>.json` (gitignored). Records are `EXCLUDE` (mechanical) or `PENDING`, with `matched_in`, `abstract` and `hints`.
@@ -52,7 +52,7 @@ Ask who is signing off. Spot checks: all INCLUDE items if there are 10 or fewer,
 
 ## 4. Publish approved entries
 
-After sign-off, add each approved record to `by-others.yml` in the "Ready" section, keeping the file's order (year descending, then title). Map the fields:
+After sign-off, add each approved record to `by-others.yml`, which has no sections: every entry in it shows on the page. Put new entries above older ones, ordered by year descending, then title. Map the fields:
 
 | Guideline field | by-others.yml |
 | --- | --- |
@@ -64,8 +64,8 @@ After sign-off, add each approved record to `by-others.yml` in the "Ready" secti
 | domain | `fields`: HCI → `hci`; Privacy and security → `security-monitoring`; Energy → `energy`; Software / Systems and IoT → `systems-software`; Health and accessibility → `health-care` or `accessibility`; voice and language work → `voice-language` |
 | doi, open_access_url | `links`: `{ label: "Paper", url: <doi url> }`, plus `{ label: "Free copy", url: ... }` if different; `openAccess: true` when there's a free copy |
 | summary | `summary` |
-| — | `added: <today>`, `peerReviewed: true`, `collectedFrom: automated` (or `submitted` for self-submissions) |
+| — | `added: <today>`, `collectedFrom: automated` (or `submitted` for self-submissions) |
 
-Use an `id` in kebab-case from the title's key words. Then run `npm run build` to check the schema, and leave the changes uncommitted for review.
+Use an `id` in kebab-case from the title's key words. Only use fields defined in the `researchByOthers` schema in [src/content.config.ts](../../../src/content.config.ts): the schema drops unknown keys without an error. Then run `npm run build` to check the schema, and leave the changes uncommitted for review.
 
 Also recheck every entry already in `by-others.yml` for retractions (the OpenAlex `is_retracted` flag on its DOI) and tell the user about any that need removing.
