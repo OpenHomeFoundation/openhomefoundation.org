@@ -195,6 +195,7 @@ const researchByOthers = defineCollection({
       fields: z.array(z.enum(FIELDS)).min(1),
       uses: z.array(z.enum(OHF_PROJECTS)).min(1),
       openAccess: z.boolean().optional(),
+      featured: z.number().int().positive().optional(), // position in "Featured research"; omit to leave it out
       summary: z.string().optional(),
       links: z.array(link).min(1),
       notes: z.string().optional(),

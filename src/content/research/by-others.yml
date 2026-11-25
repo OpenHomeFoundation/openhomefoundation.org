@@ -21,6 +21,24 @@
     - { label: "Paper", url: "https://doi.org/10.1145/3731450" }
     - { label: "Free copy", url: "https://hdl.handle.net/10919/136951" }
 
+- id: wozniak-2026-dashboard-fault-diagnosis
+  title: "Room for Improvement: Dashboard Design Approaches to Facilitate Smart Home Fault Diagnosis"
+  year: 2026
+  added: 2026-11-24
+  collectedFrom: curated
+  type: paper
+  authors: "Woźniak, M. P., Müller, H., Mook, R., Koelle, M., & Boll, S."
+  venue: "Proceedings of the ACM on Interactive, Mobile, Wearable and Ubiquitous Technologies (IMWUT)"
+  institution: "Carl von Ossietzky Universität Oldenburg"
+  fields: [hci]
+  uses: [home-assistant]
+  openAccess: true
+  featured: 3
+  summary: "A controlled study with 36 people comparing three smart home dashboard designs for tracking down faults: device lists, floor plans and dependency graphs. Floor plans and graphs led to more accurate diagnosis without extra effort, though people felt they did worse with the graphs."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3810237" }
+  notes: "Featured candidate from the copy doc (Annika). Mentions Home Assistant four times; confirm how it was used (Step 2). IMWUT is pre-approved."
+
 - id: smart-building-energy-management-diagnosis
   title: "On-line diagnosis and optimization of Energy Management Systems for Smart Buildings"
   year: 2025
@@ -49,10 +67,28 @@
   fields: [energy]
   uses: [home-assistant]
   openAccess: true
+  featured: 1
   summary: "A public dataset of domestic electricity demand with metadata, collected with Home Assistant."
   links:
     - { label: "Paper", url: "https://doi.org/10.1038/s41597-024-03208-0" }
   notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Home Assistant; confirm in the full text that it was used to collect the data. Step 4: Scientific Data, check SJR quartile."
+
+- id: oulefki-2025-mcp-home-assistant
+  title: "Sustainable Energy Management via Integrating Model Context Protocol with Home Assistant"
+  year: 2025
+  added: 2026-11-24
+  collectedFrom: curated
+  type: paper
+  authors: "Oulefki, A., Bechar, A., Amira, A., et al."
+  venue: "IEEE PES Conference on Innovative Smart Grid Technologies Middle East (ISGT Middle East 2025)"
+  institution: "University of Sharjah"
+  fields: [energy]
+  uses: [home-assistant]
+  featured: 7
+  summary: "Connects Home Assistant to large language models through the Model Context Protocol, so people can monitor and control the devices in a 3D model of a smart campus by asking in plain language. A case study uses it to follow energy use."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/isgtmiddleeast65737.2025.11314322" }
+  notes: "Featured candidate from the copy doc. Step 4: check CORE rank for ISGT Middle East."
 
 - id: modular-iot-office
   title: "Modular IoT Architecture for Monitoring and Control of Office Environments Based on Home Assistant"
@@ -68,6 +104,24 @@
     - { label: "Paper", url: "https://www.mdpi.com/2624-831X/6/4/69" }
   notes: "Screening 2026-11-19: Step 2 passes (Home Assistant is the core automation engine). Step 4: MDPI journal, check SJR quartile for IoT (ISSN 2624-831X)."
 
+- id: schenkluhn-2024-connecting-home
+  title: "Connecting Home: Human-Centric Setup Automation in the Augmented Smart Home"
+  year: 2024
+  added: 2026-11-24
+  collectedFrom: curated
+  type: paper
+  authors: "Schenkluhn, M., Knierim, M. T., Kiss, F., & Weinhardt, C."
+  venue: "Proceedings of the 2024 CHI Conference on Human Factors in Computing Systems (CHI '24)"
+  institution: "Karlsruhe Institute of Technology"
+  fields: [hci]
+  uses: [home-assistant]
+  openAccess: true
+  featured: 2
+  summary: "A lab study with 28 people comparing three ways to locate smart home devices so they can be controlled in augmented reality, from manual to fully automatic. Most people chose a middle option over full automation, to keep a sense of control."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3613904.3642862" }
+  notes: "Featured candidate from the copy doc (Annika). Annika's literature notes say Home Assistant manages the devices; confirm in the full text (Step 2). CHI is pre-approved."
+
 - id: tatartts
   title: "TatarTTS: An Open-Source Text-to-Speech Synthesis Dataset for the Tatar Language"
   year: 2024
@@ -77,6 +131,7 @@
   venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
   fields: [voice-language]
   uses: [piper]
+  featured: 8
   summary: "The first large-scale public dataset of its kind, promoting Tatar text-to-speech in academia and industry."
   links:
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463261" }
@@ -96,6 +151,42 @@
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463430" }
   notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
 
+- id: wozniak-2023-inhabiting-interconnected-spaces
+  title: "Inhabiting Interconnected Spaces: How Users Shape and Appropriate Their Smart Home Ecosystems"
+  year: 2023
+  added: 2026-11-24
+  collectedFrom: curated
+  type: paper
+  authors: "Woźniak, M. P., Vöge, S., Krüger, R., Müller, H., Koelle, M., & Boll, S."
+  venue: "Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems (CHI '23)"
+  institution: "Carl von Ossietzky Universität Oldenburg"
+  fields: [hci]
+  uses: [home-assistant]
+  openAccess: true
+  featured: 4
+  summary: "Interviews with 20 smart home users in their own homes about how households shape their setups. Household members chose how connected their own devices should be, based on relationships at home, who owns what and the benefits they expected."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3544548.3581497" }
+  notes: "Featured candidate from the copy doc (Annika). Home Assistant appears only in a participant quote, which would fail Step 2 (X-MENTION) for the main list. Confirm with Idil and Annika before publishing."
+
+- id: paguay-2023-esp-now-mesh
+  title: "Secure home automation system based on ESP-NOW mesh network, MQTT and Home Assistant platform"
+  year: 2023
+  added: 2026-11-24
+  collectedFrom: curated
+  type: paper
+  authors: "Cujilema Paguay, J. A., Hidalgo Brito, G. A., Hernández Rojas, D. L., & Cartuche Calva, J. J."
+  venue: "IEEE Latin America Transactions"
+  institution: "Universidad Técnica de Machala"
+  citationCount: 46
+  fields: [systems-software, security-monitoring]
+  uses: [home-assistant]
+  featured: 6
+  summary: "A secure, encrypted mesh network for low-cost home devices built on the ESP-NOW protocol and connected to Home Assistant through a secure MQTT broker. Tests in a real home showed an average latency of 75 ms."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/tla.2023.10244182" }
+  notes: "Featured candidate from the copy doc. Step 4: check SJR quartile for IEEE Latin America Transactions."
+
 - id: akhmetzhanov-2022
   title: "Integration of a Video Surveillance System Into a Smart Home Using the Home Assistant Platform"
   year: 2022
@@ -106,6 +197,7 @@
   venue: "2022 International Conference on Smart Information Systems and Technologies (SIST)"
   fields: [security-monitoring]
   uses: [home-assistant]
+  featured: 5
   links:
     - { label: "DOI", url: "https://doi.org/10.1109/SIST54437.2022.9945718" }
   notes: "Screening 2026-11-19: Step 2 passes (built on Home Assistant). Step 4: check CORE rank for IEEE SIST."
