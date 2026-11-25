@@ -13,15 +13,21 @@ const views = [
     key: "ours",
     href: "/research/",
     title: "Our research",
-    text: "How we work, our projects and everything we've published",
+    heading: "Understanding how people live in smart homes",
+    text: "How we work, our projects, and everything we've published",
+    lede: "We study how people live with smart home technology and publish everything we learn – findings, data, and tools – for anyone to use. And because our projects are open source, researchers around the world can build their own studies on them too.",
   },
   {
     key: "others",
     href: "/research/by-others/",
     title: "Research by others",
-    text: "Studies and datasets that use Home Assistant and our other projects",
+    heading: "How researchers use our open source projects",
+    text: "Studies and datasets that use Home Assistant and other Open Home Foundation projects",
+    lede: "Because our projects are open source, researchers around the world use them to run their own studies, from energy and privacy to design and accessibility. Here's the published work we know of, and how to add yours.",
   },
 ];
+
+const current = views.find((v) => v.key === view)!;
 ---
 
 <div class="bg-gradient-agreement-header">
@@ -29,12 +35,8 @@ const views = [
     <div class="container">
       <div class="poly"><Icon name="poly/poly-thin" /></div>
       <p class="research-eyebrow">Research</p>
-      <h1 class="mb-24">Understanding how people live with the smart home</h1>
-      <p class="research-lede mb-24">
-        We study how people live with smart home technology and publish everything we learn — findings, data and tools —
-        for anyone to use. And because our projects are open source, researchers around the world build their own
-        studies on them too.
-      </p>
+      <h1 class="mb-24">{current.heading}</h1>
+      <p class="research-lede mb-24">{current.lede}</p>
       <p class="research-hero-contact mb-48">
         Questions or ideas? Email <a
           href={`mailto:${RESEARCH_EMAIL}`}

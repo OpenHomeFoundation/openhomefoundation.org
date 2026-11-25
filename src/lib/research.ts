@@ -14,11 +14,11 @@ export type Link = { label: string; url: string; broken?: boolean };
 export const FIELD_LABELS: Record<Field, string> = {
   energy: "Energy",
   hci: "Human–computer interaction",
-  "security-monitoring": "Security & monitoring",
-  "voice-language": "Voice & language",
-  "health-care": "Health & care",
+  "security-monitoring": "Security and monitoring",
+  "voice-language": "Voice and language",
+  "health-care": "Health and care",
   accessibility: "Accessibility",
-  "systems-software": "Systems & software",
+  "systems-software": "Systems and software",
 };
 
 export const PROJECT_LABELS: Record<OhfProject, string> = {
@@ -42,7 +42,7 @@ export const RELATION_LABELS: Record<Relation, [stored: string, reverse: string]
 };
 
 export const TYPE_LABELS: Record<OutputType, [singular: string, plural: string]> = {
-  paper: ["paper", "papers"],
+  paper: ["scientific paper", "scientific papers"],
   report: ["report", "reports"],
   dataset: ["dataset", "datasets"],
   "blog-post": ["blog post", "blog posts"],
@@ -62,11 +62,14 @@ export const TYPE_LABELS: Record<OutputType, [singular: string, plural: string]>
 export const PUBLICATION_TYPES: OutputType[] = ["paper", "report", "thesis", "dataset", "blog-post", "talk", "poster"];
 
 export const PUBLICATION_FILTERS = [
-  { key: "papers", label: "Papers", types: ["paper", "report", "thesis"] },
+  { key: "papers", label: "Scientific papers", types: ["paper", "thesis", "poster"] },
   { key: "datasets", label: "Datasets", types: ["dataset"] },
-  { key: "blog-posts", label: "Blog posts", types: ["blog-post"] },
-  { key: "talks-posters", label: "Talks & posters", types: ["talk", "poster"] },
+  { key: "blog-posts", label: "Blog posts and reports", types: ["blog-post", "report"] },
+  { key: "talks", label: "Talks", types: ["talk"] },
 ] as const satisfies { key: string; label: string; types: OutputType[] }[];
+
+/** Listed first within each year of the publications index. */
+export const SCIENTIFIC_TYPES: OutputType[] = ["paper", "thesis", "poster"];
 
 const byDateDesc = (a: { date: Date }, b: { date: Date }) => b.date.getTime() - a.date.getTime();
 
@@ -227,7 +230,13 @@ export interface PublicationRow {
   project?: { slug: string; title: string };
 }
 
-export async function getPublicationsIndex(): Promise<{ year: number; items: PublicationRow[] }[]> {
+export interface PublicationYear {
+  year: number;
+  scientific: PublicationRow[];
+  other: PublicationRow[];
+}
+
+export async function getPublicationsIndex(): Promise<PublicationYear[]> {
   const projects = new Map((await getProjects()).map((p) => [p.id, p]));
   const outputs = await getVisibleOutputs();
   const referencedPosts = new Set(outputs.map((o) => o.blog).filter(Boolean));
@@ -267,7 +276,11 @@ export async function getPublicationsIndex(): Promise<{ year: number; items: Pub
     const year = row.date.getUTCFullYear();
     years.set(year, [...(years.get(year) ?? []), row]);
   }
-  return [...years].map(([year, items]) => ({ year, items }));
+  return [...years].map(([year, items]) => ({
+    year,
+    scientific: items.filter((i) => SCIENTIFIC_TYPES.includes(i.type)),
+    other: items.filter((i) => !SCIENTIFIC_TYPES.includes(i.type)),
+  }));
 }
 
 export function publicationFilter(type: OutputType): string | undefined {
@@ -338,8 +351,10 @@ export async function getByOthers(sort: ByOthersSort = "newest"): Promise<ByOthe
   });
 }
 
-export async function getByOthersDatasets(): Promise<ByOthersEntry[]> {
-  return (await getByOthers()).filter((e) => e.data.type === "dataset");
+export async function getFeaturedByOthers(): Promise<ByOthersEntry[]> {
+  return (await getByOthers())
+    .filter((e) => e.data.featured)
+    .sort((a, b) => a.data.featured! - b.data.featured!);
 }
 
 export function paginate<T>(entries: T[], pageSize: number): T[][] {

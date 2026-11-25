@@ -26,7 +26,7 @@ type Ours = {
   project?: { slug: string; title: string };
   compact?: boolean;
 };
-type Others = { variant: "others"; entry: ByOthersEntry };
+type Others = { variant: "others"; entry: ByOthersEntry; featured?: boolean };
 type Props = Ours | Others;
 
 const props = Astro.props;
@@ -66,18 +66,20 @@ const props = Astro.props;
     (() => {
       const { data, id } = props.entry;
       const search = [data.title, data.authors, data.venue, data.institution].filter(Boolean).join(" ");
+      const listAttrs = props.featured
+        ? {}
+        : {
+            id,
+            "data-year": data.year ?? 0,
+            "data-title": data.title,
+            "data-type": data.type,
+            "data-field": data.fields.join(" "),
+            "data-uses": data.uses.join(" "),
+            "data-oa": data.openAccess ? "true" : "false",
+            "data-search": search.toLowerCase(),
+          };
       return (
-        <li
-          class="publication-row others"
-          id={id}
-          data-year={data.year ?? 0}
-          data-title={data.title}
-          data-type={data.type}
-          data-field={data.fields.join(" ")}
-          data-uses={data.uses.join(" ")}
-          data-oa={data.openAccess ? "true" : "false"}
-          data-search={search.toLowerCase()}
-        >
+        <li class="publication-row others" {...listAttrs}>
           <div class="publication-meta">
             <span class="publication-date">{data.year ?? "Year TBC"}</span>
           </div>
@@ -93,6 +95,7 @@ const props = Astro.props;
               {data.openAccess && <Badge tone="positive">Open access</Badge>}
             </div>
             <h3 class="publication-title">{data.title}</h3>
+            {props.featured && data.summary && <p class="publication-summary">{data.summary}</p>}
             <p class="publication-details">{[data.authors, data.venue].filter(Boolean).join(" · ")}</p>
           </div>
           <div class="publication-actions">

@@ -5,12 +5,12 @@ import ResearchHero from "../../components/research/ResearchHero.astro";
 import ResearchSubnav from "../../components/research/ResearchSubnav.astro";
 import ResearchLink from "../../components/research/ResearchLink.astro";
 import PublicationRow from "../../components/research/PublicationRow.astro";
-import DatasetCard from "../../components/research/DatasetCard.astro";
+import Badge from "../../components/research/Badge.astro";
 import {
   FIELD_LABELS,
   PROJECT_LABELS,
   getByOthers,
-  getByOthersDatasets,
+  getFeaturedByOthers,
   getFilterFacets,
   getProjectMaterials,
   getProjects,
@@ -21,7 +21,7 @@ const PAGE_SIZE = 10;
 
 const entries = await getByOthers();
 const facets = getFilterFacets(entries);
-const datasets = await getByOthersDatasets();
+const featured = await getFeaturedByOthers();
 
 const ourDatasets = [];
 for (const project of await getProjects()) {
@@ -31,7 +31,7 @@ for (const project of await getProjects()) {
 ourDatasets.sort((a, b) => b.dataset.date.getTime() - a.dataset.date.getTime());
 
 const TYPE_FILTER_LABELS: Record<string, string> = {
-  paper: "Paper",
+  paper: "Scientific paper",
   dataset: "Dataset",
   thesis: "Thesis",
 };
@@ -75,22 +75,22 @@ const why = [
   },
   {
     icon: "sustainability",
-    title: "Free, open and extensible",
-    text: "Runs on almost any hardware, and every part — integrations, dashboards, even the voice assistant — can be adapted for your study.",
+    title: "Free, open, and extensible",
+    text: "Runs on almost any hardware, and every part – integrations, dashboards, even the voice assistant – can be adapted for your study.",
   },
 ];
 
 const subnav = [
   { href: "#why", label: "Why researchers use it" },
+  ...(featured.length || ourDatasets.length ? [{ href: "#featured", label: "Featured research" }] : []),
   ...(entries.length ? [{ href: "#publications", label: "Publications" }] : []),
-  ...(datasets.length || ourDatasets.length ? [{ href: "#datasets", label: "Open datasets" }] : []),
   { href: "#submit", label: "Add your research" },
 ];
 ---
 
 <Base
   title="Research by others"
-  description="Studies, theses and datasets from researchers around the world that use Home Assistant and other Open Home Foundation projects."
+  description="Studies, theses, and datasets from researchers around the world that use Home Assistant and other Open Home Foundation projects."
 >
   <ResearchHero view="others" />
   <ResearchSubnav label="Research by others" links={subnav} />
@@ -100,8 +100,8 @@ const subnav = [
       <p class="research-eyebrow">For researchers and educators</p>
       <h2 class="mb-16">Why researchers choose Home Assistant</h2>
       <p class="research-intro mb-48">
-        Whether you study energy, behavior, design or security, our projects give you a privacy-respecting lab that runs
-        in real homes.
+        Whether you study energy, behavior, design, or security, our projects give you a privacy-respecting lab that
+        runs in real homes.
       </p>
       <ul class="why-cards">
         {
@@ -120,24 +120,67 @@ const subnav = [
   </section>
 
   {
+    (featured.length > 0 || ourDatasets.length > 0) && (
+      <section id="featured" class="research-section">
+        <div class="container">
+          <p class="research-eyebrow">Featured</p>
+          <h2 class="mb-16">Featured research</h2>
+          <p class="research-intro mb-32">
+            A selection of studies and datasets that show what researchers have done with Home Assistant and other
+            Open Home Foundation projects.
+          </p>
+          <ul class="publication-list featured-list">
+            {featured.map((entry) => (
+              <PublicationRow variant="others" entry={entry} featured />
+            ))}
+            {ourDatasets.map(({ project, dataset }) => (
+              <li class="publication-row others">
+                <div class="publication-meta">
+                  <span class="publication-date">{dataset.date.getUTCFullYear()}</span>
+                </div>
+                <div class="publication-body">
+                  <div class="publication-badges">
+                    <Badge tone="dark">Our dataset</Badge>
+                    <Badge>Dataset</Badge>
+                    <Badge>Home Assistant</Badge>
+                  </div>
+                  <h3 class="publication-title">{project.data.title}</h3>
+                  {dataset.description && <p class="publication-summary">{dataset.description}</p>}
+                  <p class="publication-details">
+                    {["Open Home Foundation", dataset.host].filter(Boolean).join(" · ")}
+                  </p>
+                </div>
+                <div class="publication-actions">
+                  <ResearchLink href={`/research/projects/${project.id}/`}>View project</ResearchLink>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
     entries.length > 0 && (
       <section id="publications" class="research-section bg-secondary">
         <div class="container">
-          <p class="research-eyebrow">Publications</p>
-          <h2 class="mb-16">Research using our projects</h2>
-          <p class="research-intro mb-32">
-            Studies, theses and datasets from researchers around the world that use Home Assistant or our other
-            projects, newest first. We gather them from public sources, so the list keeps growing and is never complete.
-          </p>
-
-          <aside class="research-note mb-32" aria-label="About this list">
-            <p class="research-note-title">About this list</p>
-            <p>
-              This is independent research by others. Listing a study here doesn't mean we've reviewed or endorse it. We
-              only list peer-reviewed work and PhD theses. Missing your published research? <a href="#submit">Add it</a>
-              .
-            </p>
-          </aside>
+          <div class="list-header">
+            <div>
+              <p class="research-eyebrow">Publications</p>
+              <h2 class="mb-16">Research using our projects</h2>
+              <p class="research-intro">
+                A list of studies, theses, and datasets from researchers around the world that use Home Assistant or our
+                other projects, starting with the latest. We gather research from public sources, so the list keeps
+                growing and is never complete.
+              </p>
+              <p class="list-disclaimer">
+                This is independent research by others. Listing a study here doesn't mean we've reviewed or endorse it.
+                We only list peer-reviewed work and PhD theses.
+              </p>
+            </div>
+            <a href="#submit" class="button button-outline list-header-action">Add your research</a>
+          </div>
 
           <div class="list-controls" data-list-controls hidden>
             <details class="list-filters" open>
@@ -197,41 +240,6 @@ const subnav = [
             </button>
           </div>
           <nav class="list-pagination" aria-label="Publication pages" data-pagination hidden />
-        </div>
-      </section>
-    )
-  }
-
-  {
-    (datasets.length > 0 || ourDatasets.length > 0) && (
-      <section id="datasets" class="research-section">
-        <div class="container">
-          <p class="research-eyebrow">Open datasets</p>
-          <h2 class="mb-16">Data you can use today</h2>
-          <p class="research-intro mb-48">
-            Datasets collected with Home Assistant or our other projects, published openly for any researcher to reuse.
-          </p>
-          <div class="dataset-grid">
-            {datasets.map(({ data }) => (
-              <DatasetCard
-                title={data.title}
-                text={data.summary}
-                href={data.links[0].url}
-                badge={FIELD_LABELS[data.fields[0]]}
-                meta={[data.uses.map((u) => PROJECT_LABELS[u]).join(", "), data.venue].filter(Boolean).join(" · ")}
-              />
-            ))}
-            {ourDatasets.map(({ project, dataset }) => (
-              <DatasetCard
-                ours
-                title={project.data.title}
-                text={dataset.description}
-                href={`/research/projects/${project.id}/`}
-                badge="Our dataset"
-                meta={["Open Home Foundation", dataset.host].filter(Boolean).join(" · ")}
-              />
-            ))}
-          </div>
         </div>
       </section>
     )
