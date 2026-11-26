@@ -1085,7 +1085,7 @@ a.project-card:focus-visible {
 .list-pagination {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   margin-top: 32px;
 }
 
@@ -1110,6 +1110,32 @@ a.project-card:focus-visible {
 .list-pagination button:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+.list-pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.list-pagination-wide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .list-pagination-wide {
+    display: flex;
+  }
+
+  .list-pagination-narrow {
+    display: none;
+  }
+}
+
+.list-pagination-ellipsis {
+  min-width: 16px;
+  text-align: center;
+  color: var(--secondary-text-color);
 }
 
 .submit-card {

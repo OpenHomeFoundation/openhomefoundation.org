@@ -90,36 +90,3 @@ export function truncate(text: string, length: number): string {
 export function blogPageHref(page: number): string {
   return page === 1 ? "/blog/" : `/blog/posts/${page}/`;
 }
-
-export type PaginationNavItem =
-  | { ellipsis: true }
-  | { ellipsis?: false; number: number; href: string; current: boolean };
-
-/**
- * Builds a windowed page list for the pagination nav: first two pages,
- * last two pages, and the pages immediately around the current one,
- * with ellipsis markers standing in for the "..." gaps between them.
- */
-export function buildPaginationNav(currentPage: number, totalPages: number): PaginationNavItem[] {
-  const pageNumbers = new Set(
-    [1, 2, currentPage - 1, currentPage, currentPage + 1, totalPages - 1, totalPages].filter(
-      (page) => page >= 1 && page <= totalPages,
-    ),
-  );
-  const sortedPages = [...pageNumbers].sort((a, b) => a - b);
-
-  const nav: PaginationNavItem[] = [];
-  let previousPage: number | null = null;
-  for (const page of sortedPages) {
-    if (previousPage !== null && page - previousPage > 1) {
-      nav.push({ ellipsis: true });
-    }
-    nav.push({
-      number: page,
-      href: blogPageHref(page),
-      current: page === currentPage,
-    });
-    previousPage = page;
-  }
-  return nav;
-}

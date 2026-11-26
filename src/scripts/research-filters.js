@@ -1,3 +1,5 @@
+import { pageItems } from "../lib/pagination.mjs";
+
 const press = (chips, active) => chips.forEach((c) => c.setAttribute("aria-pressed", String(c === active)));
 
 function initPublicationFilters() {
@@ -64,7 +66,7 @@ function initOthersList() {
     pagination.hidden = pages <= 1;
     if (pages <= 1) return;
 
-    const button = (label, target, { current = false, disabled = false, aria } = {}) => {
+    const button = (parent, label, target, { current = false, disabled = false, aria } = {}) => {
       const b = document.createElement("button");
       b.type = "button";
       b.textContent = label;
@@ -76,12 +78,26 @@ function initOthersList() {
         render();
         list.closest("section").scrollIntoView({ behavior: "smooth" });
       });
-      pagination.append(b);
+      parent.append(b);
     };
 
-    button("←", page - 1, { disabled: page === 1, aria: "Previous page" });
-    for (let i = 1; i <= pages; i++) button(String(i), i, { current: i === page, aria: `Page ${i}` });
-    button("→", page + 1, { disabled: page === pages, aria: "Next page" });
+    button(pagination, "←", page - 1, { disabled: page === 1, aria: "Previous page" });
+    for (const [size, items] of Object.entries(pageItems(page, pages))) {
+      const group = document.createElement("div");
+      group.className = `list-pagination-pages list-pagination-${size}`;
+      for (const item of items) {
+        if (item.ellipsis) {
+          const gap = document.createElement("span");
+          gap.className = "list-pagination-ellipsis";
+          gap.textContent = "…";
+          group.append(gap);
+        } else {
+          button(group, String(item.page), item.page, { current: item.current, aria: `Page ${item.page}` });
+        }
+      }
+      pagination.append(group);
+    }
+    button(pagination, "→", page + 1, { disabled: page === pages, aria: "Next page" });
   };
 
   const render = () => {
