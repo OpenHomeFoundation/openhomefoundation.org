@@ -1099,6 +1099,7 @@ a.project-card:focus-visible {
   font-size: 15px;
   color: var(--primary-text-color);
   cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .list-pagination button[aria-current="page"] {
@@ -1110,6 +1111,26 @@ a.project-card:focus-visible {
 .list-pagination button:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+.list-pagination button:not(:disabled, [aria-current="page"]):hover {
+  border-color: var(--dark-blue-color);
+  background: var(--light-grey-color);
+}
+
+.list-pagination-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-pagination-arrow svg {
+  width: 14px;
+  height: 14px;
+}
+
+.list-pagination-prev svg {
+  transform: rotate(180deg);
 }
 
 .list-pagination-pages {

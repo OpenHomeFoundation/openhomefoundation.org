@@ -1,3 +1,4 @@
+import arrow from "../assets/svg/arrow.svg?raw";
 import { pageItems } from "../lib/pagination.mjs";
 
 const press = (chips, active) => chips.forEach((c) => c.setAttribute("aria-pressed", String(c === active)));
@@ -69,7 +70,12 @@ function initOthersList() {
     const button = (parent, label, target, { current = false, disabled = false, aria } = {}) => {
       const b = document.createElement("button");
       b.type = "button";
-      b.textContent = label;
+      if (label === "prev" || label === "next") {
+        b.innerHTML = arrow;
+        b.classList.add("list-pagination-arrow", `list-pagination-${label}`);
+      } else {
+        b.textContent = label;
+      }
       b.disabled = disabled;
       if (aria) b.setAttribute("aria-label", aria);
       if (current) b.setAttribute("aria-current", "page");
@@ -81,7 +87,7 @@ function initOthersList() {
       parent.append(b);
     };
 
-    button(pagination, "←", page - 1, { disabled: page === 1, aria: "Previous page" });
+    button(pagination, "prev", page - 1, { disabled: page === 1, aria: "Previous page" });
     for (const [size, items] of Object.entries(pageItems(page, pages))) {
       const group = document.createElement("div");
       group.className = `list-pagination-pages list-pagination-${size}`;
@@ -97,7 +103,7 @@ function initOthersList() {
       }
       pagination.append(group);
     }
-    button(pagination, "→", page + 1, { disabled: page === pages, aria: "Next page" });
+    button(pagination, "next", page + 1, { disabled: page === pages, aria: "Next page" });
   };
 
   const render = () => {
