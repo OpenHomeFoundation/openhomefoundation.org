@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
 import ResearchHero from "../../components/research/ResearchHero.astro";
 import ResearchSubnav from "../../components/research/ResearchSubnav.astro";
 import ResearchLink from "../../components/research/ResearchLink.astro";
@@ -18,26 +19,31 @@ const filtersPresent = PUBLICATION_FILTERS.filter((f) =>
 
 const principles = [
   {
+    icon: "principle-open",
     title: "Open by default",
     tagline: "Anyone can check, cite, and build on our work",
     text: "We publish findings, questions, methods, and data under open licenses, following the FAIR principles: findable, accessible, interoperable, and reusable. Datasets get a permanent DOI on Zenodo.",
   },
   {
+    icon: "principle-privacy",
     title: "Privacy first",
     tagline: "No one can be identified from what we share",
     text: "We remove identifying details, run a k-anonymity review on every dataset, and when in doubt we don't share the data. Every decision is recorded.",
   },
   {
+    icon: "principle-choice",
     title: "Your data, your choice",
     tagline: "Sharing data is opt-in, never assumed",
     text: "Data only reaches us when people choose to share it, which is one of the most valuable ways to contribute. It helps us understand how our projects are really used.",
   },
   {
+    icon: "principle-limits",
     title: "Honest about limits",
     tagline: "Every study names what it can't tell us",
     text: "We say plainly who we did and didn't reach, so results are read in context, and the gaps become starting points for future research.",
   },
   {
+    icon: "principle-feedback",
     title: "Research that feeds back",
     tagline: "What we learn shapes what we build",
     text: "Findings go straight into design discussions on GitHub and into the projects themselves, from Home Assistant features to hardware.",
@@ -92,7 +98,12 @@ const subnav = [
           {
             principles.map((p) => (
               <li>
-                <strong>{p.title}.</strong> {p.tagline}. {p.text}
+                <span class="principle-icon" aria-hidden="true">
+                  <Icon name={p.icon} />
+                </span>
+                <h3>{p.title}</h3>
+                <p class="principle-tagline">{p.tagline}</p>
+                <p>{p.text}</p>
               </li>
             ))
           }
