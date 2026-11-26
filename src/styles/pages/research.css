@@ -49,6 +49,10 @@
   white-space: nowrap;
 }
 
+.bg-secondary .research-badge-default {
+  background: var(--white-color);
+}
+
 .research-badge-positive {
   background: rgba(200, 221, 105, 0.45);
 }
