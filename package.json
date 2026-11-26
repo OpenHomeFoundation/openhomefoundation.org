@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --test \"src/lib/*.test.mjs\"",
-    "research:candidates": "node scripts/research-candidates.mjs"
+    "research:candidates": "node scripts/research-candidates.mjs",
+    "research:fulltext": "node scripts/research-fulltext.mjs"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.4",
@@ -28,6 +29,7 @@
     "micromark": "^4.0.2",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.14.1",
-    "sass": "^1.103.1"
+    "sass": "^1.103.1",
+    "unpdf": "^0.12.1"
   }
 }
