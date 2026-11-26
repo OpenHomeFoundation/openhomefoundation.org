@@ -4,6 +4,852 @@
 # Screened against .claude/skills/research-by-others/inclusion-guidelines.md. `notes` records what each entry still needs.
 # `collectedFrom`: curated (manual), submitted (GitHub issue form) or automated (future scheduled job).
 
+- id: battery-management-system-capable-analyzing-abnormal
+  title: "A Battery Management System Capable of Analyzing Abnormal Cell Trends"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Suddeepong, C., Nuchkum, S., Donjaroennon, N., et al."
+  venue: "Energies"
+  institution: "Suranaree University of Technology"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Develops a battery management system that spots abnormal trends in individual cells. Readings travel over Bluetooth and MQTT to a Home Assistant dashboard on a Raspberry Pi, which handles data collection, storage and visualisation."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/en19133062" }
+  notes: "Full text: 19 exact mentions in the body."
+
+- id: comprehensive-examination-cybersecurity-communication-protocols-utilized
+  title: "A comprehensive examination of cybersecurity in communication protocols utilized by home automation technologies : an in-depth exploration of potential vulnerabilities and mitigative strategies"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Alves, J. D. P."
+  venue: "Portuguese National Funding Agency for Science, Research and Technology (RCAAP Project by FCT)"
+  institution: "Universidade Politécnica de Viana do Castelo"
+  fields: [security-monitoring]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "A master's thesis that tests the security of smart home protocols such as Zigbee, Z-Wave, Wi-Fi and Bluetooth in a realistic home testbed. A Home Assistant controller on a Raspberry Pi ties the real devices together for the attacks and analysis."
+  links:
+    - { label: "Thesis", url: "http://repositorio.ipvc.pt/bitstream/20.500.11960/4839/1/Joel_Alves.pdf" }
+  notes: "Master's thesis. Full text: 33 exact mentions in the body."
+
+- id: unified-framework-smart-home-automation-energy
+  title: "A unified framework for smart home automation and energy analytics through matter and Modbus integration"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "G, A., Venkatesh, H., Ugargol, A. C., et al."
+  venue: "E3S Web of Conferences"
+  institution: "Visvesvaraya Technological University"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Builds a smart home automation and energy metering system on a Raspberry Pi running Home Assistant, connecting Matter devices through a hub and energy meters over Modbus."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1051/e3sconf/202669201015" }
+    - { label: "Free copy", url: "https://www.e3s-conferences.org/articles/e3sconf/pdf/2026/10/e3sconf_ispes2026_01015.pdf" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: visual-block-programming-environment-home-assistant
+  title: "A Visual Block Programming Environment for Home Assistant: A Progress Report"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Seo, M.-H., Moon, H., Choi, K., et al."
+  venue: "Proceedings of the 8th International Workshop on Software Engineering Research and Practices for the IoT"
+  institution: "Chonnam National University"
+  fields: [hci]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Extends a drag-and-drop block programming tool so people without coding skills can build Home Assistant automations. Users snap blocks together and the tool writes the matching YAML configuration for them."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3786159.3788488" }
+    - { label: "Free copy", url: "https://dl.acm.org/doi/pdf/10.1145/3786159.3788488?download=true" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: ai-assisted-vision-alarming-system-blind
+  title: "AI-Assisted Vision Alarming System for Blind and Vision- Impaired People"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Tran, L. C., Ly, S. K., Blacklidge, R., et al."
+  venue: "Sensors"
+  institution: "University of Wollongong"
+  fields: [accessibility, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Builds a Raspberry Pi warning system for blind and visually impaired people that detects obstacles with a camera and reads alerts aloud. Spoken warnings are generated locally with the Piper text-to-speech engine."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/s26102929" }
+  notes: "Full text: 4 exact mentions in the body."
+
+- id: ai-driven-smart-delivery-lockbox-multi
+  title: "AI-DRIVEN SMART DELIVERY LOCKBOX WITH MULTI-MODAL AUTHENTICATION"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  venue: "Issues in Information Systems"
+  fields: [security-monitoring]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "Builds a smart parcel box that checks who is delivering using camera, voice and sensors, all processed locally. The decision logic runs as a state machine in Home Assistant, with no proprietary hardware or cloud service."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.48009/3_iis_2026_110" }
+  notes: "Full text: 19 exact mentions in the body."
+
+- id: ambient-frictions
+  title: "Ambient Frictions: Place-conscious Frictions to Foster Intentional Technology Use"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Pitluck, S. M., Sathya, A."
+  venue: "International Conference on Tangible, Embedded, and Embodied Interaction (TEI)"
+  institution: "University of Chicago"
+  fields: [hci]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Explores 'ambient frictions': a flickering light and a scent sprayer at home that nudge people away from habitual phone use where it happens. Both prototypes are triggered through Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3731459.3801731" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: agent-service-architecture-smart-greenhouses
+  title: "An agent-Based service architecture for smart greenhouses: Telemetry analytics and decision support with RAG-grounded LLM agents"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Pardo-Pina, S., Germer, J., Suay, R., et al."
+  venue: "Smart Agricultural Technology"
+  institution: "Universitat de Miguel Hernández d'Elx"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Proposes an AI agent architecture for smart greenhouses that turns sensor data into decisions and automatic actions. Local control rules run as Home Assistant automations, which the agents can call on."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1016/j.atech.2026.101872" }
+  notes: "Full text: 12 exact mentions in the body."
+
+- id: agentic-multi-drone-framework-autonomous-multi
+  title: "An agentic multi-drone framework for autonomous multi-accident detection, reasoning, and response"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Ahmed, A., Eesaar, H., Farhan, M., et al."
+  venue: "Scientific Reports"
+  institution: "Jeonbuk National University"
+  fields: [systems-software, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Simulates a team of AI-controlled drones that find highway accidents, describe the scene and send help. A dispatch agent turns the reports into spoken messages with Piper."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1038/s41598-026-74192-1" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: analysis-matter-iot-security-against-international
+  title: "An Analysis of Matter IoT Security Against International Standards and Regulatory Framework"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Losty, A., Mandalari, A. M."
+  venue: "Workshop on Security and Privacy in Standardized IoT (SDIoTSec)"
+  institution: "University College London"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Checks the Matter smart home standard against 18 international IoT security frameworks to find compliance and security gaps, and compares how ecosystems including Google Nest and Home Assistant handle Matter security."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.14722/sdiotsec.2026.23066" }
+  notes: "Reviewer: compares ecosystems, including Home Assistant, on Matter security; counts as studying the product."
+
+- id: anota
+  title: "Anota: Identifying Business Logic Vulnerabilities via Annotation-Based Sanitization"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Wang, M., Görz, P., Schilling, J., et al."
+  venue: "Network and Distributed System Security Symposium"
+  institution: "Helmholtz Center for Information Security"
+  fields: [security-monitoring]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "Presents Anota, a tool that finds business-logic security bugs in web applications from developers' annotations. Home Assistant Core is one of the open-source projects it was tested on."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.14722/ndss.2026.240938" }
+  notes: "Full text: 3 exact mentions in the body. Home Assistant Core is one of six evaluation projects."
+
+- id: aos-elm-intrusion-detection-esphome-iot
+  title: "AOS-ELM-Based Intrusion Detection for ESPHome IoT Networks: An Edge Computing Performance Evaluation"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Pratama, R. B., Alaydrus, M."
+  venue: "International Journal of Engineering Continuity"
+  institution: "Mercu Buana University"
+  fields: [security-monitoring]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "Develops a lightweight intrusion detector for networks of ESPHome devices that watches their Native API traffic to Home Assistant. Tested live on small edge computers, it spots denial-of-service attacks in real time."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.58291/ijec.v5i2.683" }
+    - { label: "Free copy", url: "https://ejournal.sultanpublisher.com/ijec/article/download/683/486" }
+  notes: "Full text: 36 exact mentions in the body."
+
+- id: automated-regulatory-compliance-assessment-open-source
+  title: "Automated Regulatory Compliance Assessment for Open-Source Software: A Machine-Readable Policy Approach Applied to the Cyber Resilience Act"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Sacre, A., Tith, D., Hosselet, B., et al."
+  venue: "Applied Sciences"
+  institution: "University of Namur"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Proposes a machine-readable way to check open-source software against the EU Cyber Resilience Act, then tests it end to end on Home Assistant Core. The case study shows which requirements can be checked automatically and where human judgement is still needed."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/app162110931" }
+  notes: "Full text: 24 exact mentions in the body."
+
+- id: baytfactory
+  title: "BAYTFACTORY: Engineering Smart-Home Variants with Software Product Lines"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Ziadi, T., Maamar, Z."
+  venue: "International Conference on Evaluation of Novel Approaches to Software Engineering"
+  institution: "University of Doha for Science and Technology"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Presents BaytFactory, a framework for building different versions of a smart home system from shared parts using software product line methods. It was tested on a smart home application built on Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.5220/0014724500004015" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: beyond-motion
+  title: "Beyond Motion: Affordable Human Presence Detection for Smart Homes"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Gummesson, E."
+  venue: "Lund University Publications Student Papers (Lund University)"
+  institution: "Lund University"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A master's thesis that builds a low-cost presence sensor able to tell whether someone is in a room even when they sit still. The prototype is compared with commercial sensors, read through Home Assistant, as the reference."
+  links:
+    - { label: "Thesis", url: "https://lup.lub.lu.se/student-papers/record/9239490/file/9239503.pdf" }
+  notes: "Master's thesis. Full text: 3 exact mentions in the body."
+
+- id: cadence-stratified-multimodal-perception-real-time
+  title: "Cadence-Stratified Multimodal Perception for Real-Time Child–Robot Interaction"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Mohammed, M., Zarrin, J., ElSayed, S., et al."
+  venue: "Proceedings of the 1st Workshop on Multimodal Interaction in Face-to-Face Dialogue"
+  institution: "Abertay University"
+  fields: [voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Designs a perception pipeline for a robot that plays with children, running each sensing task only as often as needed to save computing power. The robot speaks through Piper text-to-speech on local hardware."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.18653/2026.mint-1.3" }
+    - { label: "Free copy", url: "https://aclanthology.org/2026.mint-1.3.pdf" }
+  notes: "Full text: 3 exact mentions in the body. Workshop paper."
+
+- id: characterizing-tests-iot-software
+  title: "Characterizing Tests in IoT Software: Practices, Challenges and Opportunities"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Chen, R., Zhu, H., Zhang, W., et al."
+  venue: "IEEE Transactions on Software Engineering"
+  institution: "McGill University"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Analyses how open-source IoT projects test their code, what they test and what they miss. Home Assistant is one of the projects studied, and its approach to mocking device behaviour is used as a worked example."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/tse.2026.3700841" }
+    - { label: "Free copy", url: "https://arxiv.org/pdf/2606.12592" }
+  notes: "Full text: 7 exact mentions in the body. Borderline: Home Assistant is one of many projects studied, but is discussed as a case."
+
+- id: comparative-analysis-state-art-text-speech
+  title: "Comparative Analysis of State-of-the-Art Text-to-Speech and Voice Cloning Models for the Polish Language: Challenges in Phonetics and Accent Accuracy"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Kwaśniewska, M., Daraszkiewicz, S., Rumiński, J."
+  venue: "Conference on Human System Interactions"
+  institution: "Gdańsk University of Technology"
+  fields: [voice-language]
+  uses: [piper]
+  summary: "Compares five text-to-speech systems, including Piper, on Polish pronunciation, emotion and speed. A cloud service sounded most natural, while Piper was less natural but far faster and runs locally."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/hsi70218.2026.11773158" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: context-aware-code-review-automation
+  title: "Context-Aware Code Review Automation: A Retrieval-Augmented Approach"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "İçöz, B., Biricik, G."
+  venue: "Applied Sciences"
+  institution: "Yıldız Technical University"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Builds a tool that writes code review comments for Python projects by combining a language model with examples from past reviews. It is tested on pull requests from the Home Assistant Core project."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/app16041875" }
+  notes: "Full text: 13 exact mentions in the body."
+
+- id: cortex
+  title: "Cortex: An AI-Powered Cross-Platform Voice Assistant for Desktop Automation"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "K, A."
+  venue: "International Journal for Research in Applied Science and Engineering Technology"
+  fields: [systems-software, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Describes Cortex, a voice assistant that controls desktop computers on Windows, Linux and macOS. It uses Whisper for speech recognition and the Piper engine to speak its replies, all running locally."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.22214/ijraset.2026.79161" }
+  notes: "Full text: 8 exact mentions in the body. Section labels unknown in the extracted text; snippets describe Piper as the system's TTS."
+
+- id: cross-platform-deployment-characterization-device-generative
+  title: "Cross-platform deployment and characterization of an on-device generative conversational agent"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Firpo, P., Berta, R., Bellotti, F., et al."
+  venue: "Journal of Systems Architecture"
+  institution: "University of Genoa"
+  fields: [systems-software, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Tests a fully local voice assistant pipeline, with Moonshine for listening, small language models and Piper for speech, on three edge devices. It reports speed, energy use and accuracy on thermostat and washing-machine tasks."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1016/j.sysarc.2026.103981" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: decentralized-haos
+  title: "Decentralized HAOS: A Distributed Control Model for Multiple Home Assistant OS Instances"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Rosa, A. C. F., Pires, V. B., Roman, M., et al."
+  venue: "Lecture notes in networks and systems"
+  institution: "Universidade de Brasília"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Proposes a distributed control model that links several Home Assistant OS instances, with a controller that coordinates them centrally and lets them be managed remotely."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1007/978-3-032-34571-4_30" }
+  notes: "Reviewer confirmed from the publisher's abstract (paywalled; no OpenAlex abstract)."
+
+- id: design-evaluation-web-app-foster-energy
+  title: "Design and evaluation of a web app to foster energy saving in families"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Konduri, S."
+  venue: "University of Vienna"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Designs and evaluates a web app that helps families, including multi-generation households, understand their energy use and save energy. Home Assistant runs the smart home system behind it."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.25365/thesis.81342" }
+  notes: "Master's thesis. Reviewer confirmed the thesis is in English; only the abstract is German. Master's thesis."
+
+- id: design-implementation-mattress-temperature-conditioning
+  title: "Design and implementation of mattress temperature conditioning"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Lachman, I."
+  venue: "Brno University of Technology Digital Library (Brno University of Technology)"
+  institution: "Brno University of Technology"
+  fields: [systems-software]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "A master's thesis that designs a module to heat and cool a mattress. The controller runs ESPHome and connects to Home Assistant, which also supplies room temperature history used to set the requirements."
+  links:
+    - { label: "Thesis", url: "https://dspace.vut.cz/bitstreams/e84902e3-a9a9-4f9a-86da-b8e77a8d4d2f/download" }
+  notes: "Master's thesis. Full text: 4 exact mentions in the body."
+
+- id: design-voice-care-personalized-voice-technology
+  title: "Design of Voice of Care Using Personalized Voice Technology for Emotional Support and Digital Well‐Being"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Selvakumar, V. S., Saranya, J. D., Dinesh, K., et al."
+  venue: "Wiley eBooks"
+  institution: "Rajalakshmi Engineering College"
+  fields: [health-care, voice-language]
+  uses: [home-assistant, piper]
+  openAccess: true
+  summary: "Describes Voice of Care, an offline voice companion on two Raspberry Pis that offers emotional support to lonely people. It runs Whisper for listening, a local language model and Piper for a personalised voice."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1002/9781394390274.ch16" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used. Chapter in an academic publisher's volume."
+
+- id: designing-evaluating-socially-assistive-robots
+  title: "Designing and Evaluating Socially Assistive Robots: The Role of Language Choice in Dementia Care Scenarios"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Düzgün, A. L., Vrecar, R., Dobrosovestnova, A."
+  venue: "Nordic Conference on Human-Computer Interaction"
+  institution: "TU Wien"
+  fields: [health-care, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Studies how bilingual Turkish-German older adults respond to a social robot for reminiscence that can speak either language. The robot's speech is generated with Piper text-to-speech."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3821402.3830142" }
+  notes: "Full text: 4 exact mentions in the body."
+
+- id: edge-personalized-energy-optimization-smart-plug
+  title: "Edge-based personalized energy optimization using smart plug with micro-moments driven recommender system"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Hossen, M. M., Sayed, A. N., Nhlabatsi, A., et al."
+  venue: "Internet of Things"
+  institution: "Qatar University"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Develops a smart plug system that gives people timely, personalised tips to save energy, with the learning done on local devices to protect privacy. Home Assistant connects the sensors and appliances."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1016/j.iot.2026.102092" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: eldermate
+  title: "ElderMate: A Privacy-Preserving Offline Edge-AI Assistive Healthcare Monitoring System for Elderly Aging-in-Place on Raspberry Pi 5"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Kumar, S. A., Pabboju, S., Kiranmaie, P."
+  venue: "International Journal of Drug Delivery Technology"
+  institution: "Chaitanya Bharathi Institute of Technology"
+  fields: [health-care, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Presents ElderMate, an offline home monitoring system for older people living alone that detects falls, reminds them about medication and raises alerts. It runs on a Raspberry Pi and talks to the user with Vosk and Piper."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.25258/ijddt.16.42s.103" }
+  notes: "Full text: 13 exact mentions in the body."
+
+- id: eliminating-cold-start-smart-home-lighting
+  title: "Eliminating Cold Start in Smart Home Lighting Control via Digital Twin-Trained Q-Learning"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Sladcik, T., Habiballa, H."
+  venue: "Automation"
+  institution: "University of Ostrava"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Trains a smart lighting controller in a digital twin before deployment, so it works well from day one instead of learning from scratch. The real-world test ran on a Raspberry Pi 5 with Home Assistant controlling a Philips Hue bulb."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/automation7050148" }
+  notes: "Full text: 12 exact mentions in the body."
+
+- id: enabling-personal-dataflow-sovereignty-bolt-data
+  title: "Enabling Personal Dataflow Sovereignty via Bolt-on Data Escrow"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Zhu, Z.-R., Fernandez, R. C."
+  venue: "Proceedings on Privacy Enhancing Technologies"
+  institution: "University of Chicago"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Proposes a data escrow that gives people fine control over how apps use their personal data, added to existing apps without rewriting them. Home Assistant is one of the open-source apps used to test it."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.56553/popets-2026-0147" }
+  notes: "Full text: 6 exact mentions in the body. Borderline: Home Assistant is one of several apps in the evaluation."
+
+- id: enabling-research-extensions-matter-custom-clusters
+  title: "Enabling Research Extensions in Matter via Custom Clusters"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Mangar, R., Chandler, J., Pierson, T. J., et al."
+  venue: "Workshop on Security and Privacy in Standardized IoT (SDIoTSec)"
+  institution: "Dartmouth College"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Shows how researchers can add custom features to the Matter smart home standard without breaking compatibility. The authors test it with a real controller, Home Assistant, describing the small changes needed in its Matter integration."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.14722/sdiotsec.2026.23064" }
+  notes: "Full text: 16 exact mentions in the body. Workshop paper (SDIoTSec, co-located with NDSS)."
+
+- id: evaluating-effectiveness-mqtt-fuzzing-tools-mutation
+  title: "Evaluating the Effectiveness of MQTT Fuzzing Tools Using Mutation Testing in IoT Systems"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Alves, D. G., Garcia, B. E. R., Delamaro, M. E., et al."
+  venue: "Simpósio Brasileiro de Testes de Software Sistemático e Automatizado (SAST)"
+  institution: "Universidade de São Paulo"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Compares tools that fuzz-test MQTT messaging in smart home systems, measuring how many seeded faults each one catches rather than just crashes. The experiment runs against a Home Assistant installation used as a realistic IoT platform."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.5753/sast.2026.32373" }
+    - { label: "Free copy", url: "https://sol.sbc.org.br/index.php/sast/article/download/45878/45639" }
+  notes: "Full text: 51 exact mentions in the body."
+
+- id: gamifying-sustainability
+  title: "Gamifying Sustainability: Harnessing AI and IoT for Human-Centric Energy Efficiency"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Teixeira, R. N."
+  venue: "Portuguese National Funding Agency for Science, Research and Technology (RCAAP Project by FCT)"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A master's thesis that builds GreenShift, a Home Assistant component that turns energy monitoring into a game with personalised challenges and AI-timed nudges. Tests in labs and homes showed real cuts in power use when people engaged with it."
+  links:
+    - { label: "Thesis", url: "https://repositorio-aberto.up.pt/bitstream/10216/175500/2/786388.pdf" }
+  notes: "Master's thesis. Full text: 11 exact mentions in the body. Title page states 'Mestrado em Engenharia Informática e Computação' (master's)."
+
+- id: how-energy-consumed-llm-enabled-smart
+  title: "How Energy is Consumed by LLM-enabled Smart Home Assistant Systems on Low-Cost Devices: An Empirical Study"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Velaga, K. S., Mallik, A., Guo, Y."
+  venue: "IEEE Consumer Communications and Networking Conference"
+  institution: "Towson University"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Measures how much time and energy it takes to run language models on cheap devices like the Raspberry Pi for smart home control. The test bed connects the models to Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/ccnc65079.2026.11366615" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: implementation-performance-optimization-piper-tts-text
+  title: "Implementation and Performance Optimization of Piper-TTS as a Text to Speech Module on a Raspberry Pi-Based Help Desk Assistant"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Rifki, M., Soelistijorini, R., Ruswiansari, M."
+  venue: "International Electronics Symposium (IES)"
+  institution: "Politeknik Elektronika Negeri Surabaya"
+  fields: [systems-software, voice-language]
+  uses: [piper]
+  summary: "Fine-tunes an Indonesian voice for Piper and optimises it as the speech module of a help-desk assistant on a Raspberry Pi 5, reporting the gains in speed and quality."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/ies71033.2026.11702572" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: increasing-energy-efficiency-smart-homes-home
+  title: "Increasing Energy Efficiency in Smart Homes using Home Assistant"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Vikalo, E., Jokić, D. Ž."
+  venue: "Conference on Human System Interactions"
+  institution: "International Burch University"
+  fields: [energy]
+  uses: [home-assistant]
+  summary: "Brings solar inverter data into the home locally with a custom circuit board, instead of relying on the manufacturer's cloud. Home Assistant uses the solar production data so devices can react to it in real time."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/hsi70218.2026.11773184" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: integrated-technologies-care
+  title: "Integrated technologies of care: proof-of-concept study on an integrated physiological and activity monitoring system to enhance independence and care"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Contreras, R., Saied, I., Long-fei, C., et al."
+  venue: "Scientific Reports"
+  institution: "University of Edinburgh"
+  fields: [health-care]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A proof-of-concept home monitoring system that combines motion, contact and body sensors to check daily routines and spot health warning signs. Home Assistant collects the data from the home sensors."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1038/s41598-026-62544-w" }
+  notes: "Full text: 5 exact mentions in the body."
+
+- id: iot-system-residential-energy-monitoring-management
+  title: "IoT System for Residential Energy Monitoring and Management: Design and Implementation"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Martínez-Morocho, J. D., Cuzme-Rodríguez, F., Domínguez-Limaico, M."
+  venue: "Journal of the Brazilian Computer Society"
+  institution: "Universidad Técnica del Norte"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Designs a home energy monitoring and control system with ESP32 meters at the appliance and circuit level, tied together through MQTT and Home Assistant. It was run in two households for several months to measure the savings."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.5753/jbcs.2026.6008" }
+    - { label: "Free copy", url: "https://journals-sol.sbc.org.br/index.php/jbcs/article/download/6008/3989" }
+  notes: "Full text: 9 exact mentions in the body."
+
+- id: iot-enabled-smart-laboratory-system-safety
+  title: "IoT-Enabled Smart Laboratory System for Safety and Energy Optimization in Academic Environments"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Alcantara, C. A., Tose, T. B., Reynoso, J. D."
+  venue: "International Conference on Robotics, Control and Automation (ICRCA)"
+  institution: "Colegio de San Juan de Letran"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Builds a monitoring and control system for a university classroom and laboratory, with sensors for temperature, gas and power on ESP32 boards. A locally hosted Home Assistant and Node-RED setup handles real-time monitoring and automation."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/icrca69813.2026.11749940" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: itantra
+  title: "iTantra: Indian Multilingual TTS & STT Aided Neural Transceiver Radio Access for Low Bitrate"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Tamhan, P., Jagtap, O., Padwal, A., et al."
+  venue: "International Journal for Research in Applied Science and Engineering Technology"
+  institution: "International Institute of Information Technology"
+  fields: [voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Presents iTantra, an offline Android app for voice calls in several Indian languages over low-bitrate links, for disasters in remote areas. Speech is generated on the device with Piper and eSpeak, with no external services."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.22214/ijraset.2026.84999" }
+  notes: "Reviewer confirmed the system uses Piper for speech synthesis."
+
+- id: location-enhanced-information-flow-home-automations
+  title: "Location-Enhanced Information Flow for Home Automations"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "McCall, M., Weinshel, B., Cai, K., et al."
+  venue: "Proceedings on Privacy Enhancing Technologies"
+  institution: "Colorado State University"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Studies how people feel about home automations that use location data, using participants' real automations from Amazon Alexa, Google Home and Home Assistant. Concern varied by platform, with Home Assistant automations raising fewer worries."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.56553/popets-2026-0018" }
+    - { label: "Free copy", url: "https://petsymposium.org/popets/2026/popets-2026-0018.pdf" }
+  notes: "Full text: 18 exact mentions in the body."
+
+- id: metauniversity-implementation
+  title: "Metauniversity Implementation: An AI-Enabled Multi-User Learning Environment"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Ipalakova, M., Daineko, Y. A., Tsoy, D., et al."
+  venue: "Computers"
+  institution: "International Information Technologies University"
+  fields: [voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Describes a shared virtual-reality learning space with AI tutors that listen and speak. Speech runs locally, with Whisper for recognition, an Ollama language model and Piper for speech synthesis, and was tested in a classroom pilot."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/computers15100735" }
+  notes: "Full text: 8 exact mentions in the body."
+
+- id: milp-appliance-scheduling-energy-cost-optimization
+  title: "MILP-Based Appliance Scheduling for Energy and Cost Optimization in IoT-Enabled Smart Home Systems"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Dafiq, M. N., Arifiyan, G., Basofi, A., et al."
+  venue: "International Conference on Vocational Education and Electrical Engineering (ICVEE)"
+  institution: "Politeknik Elektronika Negeri Surabaya"
+  fields: [energy]
+  uses: [home-assistant]
+  summary: "Builds a home energy system that uses optimisation to schedule appliances for the lowest cost, based on live data from 17 smart devices. Home Assistant and Smart Life gather the data from the devices in a two-storey house."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/icvee71133.2026.11766423" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: multi-agent-system-intelligent-heating-control
+  title: "Multi-agent System for Intelligent Heating Control: Implementation and Evaluation Using Home Assistant and Neural Networks"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Sladcik, T., Habiballa, H."
+  venue: "Lecture notes in networks and systems"
+  institution: "University of Ostrava"
+  fields: [energy]
+  uses: [home-assistant]
+  summary: "Builds a multi-agent system for heating control in homes, with three agents (manual, seasonal and neural network) running inside Home Assistant, and evaluates how well it performs."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1007/978-3-032-20746-3_10" }
+  notes: "Reviewer confirmed from the publisher's abstract (paywalled; no OpenAlex abstract)."
+
+- id: multi-layered-defense-proxy-home-assistant
+  title: "Multi-Layered Defense Proxy for Home Assistant utilizing Large Language Models"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Yazdani, F., Antezana, S., Gebril, M., et al."
+  venue: "IEEE International Conference on AI in Cybersecurity (ICAIC)"
+  institution: "George Mason University"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  summary: "Studies prompt injection attacks on AI assistants that can control physical devices in the home, and proposes a proxy that uses language models to catch them before they reach Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/icaic67076.2026.11395708" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: next-generation-smart-home-through-digital
+  title: "Next Generation Smart Home through Digital Twin Adoption on ZEN Experimental Living Unit"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Tachakitkachorn, T., Thawanapong, C., Boonsukachote, P., et al."
+  venue: "IOP Conference Series Earth and Environmental Science"
+  institution: "Chulalongkorn University"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Describes a smart home test house in Thailand built around a digital twin, so data from the home can be used for energy and living-quality analysis. Home Assistant Core is the hub that collects data from the devices."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1088/1755-1315/1629/1/012001" }
+    - { label: "Free copy", url: "https://iopscience.iop.org/article/10.1088/1755-1315/1629/1/012001/pdf" }
+  notes: "Full text: 2 exact mentions in the body."
+
+- id: optimization-internet-things-solar-panel-cooling
+  title: "Optimization of Internet of Things-Based Solar Panel Cooling Using Splash Fill"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Rochim, A., Siregar, M. R. T., Yuana, R."
+  venue: "International Journal of Advanced Multidisciplinary"
+  institution: "National Institute of Science and Technology"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Designs an automatic water-cooling system for solar panels that keeps them efficient on hot days. Sensors report over MQTT, and Home Assistant shows the system status in real time and drives the cooling."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.38035/ijam.v5i2.2279" }
+    - { label: "Free copy", url: "https://greenpub.org/IJAM/article/download/2279/1550" }
+  notes: "Full text: 7 exact mentions in the body."
+
+- id: performance-analysis-modular-framework-edge-generative
+  title: "Performance Analysis of a Modular Framework for Edge-Based Generative Conversational AI"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Mazzone, L., Pau, D. P."
+  venue: "Applied Sciences"
+  institution: "STMicroelectronics (Italy)"
+  fields: [systems-software, voice-language]
+  uses: [piper]
+  openAccess: true
+  summary: "Measures how well a modular conversational AI pipeline runs on edge hardware, comparing speech recognition, language and text-to-speech models. Piper is the baseline speech synthesis engine for low-power CPUs, and the paper reports its speed and quality."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/app16168157" }
+  notes: "Full text: 33 exact mentions in the body."
+
+- id: privacy-focused-aiot
+  title: "Privacy-Focused AIoT: Implementing an Offline Voice Assistant for Smart Building Management Using Local LLMs"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Wibowo, F., Suheri, S., Faisal, F., et al."
+  venue: "Jurnal Teknologi Terapan G-Tech"
+  institution: "Politeknik Negeri Pontianak"
+  fields: [systems-software, voice-language]
+  uses: [home-assistant, piper]
+  openAccess: true
+  summary: "Builds a fully offline voice assistant for running a smart building, with local speech recognition, a local language model and Piper for speech. Devices are controlled through Home Assistant, so nothing depends on the cloud."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.70609/g-tech.v10i2.9342" }
+    - { label: "Free copy", url: "https://ejournal.uniramalang.ac.id/g-tech/article/download/9342/5621" }
+  notes: "Full text: 43 exact mentions in the body."
+
+- id: privacy-preserving-edge-iot-architecture-physiology
+  title: "Privacy-Preserving Edge-IoT Architecture for Physiology-Aware Smart Homes: Design and Implementation"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Shah, S., Fernandes, J. M., Santos, J. P., et al."
+  venue: "International Conference in Electronic Engineering & Information Technology (EEITE)"
+  institution: "University of Aveiro"
+  fields: [health-care]
+  uses: [home-assistant]
+  summary: "Designs a privacy-first smart bedroom whose lights adapt to whether the occupant is asleep, using heart rate and motion from a wearable. Sleep state is worked out on the phone and sent over MQTT to Home Assistant, which controls the lights locally."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/eeite69609.2026.11679604" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
 - id: home-assistant-automation-configuration-challenges
   title: "Programming of Automation Configuration in Smart Home Systems: Challenges and Opportunities"
   year: 2026
@@ -20,6 +866,71 @@
   links:
     - { label: "Paper", url: "https://doi.org/10.1145/3731450" }
     - { label: "Free copy", url: "https://hdl.handle.net/10919/136951" }
+
+- id: prometeo
+  title: "PROMETEO: Infrastructure Remote-Control and Geophysical Monitoring System of the INGV Osservatorio Vesuviano"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Benincasa, A., Caputo, A. C., Liguoro, F., et al."
+  venue: "Sensors"
+  institution: "Istituto Nazionale di Geofisica e Vulcanologia"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Describes PROMETEO, the remote-control and monitoring system for the instruments of the Vesuvius volcano observatory. Field devices feed diagnostic data into Home Assistant, which acts as the central hub for dashboards, alerts and remote control of the monitoring network."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/s26185914" }
+  notes: "Full text: 20 exact mentions in the body."
+
+- id: real-time-iot-energy-monitoring-system
+  title: "Real-time IoT-based energy monitoring system for residential applications"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Suhaimey, M. Z., Amin, M. R. R. M., Ghaffar, A. N. A."
+  venue: "IET conference proceedings."
+  institution: "Universiti Malaysia Pahang Al-Sultan Abdullah"
+  fields: [energy]
+  uses: [home-assistant]
+  summary: "Designs a home energy monitor that measures each electrical circuit separately with ESP32 boards and custom current clamps. Readings travel over MQTT to a Home Assistant dashboard."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1049/icp.2026.2504" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: repurposing-seized-tv-boxes-single-board
+  title: "Repurposing of Seized TV Boxes for Single Board Computing: Implementation of IoT Servers Based on Edge Computing with Open-Source Software"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Teixeira, E. A., Silva, A. L. D., Alves, L. L., et al."
+  venue: "Symposium on Internet of Things (SIoT)"
+  institution: "Instituto Federal Goiano"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Shows how seized TV boxes can be reflashed with Linux and reused as low-power home servers. Home Assistant runs on them in Docker and controls IP cameras, using about 1.4 watts."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/siot73132.2026.11792496" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: reverse-engineering-proprietary-protocols-unified-smart
+  title: "Reverse Engineering Proprietary Protocols for a Unified Smart Thermostat in an Open-Source Iot Ecosystem"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Aydemir, K., Sever, M."
+  venue: "IEEE Mediterranean Electrotechnical Conference (MELECON)"
+  institution: "TOBB University of Economics and Technology"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Reverse-engineers the encrypted protocol of some heat pumps and replaces a Bluetooth thermometer's cloud firmware, so both work locally. The result is a single smart thermostat running entirely inside Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/melecon64486.2026.11418867" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
 
 - id: wozniak-2026-dashboard-fault-diagnosis
   title: "Room for Improvement: Dashboard Design Approaches to Facilitate Smart Home Fault Diagnosis"
@@ -39,6 +950,272 @@
     - { label: "Paper", url: "https://doi.org/10.1145/3810237" }
   notes: "Featured candidate from the copy doc (Annika). Mentions Home Assistant four times; confirm how it was used (Step 2). IMWUT is pre-approved."
 
+- id: security-robustness-analysis-encrypted-communications-local
+  title: "SECURITY AND ROBUSTNESS ANALYSIS OF ENCRYPTED COMMUNICATIONS FOR LOCAL HOME AUTOMATION: ESPHOME NATIVE API AND MQTT OVER TLS 1.3"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Gonzalez-Escarpeta, C. R., Sanchez, J. E. G., Reyes, J. A. H., et al."
+  venue: "International Journal of Network Security & Its Applications"
+  institution: "Tecnológico Nacional de México"
+  fields: [security-monitoring]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "Compares two ways ESP microcontrollers can talk to Home Assistant on a local network, MQTT over TLS 1.3 and the ESPHome Native API, and tests how each holds up against man-in-the-middle attacks."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.5121/ijnsa.2026.18502" }
+  notes: "Full text: 107 exact mentions in the body."
+
+- id: smart-home-implementation-home-assistant-platform
+  title: "Smart Home Implementation with Home Assistant Platform in Modern Housing"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Hidayat, A. T. A., Rasyid, M. U. H. A., Nadhori, I. U., et al."
+  venue: "Journal of Advanced Vocational Information and Communication Technology"
+  institution: "Politeknik Elektronika Negeri Surabaya"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Builds and tests a smart home system for a modern Indonesian home, with ESP32 sensors for temperature, humidity, motion and energy use. Home Assistant is the platform that ties the devices together for monitoring and control."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.52158/javict.v1i1.1482" }
+    - { label: "Free copy", url: "https://journal.isas.or.id/index.php/javict/article/download/1482/502" }
+  notes: "Full text read in an earlier pass. Full text read in an earlier pass: Home Assistant 58 times, in the implementation."
+
+- id: smart-surface
+  title: "Smart Surface: A Multifunctional IoT-Based Smart Table"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Udale, J., Kakade, M., Sontakke, M."
+  venue: "CRC Press eBooks"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Designs a smart table with wireless charging, ambient lighting and offline voice control of home devices. It is built on a Raspberry Pi running Home Assistant OS with ESP32 boards, and responds to commands in about a second."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1201/9781003798514-35" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used. Chapter in an academic publisher's volume."
+
+- id: speaking-edge
+  title: "Speaking to the Edge: Conversational Control of Smart Home IoT with LLM AI and Deterministic Gatekeeping"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Hewitt, M."
+  venue: "White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York)"
+  institution: "University of Sheffield"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "A doctoral thesis on controlling smart homes by talking to a language model running locally, with rule-based checks so commands stay safe. It uses the Home Assistant intents collection as training and test data for smart home commands."
+  links:
+    - { label: "Thesis", url: "https://etheses.whiterose.ac.uk/id/eprint/39147/1/Hewitt%2CMary%2CThesis.pdf" }
+  notes: "PhD thesis. Full text: 10 exact mentions in the body."
+
+- id: speech-synthesis-piper-tts-resource-constrained
+  title: "Speech Synthesis Using Piper TTS on a Resource-Constrained Edge Device"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Jankowski, M., Cetnarowicz, D., Świetlicka, A."
+  venue: "International Conference on Computational Problems of Electrical Engineering (CPEE)"
+  institution: "Poznań University of Technology"
+  fields: [systems-software, voice-language]
+  uses: [piper]
+  summary: "Trains a Polish voice for Piper and measures how fast it speaks on a desktop computer and a Raspberry Pi 3B+, to see whether local speech synthesis is practical on small devices."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/cpee71962.2026.11768087" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: standalone-vr-softskill-enhancement-tracking-system
+  title: "Standalone VR-Based Softskill Enhancement and Tracking System"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Deborah, S. A., Mirnalinee, T. T., V, S., et al."
+  venue: "International Conference on Communications and Signal Processing (ICCSP)"
+  institution: "Sri Sivasubramaniya Nadar College of Engineering"
+  fields: [voice-language]
+  uses: [piper]
+  summary: "Builds a private VR platform for practising soft skills and technical interviews with AI characters, all run on-site. Speech uses Whisper and Piper, with no cloud services."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/iccsp68173.2026.11539666" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: systems-level-attack-surface-edge-agent
+  title: "Systems-Level Attack Surface of Edge Agent Deployments on IoT"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Zhan, Z., Li, K., Zhang, Y., et al."
+  venue: "Workshop on Machine Learning and Systems (EuroMLSys)"
+  institution: "Imperial College London"
+  fields: [security-monitoring]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Analyses the security risks of running AI agents on home devices rather than in the cloud, using a home-automation testbed where the agents control devices through Home Assistant. It names five weak points and ways to measure them."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1145/3805621.3807636" }
+    - { label: "Free copy", url: "https://arxiv.org/pdf/2602.22525" }
+  notes: "Full text: 9 exact mentions in the body. Workshop paper (EuroMLSys)."
+
+- id: target-recommendation-home-ai-device-control
+  title: "Target Recommendation for Home AI Device Control Commands"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Madhumitha, S. D., Jeevakumari, S. A. A., Mandal, A. K."
+  venue: "International Conference on Recent Advances in Electrical, Electronics, Ubiquitous Communication, and Computational Intelligence (RAEEUCCI)"
+  institution: "Vellore Institute of Technology University"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Builds a smart home command system that uses a language model grounded in a live map of the home's devices, to handle vague or compound spoken commands. A proof of concept controls devices through Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/raeeucci67649.2026.11504948" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: stoolie
+  title: "The Stoolie: a framework for retrofitting binary-state reporting using hardware interrupts to build a purpose- agnostic and low-power ESPHome node"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: thesis
+  authors: "Rueda, A."
+  venue: "O2 - Repositori Institucional (Universitat Oberta de Catalunya)"
+  fields: [systems-software]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "A master's thesis that designs the Stoolie, a cheap, low-power sensor that reports whether an appliance is on or off. It runs ESPHome on an ESP32 and plugs into Home Assistant, so existing appliances can be monitored without replacing them."
+  links:
+    - { label: "Thesis", url: "https://hdl.handle.net/10609/154911" }
+  notes: "Master's thesis. Full text: 117 exact mentions in the body."
+
+- id: semantic-interoperability-scalable-building-grid-services
+  title: "Towards Semantic Interoperability for Scalable Building-to-Grid Services: A Multi-Layer Annotation Pipeline for SCADA Hierarchies"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Abtahi, M., Athienitis, A."
+  venue: "eSim: IBPSA-Canada Building Simulation Conference (eSim)"
+  institution: "Concordia University"
+  fields: [energy]
+  uses: [home-assistant, esphome]
+  openAccess: true
+  summary: "Turns the raw device data from Home Assistant into a structured knowledge graph using building ontologies, so smart buildings can take part in grid services through digital twins."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.26868/31114504.2026.268" }
+    - { label: "Free copy", url: "https://publications.ibpsa.org/proceedings/esim/2026/papers/esim2026_268.pdf" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: vipsn-knob
+  title: "ViPSN-Knob: A Motion-Powered Wireless Sensing Knob With Instant Visual Feedback for Continuous Adjustment"
+  year: 2026
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Wang, Y., 孟金涛, Liang, J."
+  venue: "IEEE Sensors Journal"
+  institution: "ShanghaiTech University"
+  fields: [systems-software]
+  uses: [home-assistant]
+  summary: "Presents a battery-free knob that powers itself from being pressed and turned, and shows the user when its signal has been received. It is demonstrated controlling a smart home through Home Assistant."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/jsen.2026.3739792" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
+
+- id: personalized-formal-verification-framework-monitoring-activities
+  title: "A Personalized Formal Verification Framework for Monitoring Activities of Daily Living of Older Adults Living Independently in Their Homes"
+  year: 2025
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Contreras, R., Smola, F., Farič, N., et al."
+  venue: "IEEE Sensors Journal"
+  institution: "University of Edinburgh"
+  fields: [health-care]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Proposes a formal checking method that monitors the daily activities of older adults living alone and flags unusual patterns. In the field deployment, Home Assistant collected data from Zigbee sensors in participants' homes."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.1109/jsen.2025.3635781" }
+  notes: "Full text: 3 exact mentions in the body. Section labels in the extracted text are wrong; snippets show Home Assistant used for data acquisition in the deployment."
+
+- id: privacy-preserving-edge-data-aggregation-tinyml
+  title: "A privacy-preserving edge data aggregation for Tinyml energy forecasting in households"
+  year: 2025
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Komin, A., Boiko, O."
+  venue: "Technology audit and production reserves"
+  institution: "Sumy State University"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Proposes a home energy system that forecasts use with small machine-learning models on local devices, so private data stays in the home. The prototype is built around Home Assistant as its core component."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.15587/2706-5448.2025.339277" }
+  notes: "Full text: 6 exact mentions in the body."
+
+- id: development-control-monitoring-system-energy-off
+  title: "Development of Control and Monitoring System for Energy in Off-Grid Mini Solar Power Plants"
+  year: 2025
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Iskandar, Triwinarko, A., Istardi, D."
+  venue: "Advances in engineering research/Advances in Engineering Research"
+  institution: "Politeknik Negeri Batam"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Builds a monitoring and control system for small off-grid solar plants, sending LoRa telemetry through a Raspberry Pi gateway to Home Assistant for dashboards, alerts and automations, so the plants can be watched in places with poor connectivity."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.2991/978-94-6463-982-7_11" }
+    - { label: "Free copy", url: "https://www.atlantis-press.com/article/126020096.pdf" }
+  notes: "Full text: 8 exact mentions in the body."
+
+- id: hl7-fhir-open-source-framework-real
+  title: "HL7 FHIR-Based Open-Source Framework for Real-Time Biomedical Signal Acquisition and IoMT Interoperability"
+  year: 2025
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Adochiei, F., Țoi, F.-A., Adochiei, I.-R., et al."
+  venue: "Applied Sciences"
+  institution: "Academia Oamenilor de Știință din România"
+  fields: [health-care]
+  uses: [home-assistant]
+  openAccess: true
+  summary: "Presents an open-source framework that collects biomedical signals from ESP32 sensor nodes and shares them in the HL7 FHIR health-data standard. Home Assistant runs as the middleware layer that receives, stores and displays the readings in real time."
+  links:
+    - { label: "Paper", url: "https://doi.org/10.3390/app152312803" }
+  notes: "Full text: 17 exact mentions in the body."
+
+- id: modular-iot-office
+  title: "Modular IoT Architecture for Monitoring and Control of Office Environments Based on Home Assistant"
+  year: 2025
+  added: 2026-11-04
+  collectedFrom: curated
+  type: paper
+  venue: "IoT (MDPI)"
+  fields: [systems-software]
+  uses: [home-assistant]
+  openAccess: true
+  links:
+    - { label: "Paper", url: "https://www.mdpi.com/2624-831X/6/4/69" }
+  notes: "Screening 2026-11-19: Step 2 passes (Home Assistant is the core automation engine). Step 4: MDPI journal, check SJR quartile for IoT (ISSN 2624-831X)."
+
 - id: smart-building-energy-management-diagnosis
   title: "On-line diagnosis and optimization of Energy Management Systems for Smart Buildings"
   year: 2025
@@ -56,22 +1233,22 @@
     - { label: "Paper", url: "https://doi.org/10.70675/d1b10ab7zb852z4f2czb462zecde768def81" }
     - { label: "Free copy", url: "https://www.theses.fr/2025CYUN1413/document" }
 
-- id: plegma-dataset
-  title: "The Plegma dataset: Domestic appliance-level and aggregate electricity demand with metadata from Greece"
-  year: 2024
-  added: 2026-11-04
-  collectedFrom: curated
-  type: dataset
-  authors: "Athanasoulias, S., Guasselli, F., Doulamis, N., et al."
-  venue: "Scientific Data (Nature)"
+- id: smart-greenhouse-climate-control-real-time
+  title: "Smart greenhouse climate control with real-time fault detection and energy-aware automation"
+  year: 2025
+  added: 2026-11-26
+  collectedFrom: automated
+  type: paper
+  authors: "Zeping, L., Abdullah, N., Ishak, M. K."
+  venue: "Smart Agricultural Technology"
+  institution: "Universiti Sains Malaysia"
   fields: [energy]
-  uses: [home-assistant]
+  uses: [home-assistant, esphome]
   openAccess: true
-  featured: 1
-  summary: "A public dataset of domestic electricity demand with metadata, collected with Home Assistant."
+  summary: "Designs a low-cost greenhouse climate controller with Zigbee sensors, ESP32 boards configured with ESPHome, and Home Assistant for monitoring and automation. A test greenhouse showed it kept temperatures steady and caught faults."
   links:
-    - { label: "Paper", url: "https://doi.org/10.1038/s41597-024-03208-0" }
-  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Home Assistant; confirm in the full text that it was used to collect the data. Step 4: Scientific Data, check SJR quartile."
+    - { label: "Paper", url: "https://doi.org/10.1016/j.atech.2025.101707" }
+  notes: "Abstract only: no open copy to count mentions; abstract says the product is used."
 
 - id: oulefki-2025-mcp-home-assistant
   title: "Sustainable Energy Management via Integrating Model Context Protocol with Home Assistant"
@@ -90,19 +1267,19 @@
     - { label: "Paper", url: "https://doi.org/10.1109/isgtmiddleeast65737.2025.11314322" }
   notes: "Featured candidate from the copy doc. Step 4: check CORE rank for ISGT Middle East."
 
-- id: modular-iot-office
-  title: "Modular IoT Architecture for Monitoring and Control of Office Environments Based on Home Assistant"
-  year: 2025
+- id: chatgpt-visually-impaired
+  title: "ChatGPT for Visually Impaired and Blind"
+  year: 2024
   added: 2026-11-04
   collectedFrom: curated
   type: paper
-  venue: "IoT (MDPI)"
-  fields: [systems-software]
-  uses: [home-assistant]
-  openAccess: true
+  venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
+  fields: [accessibility, voice-language]
+  uses: [piper]
+  summary: "Uses Piper, our text-to-speech system."
   links:
-    - { label: "Paper", url: "https://www.mdpi.com/2624-831X/6/4/69" }
-  notes: "Screening 2026-11-19: Step 2 passes (Home Assistant is the core automation engine). Step 4: MDPI journal, check SJR quartile for IoT (ISSN 2624-831X)."
+    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463430" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
 
 - id: schenkluhn-2024-connecting-home
   title: "Connecting Home: Human-Centric Setup Automation in the Augmented Smart Home"
@@ -137,19 +1314,22 @@
     - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463261" }
   notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
 
-- id: chatgpt-visually-impaired
-  title: "ChatGPT for Visually Impaired and Blind"
+- id: plegma-dataset
+  title: "The Plegma dataset: Domestic appliance-level and aggregate electricity demand with metadata from Greece"
   year: 2024
   added: 2026-11-04
   collectedFrom: curated
-  type: paper
-  venue: "2024 International Conference on Artificial Intelligence in Information and Communication (ICAIIC)"
-  fields: [accessibility, voice-language]
-  uses: [piper]
-  summary: "Uses Piper, our text-to-speech system."
+  type: dataset
+  authors: "Athanasoulias, S., Guasselli, F., Doulamis, N., et al."
+  venue: "Scientific Data (Nature)"
+  fields: [energy]
+  uses: [home-assistant]
+  openAccess: true
+  featured: 1
+  summary: "A public dataset of domestic electricity demand with metadata, collected with Home Assistant."
   links:
-    - { label: "IEEE Xplore", url: "https://ieeexplore.ieee.org/abstract/document/10463430" }
-  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Piper; confirm in the full text. Step 4: check CORE rank for ICAIIC."
+    - { label: "Paper", url: "https://doi.org/10.1038/s41597-024-03208-0" }
+  notes: "Screening 2026-11-19: Step 2: abstract doesn't mention Home Assistant; confirm in the full text that it was used to collect the data. Step 4: Scientific Data, check SJR quartile."
 
 - id: wozniak-2023-inhabiting-interconnected-spaces
   title: "Inhabiting Interconnected Spaces: How Users Shape and Appropriate Their Smart Home Ecosystems"
