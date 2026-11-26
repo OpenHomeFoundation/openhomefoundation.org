@@ -74,3 +74,57 @@ export function blogPosting(post: Post) {
     isPartOf: { "@id": WEBSITE_ID },
   };
 }
+
+interface ResearchWork {
+  title: string;
+  description?: string;
+  date: Date;
+  authors: string[];
+  doi?: string;
+  url?: string;
+  venue?: string;
+}
+
+const person = (name: string) => ({ "@type": "Person", name });
+
+export function dataset(work: ResearchWork & { license?: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: work.title,
+    description: work.description ?? work.title,
+    datePublished: work.date.toISOString().slice(0, 10),
+    creator: work.authors.length > 0 ? work.authors.map(person) : publisher,
+    publisher,
+    ...(work.doi ? { identifier: `https://doi.org/${work.doi}` } : {}),
+    ...(work.url ? { url: absolute(work.url) } : {}),
+    isAccessibleForFree: true,
+  };
+}
+
+export function scholarlyArticle(work: ResearchWork) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    headline: work.title,
+    ...(work.description ? { description: work.description } : {}),
+    datePublished: work.date.toISOString().slice(0, 10),
+    author: work.authors.map(person),
+    ...(work.doi ? { sameAs: `https://doi.org/${work.doi}` } : {}),
+    ...(work.url ? { url: absolute(work.url) } : {}),
+    ...(work.venue ? { publication: { "@type": "PublicationEvent", name: work.venue } } : {}),
+  };
+}
+
+export function breadcrumbList(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: absolute(item.url),
+    })),
+  };
+}

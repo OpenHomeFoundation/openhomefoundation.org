@@ -1,0 +1,70 @@
+---
+import Icon from "../Icon.astro";
+import { RESEARCH_EMAIL } from "../../lib/research-links";
+
+interface Props {
+  view: "ours" | "others";
+}
+
+const { view } = Astro.props;
+
+const views = [
+  {
+    key: "ours",
+    href: "/research/",
+    title: "Our research",
+    heading: "Understanding how people live in smart homes",
+    text: "How we work, our projects, and everything we've published",
+    lede: "We study how people live with smart home technology and publish everything we learn – findings, data, and tools – for anyone to use. And because our projects are open source, researchers around the world can build their own studies on them too.",
+  },
+  {
+    key: "others",
+    href: "/research/by-others/",
+    title: "Research by others",
+    heading: "How researchers use our open source projects",
+    text: "Studies and datasets that use Home Assistant and other Open Home Foundation projects",
+    lede: "Because our projects are open source, researchers around the world use them to run their own studies, from energy and privacy to design and accessibility. Here's the published work we know of, and how to add yours.",
+  },
+];
+
+const current = views.find((v) => v.key === view)!;
+---
+
+<div class="bg-gradient-agreement-header">
+  <section class="research-hero">
+    <div class="container">
+      <div class="poly"><Icon name="poly/poly-thin" /></div>
+      <p class="research-eyebrow">Research</p>
+      <h1 class="mb-24">{current.heading}</h1>
+      <p class="research-lede mb-24">{current.lede}</p>
+      <p class="research-hero-contact mb-48">
+        Questions or ideas? Email <a
+          href={`mailto:${RESEARCH_EMAIL}`}
+          class="copy-email"
+          aria-label="Contact the research team - click to copy email address">{RESEARCH_EMAIL}</a
+        >
+      </p>
+      <nav class="research-switch" aria-label="Research sections">
+        {
+          views.map((v) => (
+            <a
+              href={v.href}
+              class:list={["research-switch-card", { current: v.key === view }]}
+              aria-current={v.key === view ? "page" : undefined}
+            >
+              <span>
+                <span class="research-switch-title">{v.title}</span>
+                <span class="research-switch-text">{v.text}</span>
+              </span>
+              {v.key !== view && (
+                <span class="research-switch-icon" aria-hidden="true">
+                  <Icon name="arrow-small" />
+                </span>
+              )}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,187 @@
+# Findings with chart data. Optional per project.
+# `id` doubles as the anchor on the project page: /research/projects/<project>/#<id>
+# Source for all Community Survey 2024 figures: src/content/blog/home-assistant-survey-dataset.md
+
+- id: local-control
+  project: community-survey-2024
+  order: 1
+  headline: "Local control is the number one reason people choose Home Assistant"
+  heading: "Local control comes first"
+  text: "Among people who chose Home Assistant, local control, open source, and powerful customization were the most selected reasons. Most said an interest in technology got them started, often prompted by a move or a renovation."
+  glance: { value: "89.3%", label: "chose Home Assistant for local control" }
+  chart:
+    type: bars
+    title: "Why people choose Home Assistant"
+    subtitle: "Top reasons selected by respondents who chose Home Assistant"
+    items:
+      - { label: "Local control", value: 89.3 }
+      - { label: "Open source", value: 84.0 }
+      - { label: "Powerful customization", value: 81.7 }
+  provenance: { responseType: "Multi-select" }
+
+- id: household-roles
+  project: community-survey-2024
+  order: 2
+  headline: "One person sets up the smart home. Everyone else lives with it."
+  text: "Most respondents share their home with a partner or family. Typically one person configures and maintains the system, while everyone else uses the connected devices directly – a pattern earlier research links to imbalances of control and privacy in the home."
+  glance: { value: "94.4%", label: "of the people who set up and maintain the home are men" }
+  chart:
+    type: numbers
+    items:
+      - { title: "Who sets up and maintains the smart home", value: "94.4%", label: "are men" }
+      - { title: "Their partners", value: "87.4%", label: "are women, and mostly use devices rather than Home Assistant itself" }
+  provenance: {}
+
+- id: first-platform
+  project: community-survey-2024
+  order: 3
+  headline: "Most people arrive at Home Assistant from another platform"
+  heading: "Most people arrive from somewhere else"
+  text: "Only around a third of participants started their smart home with Home Assistant; the rest arrived from other platforms. Understanding that journey helps us see how our community grows."
+  glance: { value: "~⅔", label: "came to Home Assistant from another platform" }
+  chart:
+    type: split
+    title: "First smart home platform"
+    approximate: true
+    parts:
+      - { label: "Started with Home Assistant", value: 33, display: "~⅓" }
+      - { label: "Another platform first", value: 67, display: "~⅔" }
+  provenance: { responseType: "Single choice" }
+
+- id: setups
+  project: community-survey-2024
+  order: 4
+  headline: "The typical respondent runs a substantial setup"
+  chart:
+    type: stats
+    items:
+      - { value: "11–200", label: "devices in a typical setup" }
+      - { value: "75%", label: "live in a home they own" }
+      - { value: "Over half", label: "share their home with a cat or dog" }
+      - { value: "A quarter", label: "speak more than one language at home" }
+  glance: { value: "75%", label: "run their smart home in a home they own" }
+  provenance: {}
+
+# Source for Private smart home study findings: ux-design discussion #26 and the Privacy Study wiki page.
+
+- id: privacy-drives-change
+  project: private-smart-home-study
+  order: 1
+  headline: "Privacy drives people to remove and replace parts of their smart home"
+  heading: "Privacy drives change"
+  text: "Participants described privacy as a key reason for removing devices, replacing services, or leaving whole ecosystems, often after losing trust in cloud accounts or fearing lock-in. What felt acceptable at first was reconsidered later, especially after life events such as a partner moving in or a child being born, or as political news made data practices feel more consequential."
+  quote:
+    text: "The fact that all my life is tied to one single account that I don't have control over [...] started eroding my trust in Google."
+    by: "Participant 5"
+  provenance: {}
+
+- id: privacy-trade-off
+  project: private-smart-home-study
+  order: 2
+  headline: "Privacy is a trade-off, not the goal"
+  text: "People start a smart home for automation, convenience, or monitoring, and align it with privacy later. They rated their own setups as fairly private, but kept some cloud services for convenience and accepted 'good enough' rather than complete control. Privacy work felt effortful and unrewarding, and some worried about being seen as paranoid."
+  glance: { value: "7.2 / 10", label: "average privacy participants gave their own smart home" }
+  quote:
+    text: "The only way to be 100% secure is to be disconnected."
+    by: "Participant 9"
+  chart:
+    type: numbers
+    items:
+      - { title: "How private is your smart home?", value: "7.2 / 10", label: "average self-rating (SD 1.7)" }
+  provenance: { responseType: "Rating, 0–10" }
+
+- id: privacy-strategies
+  project: private-smart-home-study
+  order: 3
+  headline: "People know the strategies, but struggle to keep them up"
+  text: "Participants preferred local setups and open protocols such as Zigbee, avoided Wi-Fi devices where they could, distrusted suspiciously cheap devices, and put smart home devices on separate networks. But everyday needs led to shortcuts, and the advice they gave a friend was more systematic than how they managed their own homes. Starting again from scratch, often when moving house, was a way to regain control."
+  quote:
+    text: "I just need a red light bulb [...] I hooked it into the main network, and it instantly undoes all of the work of having a really private network, and then I forget about it."
+    by: "Participant 4"
+  provenance: {}
+
+- id: privacy-opportunities
+  project: private-smart-home-study
+  order: 4
+  headline: "Where smart home platforms could help"
+  text: "Participants suggested a regular privacy checkup, a clear rating of how private their home is with prioritized steps to improve it, a view of which devices talk to the outside and when, and trusted labels for privacy-respecting devices. Together these point to treating privacy as ongoing maintenance, not a one-time setup decision."
+  provenance: {}
+
+# Source for Dashboard Creator findings: user-research wiki, Dashboard Creation (June 2026).
+
+- id: dashboard-blockers
+  project: dashboard-creator
+  order: 1
+  headline: "Every participant hit the same three blockers"
+  heading: "Three problems stopped everyone"
+  text: "All eight participants couldn't find the Features tab to add controls like brightness, were stopped by raw markdown in the title card, and found nothing when searching for their devices in the card picker. Four also opened a device's info panel by mistake and changed their real lights while thinking they were configuring a card."
+  glance: { value: "8 of 8", label: "couldn't find where to add controls to a card" }
+  chart:
+    type: bars
+    title: "How many participants hit each problem"
+    subtitle: "Out of 8 participants"
+    items:
+      - { label: "Couldn't find the Features tab", value: 100, display: "8/8" }
+      - { label: "Blocked by markdown in the title card", value: 100, display: "8/8" }
+      - { label: "Found nothing browsing by card type", value: 100, display: "8/8" }
+      - { label: "Confused Interactions with Features", value: 87.5, display: "7/8" }
+      - { label: "Started somewhere other than Add card", value: 75, display: "6/8" }
+      - { label: "Tripped up by technical terms", value: 62.5, display: "5/8" }
+      - { label: "Confused by layout controls", value: 62.5, display: "5/8" }
+      - { label: "Changed a real device by mistake", value: 50, display: "4/8" }
+      - { label: "Stuck in the code editor", value: 25, display: "2/8" }
+  provenance: { responseType: "Observed in moderated sessions" }
+
+- id: dashboard-devices-first
+  project: dashboard-creator
+  order: 2
+  headline: "People look for their devices, not card types"
+  text: "Participants searched for 'lamp', 'AC', or 'ceiling light', but the default card picker is organized by card type. Once they found the option to pick by device (By entity), they used it every time and praised it, which suggests a simple change of default."
+  quote:
+    text: "I'm going back to By Entity selection because that always seems to work."
+    by: "Participant 2"
+  provenance: {}
+
+- id: dashboard-learning
+  project: dashboard-creator
+  order: 3
+  headline: "Once past the first card, people learn fast"
+  text: "Despite a rough start, most participants were confident by their third or fourth card, with mistakes and hints dropping to zero. The editor is learnable; the first card is the moment that decides whether someone keeps going."
+  glance: { value: "6 of 8", label: "were building cards confidently by the third or fourth" }
+  quote:
+    text: "Took me a bit on the start but I really like it now."
+    by: "Participant 2"
+  provenance: {}
+
+# Source for Energy management findings: ux-design discussions #21 and #22.
+
+- id: energy-two-uses
+  project: energy-management
+  order: 1
+  headline: "People use energy data in two ways: to act, or just to watch"
+  heading: "Some act on data, while others just monitor"
+  text: "Some people use their energy data to decide what to do, such as charging a battery overnight when power is cheaper. Others monitor for its own sake. For those who act on it, successful energy management ranges from cutting costs to using energy as efficiently as possible."
+  chart:
+    type: stats
+    items:
+      - { value: "84", label: "people surveyed" }
+      - { value: "12", label: "took part in interviews and contextual inquiry" }
+      - { value: "2", label: "design concepts tested" }
+  provenance: {}
+
+- id: energy-savings
+  project: energy-management
+  order: 2
+  headline: "People want lower bills without endless tweaking"
+  text: "Optimizers look for a practical balance between environmental impact and cost, using energy dashboards, heating control, and tariff automations, and avoiding anything that feels unreliable. One of their biggest frustrations is not being able to see exactly how much they've saved, because factors like the weather get in the way."
+  provenance: {}
+
+- id: energy-suggestions
+  project: energy-management
+  order: 3
+  headline: "Charts aren't enough: People want suggestions"
+  text: "In testing, people found comparisons of cost between two periods the most useful, and wanted plain explanations instead of interpreting charts themselves. That led to impact cards, which say what happened, why it matters, and what to do next."
+  quote:
+    text: "System provides the information, but suggests nothing."
+    by: "Feedback from user testing"
+  provenance: {}

@@ -430,7 +430,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 8px;
   margin-top: 64px;
 }
 
@@ -441,6 +441,24 @@
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.pagination-list-wide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .pagination {
+    gap: 16px;
+  }
+
+  .pagination-list-wide {
+    display: flex;
+  }
+
+  .pagination-list-narrow {
+    display: none;
+  }
 }
 
 .pagination-number,
@@ -472,6 +490,8 @@
 }
 
 .pagination-ellipsis {
+  min-width: 20px;
+  padding: 0;
   color: var(--grey-color);
 }
 
