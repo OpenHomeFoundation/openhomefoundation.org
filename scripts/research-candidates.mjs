@@ -3,10 +3,18 @@
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { PRODUCTS, existingKeys, isAlreadyListed, toRecord, workKey } from "../src/lib/research-candidates.mjs";
+import {
+  PRODUCTS,
+  existingKeys,
+  isAlreadyListed,
+  normaliseTitle,
+  toRecord,
+  workKey,
+} from "../src/lib/research-candidates.mjs";
 
 const API = "https://api.openalex.org/works";
-const SELECT = "id,doi,title,display_name,publication_year,publication_date,type,primary_location,authorships,is_retracted,open_access,abstract_inverted_index";
+const SELECT =
+  "id,doi,title,display_name,publication_year,publication_date,type,language,primary_location,locations,authorships,is_retracted,open_access,abstract_inverted_index";
 
 function parseArgs(argv) {
   const args = { firstRun: false, since: null, out: null };
@@ -71,6 +79,7 @@ const byKey = new Map();
 let totalCost = 0;
 
 const queried = [];
+const metrics = new Map();
 
 function buildRecords() {
   let alreadyListed = 0;
@@ -82,6 +91,18 @@ function buildRecords() {
     }
     records.push(toRecord(work, products, today));
   }
+  const published = new Map(
+    records.filter((r) => !r.reason_codes.includes("X-PREPRINT")).map((r) => [normaliseTitle(r.title), r]),
+  );
+  for (const r of records) {
+    if (!r.reason_codes.includes("X-PREPRINT")) continue;
+    const match = published.get(normaliseTitle(r.title));
+    if (!match) continue;
+    r.reason_codes = ["X-DUPLICATE"];
+    r.reviewer_note = `Preprint of ${match.doi ?? match.openalex_id}, which is screened instead.`;
+    match.open_access_url ??= r.open_access_url ?? r.doi;
+  }
+  for (const r of records) if (r.venue_metrics) r.venue_metrics = metrics.get(r.venue_openalex_id) ?? {};
   const rank = (r) => (r.decision === "EXCLUDE" ? 2 : r.matched_in === "title/abstract" ? 0 : 1);
   records.sort((a, b) => rank(a) - rank(b));
   return { records, alreadyListed };
@@ -120,12 +141,41 @@ Wait for the budget to reset before running again.`);
   await save();
 }
 
+async function fetchMetrics(ids) {
+  let cost = 0;
+  for (let i = 0; i < ids.length; i += 50) {
+    const url = new URL("https://api.openalex.org/sources");
+    url.searchParams.set("filter", `openalex_id:${ids.slice(i, i + 50).join("|")}`);
+    url.searchParams.set("select", "id,summary_stats,works_count");
+    url.searchParams.set("per_page", "50");
+    const body = await get(url);
+    cost += body.meta.cost_usd ?? 0;
+    for (const s of body.results) {
+      metrics.set(s.id.replace("https://openalex.org/", ""), {
+        "2yr_mean_citedness": s.summary_stats?.["2yr_mean_citedness"] ?? null,
+        h_index: s.summary_stats?.h_index ?? null,
+        works_count: s.works_count ?? null,
+      });
+    }
+  }
+  return cost;
+}
+
+const venueIds = [...new Set(buildRecords().records.filter((r) => r.venue_metrics).map((r) => r.venue_openalex_id))];
+try {
+  totalCost += await fetchMetrics(venueIds);
+} catch (error) {
+  if (!(error instanceof BudgetExhausted)) throw error;
+  console.error("OpenAlex's daily budget ran out while fetching venue_metrics; they are left empty.");
+}
+await save();
+
 const { records, alreadyListed } = buildRecords();
 
 const count = (d, m) => records.filter((r) => r.decision === d && (!m || r.matched_in === m)).length;
 console.log(`
 Since ${since}: ${byKey.size} unique works, ${alreadyListed} already listed.
 ${count("PENDING")} need screening (Steps 2–5): ${count("PENDING", "title/abstract")} name a product in the title or abstract, ${count("PENDING", "full text only")} only in the full text.
-${count("EXCLUDE")} excluded mechanically.
+${count("EXCLUDE")} excluded mechanically (${records.filter((r) => r.reason_codes.includes("X-VENUE")).length} on venue, metrics for ${metrics.size} of ${venueIds.length} venues).
 OpenAlex cost: $${totalCost.toFixed(3)} (keyless budget is $0.10/day per IP).
 Wrote ${out}`);
