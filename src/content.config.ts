@@ -189,6 +189,7 @@ const researchByOthers = defineCollection({
       collectedFrom: z.enum(["curated", "submitted", "automated"]).default("curated"),
       citationCount: z.number().int().nonnegative().optional(),
       type: z.enum(["paper", "dataset", "thesis"]),
+      label: z.enum(["PhD thesis", "Master's thesis"]).optional(),
       authors: z.string().optional(),
       venue: z.string().optional(),
       institution: z.string().optional(),

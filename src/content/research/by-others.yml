@@ -27,6 +27,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "Master's thesis"
   authors: "Alves, J. D. P."
   venue: "Portuguese National Funding Agency for Science, Research and Technology (RCAAP Project by FCT)"
   institution: "Universidade Politécnica de Viana do Castelo"
@@ -36,7 +37,7 @@
   summary: "A master's thesis that tests the security of smart home protocols such as Zigbee, Z-Wave, Wi-Fi and Bluetooth in a realistic home testbed. A Home Assistant controller on a Raspberry Pi ties the real devices together for the attacks and analysis."
   links:
     - { label: "Thesis", url: "http://repositorio.ipvc.pt/bitstream/20.500.11960/4839/1/Joel_Alves.pdf" }
-  notes: "Master's thesis. Full text: 33 exact mentions in the body."
+  notes: "Full text: 33 exact mentions in the body."
 
 - id: unified-framework-smart-home-automation-energy
   title: "A unified framework for smart home automation and energy analytics through matter and Modbus integration"
@@ -249,6 +250,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "Master's thesis"
   authors: "Gummesson, E."
   venue: "Lund University Publications Student Papers (Lund University)"
   institution: "Lund University"
@@ -258,7 +260,7 @@
   summary: "A master's thesis that builds a low-cost presence sensor able to tell whether someone is in a room even when they sit still. The prototype is compared with commercial sensors, read through Home Assistant, as the reference."
   links:
     - { label: "Thesis", url: "https://lup.lub.lu.se/student-papers/record/9239490/file/9239503.pdf" }
-  notes: "Master's thesis. Full text: 3 exact mentions in the body."
+  notes: "Full text: 3 exact mentions in the body."
 
 - id: cadence-stratified-multimodal-perception-real-time
   title: "Cadence-Stratified Multimodal Perception for Real-Time Child–Robot Interaction"
@@ -384,6 +386,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "Master's thesis"
   authors: "Konduri, S."
   venue: "University of Vienna"
   fields: [energy]
@@ -392,7 +395,7 @@
   summary: "Designs and evaluates a web app that helps families, including multi-generation households, understand their energy use and save energy. Home Assistant runs the smart home system behind it."
   links:
     - { label: "Paper", url: "https://doi.org/10.25365/thesis.81342" }
-  notes: "Master's thesis. Reviewer confirmed the thesis is in English; only the abstract is German. Master's thesis."
+  notes: "Reviewer confirmed the thesis is in English; only the abstract is German. Master's thesis."
 
 - id: design-implementation-mattress-temperature-conditioning
   title: "Design and implementation of mattress temperature conditioning"
@@ -400,6 +403,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "Master's thesis"
   authors: "Lachman, I."
   venue: "Brno University of Technology Digital Library (Brno University of Technology)"
   institution: "Brno University of Technology"
@@ -409,7 +413,7 @@
   summary: "A master's thesis that designs a module to heat and cool a mattress. The controller runs ESPHome and connects to Home Assistant, which also supplies room temperature history used to set the requirements."
   links:
     - { label: "Thesis", url: "https://dspace.vut.cz/bitstreams/e84902e3-a9a9-4f9a-86da-b8e77a8d4d2f/download" }
-  notes: "Master's thesis. Full text: 4 exact mentions in the body."
+  notes: "Full text: 4 exact mentions in the body."
 
 - id: design-voice-care-personalized-voice-technology
   title: "Design of Voice of Care Using Personalized Voice Technology for Emotional Support and Digital Well‐Being"
@@ -554,6 +558,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "Master's thesis"
   authors: "Teixeira, R. N."
   venue: "Portuguese National Funding Agency for Science, Research and Technology (RCAAP Project by FCT)"
   fields: [energy]
@@ -562,7 +567,7 @@
   summary: "A master's thesis that builds GreenShift, a Home Assistant component that turns energy monitoring into a game with personalised challenges and AI-timed nudges. Tests in labs and homes showed real cuts in power use when people engaged with it."
   links:
     - { label: "Thesis", url: "https://repositorio-aberto.up.pt/bitstream/10216/175500/2/786388.pdf" }
-  notes: "Master's thesis. Full text: 11 exact mentions in the body. Title page states 'Mestrado em Engenharia Informática e Computação' (master's)."
+  notes: "Full text: 11 exact mentions in the body. Title page states 'Mestrado em Engenharia Informática e Computação' (master's)."
 
 - id: how-energy-consumed-llm-enabled-smart
   title: "How Energy is Consumed by LLM-enabled Smart Home Assistant Systems on Low-Cost Devices: An Empirical Study"
@@ -1006,6 +1011,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "PhD thesis"
   authors: "Hewitt, M."
   venue: "White Rose eTheses Online (University of Leeds, The University of Sheffield, University of York)"
   institution: "University of Sheffield"
@@ -1015,7 +1021,7 @@
   summary: "A doctoral thesis on controlling smart homes by talking to a language model running locally, with rule-based checks so commands stay safe. It uses the Home Assistant intents collection as training and test data for smart home commands."
   links:
     - { label: "Thesis", url: "https://etheses.whiterose.ac.uk/id/eprint/39147/1/Hewitt%2CMary%2CThesis.pdf" }
-  notes: "PhD thesis. Full text: 10 exact mentions in the body."
+  notes: "Full text: 10 exact mentions in the body."
 
 - id: speech-synthesis-piper-tts-resource-constrained
   title: "Speech Synthesis Using Piper TTS on a Resource-Constrained Edge Device"
@@ -1089,6 +1095,7 @@
   added: 2026-11-26
   collectedFrom: automated
   type: thesis
+  label: "Master's thesis"
   authors: "Rueda, A."
   venue: "O2 - Repositori Institucional (Universitat Oberta de Catalunya)"
   fields: [systems-software]
@@ -1097,7 +1104,7 @@
   summary: "A master's thesis that designs the Stoolie, a cheap, low-power sensor that reports whether an appliance is on or off. It runs ESPHome on an ESP32 and plugs into Home Assistant, so existing appliances can be monitored without replacing them."
   links:
     - { label: "Thesis", url: "https://hdl.handle.net/10609/154911" }
-  notes: "Master's thesis. Full text: 117 exact mentions in the body."
+  notes: "Full text: 117 exact mentions in the body."
 
 - id: semantic-interoperability-scalable-building-grid-services
   title: "Towards Semantic Interoperability for Scalable Building-to-Grid Services: A Multi-Layer Annotation Pipeline for SCADA Hierarchies"
@@ -1222,6 +1229,7 @@
   added: 2026-11-24
   collectedFrom: automated
   type: thesis
+  label: "PhD thesis"
   authors: "Garcia Marrero, L. E."
   venue: "theses.fr (ABES)"
   institution: "CY Cergy Paris Université"

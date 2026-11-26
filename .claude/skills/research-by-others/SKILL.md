@@ -91,12 +91,13 @@ After sign-off, add each approved record to `by-others.yml`, which has no sectio
 | authors | `authors`: "Surname, I., Surname, I., et al." (first three, then et al.) |
 | institutions | `institution`: first author's institution, if any |
 | publication_type | `type`: `thesis` for PhD and master's theses, otherwise `paper` |
+| label | `label`: "PhD thesis" or "Master's thesis" (theses only; shown as the type pill) |
 | products | `uses`: Home Assistant, ZHA, Z-Wave JS and hardware → `home-assistant`; ESPHome → `esphome`; Voice stack → `piper`; Music Assistant → `other` |
 | domain | `fields`: HCI → `hci`; Privacy and security → `security-monitoring`; Energy → `energy`; Software / Systems and IoT → `systems-software`; Health and accessibility → `health-care` or `accessibility`; voice and language work → `voice-language` |
 | doi, open_access_url | `links`: `{ label: "Paper", url: <doi url> }`, plus `{ label: "Free copy", url: ... }` if different; `openAccess: true` when there's a free copy |
 | summary | `summary` |
 | — | `added: <today>`, `collectedFrom: automated` (or `submitted` for self-submissions) |
 
-Use an `id` in kebab-case from the title's key words. Only use fields defined in the `researchByOthers` schema in [src/content.config.ts](../../../src/content.config.ts): the schema drops unknown keys without an error. It has no field for `label` yet, so the "Master's thesis" / "PhD thesis" tag can't be shown until one is added. Then run `npm run build` to check the schema, and leave the changes uncommitted for review.
+Use an `id` in kebab-case from the title's key words. Only use fields defined in the `researchByOthers` schema in [src/content.config.ts](../../../src/content.config.ts): the schema drops unknown keys without an error. Then run `npm run build` to check the schema, and leave the changes uncommitted for review.
 
 Also recheck every entry already in `by-others.yml` for retractions (the OpenAlex `is_retracted` flag on its DOI) and tell the user about any that need removing.
